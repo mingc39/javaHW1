@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+// UIInput.java
+// 입력 창
 public class UIInput extends JFrame {
 	
 	/**
@@ -17,18 +19,22 @@ public class UIInput extends JFrame {
 
 	public UIInput() {
 		
+		// 창 제목 설정
 		setTitle("입력");
-		
+		// 레이 아웃 설정
 		setLayout(new BorderLayout());
 		
+		// 변수
 		JPanel center, south;
 		JPanel panel, panel2;
 		JLabel label;
 		JTextField text;
 		JButton button;
 		
+		// 중앙 패널 생성
 		center = new JPanel(new GridLayout(3, 1));
 		
+		// 첫째 줄
 		panel = new JPanel();
 		label = new JLabel("학번");
 		panel.add(label);
@@ -42,6 +48,7 @@ public class UIInput extends JFrame {
 		panel.add(button);
 		center.add(panel);
 		
+		// 둘째 줄
 		panel = new JPanel(new GridLayout(1, 4));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -74,6 +81,7 @@ public class UIInput extends JFrame {
 		
 		center.add(panel);
 		
+		// 셋째 줄
 		panel = new JPanel(new GridLayout(1, 4));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -106,16 +114,18 @@ public class UIInput extends JFrame {
 		
 		center.add(panel);
 		
-		
+		// 아래쪽 패널 생성
 		south = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
 		button = new JButton("확인");
 		south.add(button);
 		button = new JButton("취소");
 		south.add(button);
 		
+		// 프레임에 패널 추가
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		
+		// 창 기본 설정
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		setResizable(false);

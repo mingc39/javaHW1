@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+//UIMain.java
+//메인창
 public class UIMain extends JFrame {
 	
 	/**
@@ -19,26 +21,33 @@ public class UIMain extends JFrame {
 
 	public UIMain() {
 		
+		// 창 제목 설정
 		setTitle("성적 관리");
 		
+		// 메뉴 추가
 		menu();
 		
+		// 표 추가
 		DefaultTableModel tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 30);
 		JTable table = new JTable(tableModel);
 		JScrollPane scroll = new JScrollPane(table);
 		add(scroll);
 		
+		// 창 기본 설정
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1000,500);
 		setVisible(true);
 		
 	}
 	
+	// 메뉴 추가
 	void menu() {
 		
+		// 변수
 		JMenuItem item;
 		ActionListener listener;
 		
+		// 메뉴 바, 메뉴 객체 생성
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menuFile = new JMenu("파일");
 		menuFile.setMnemonic(KeyEvent.VK_F);
@@ -47,6 +56,8 @@ public class UIMain extends JFrame {
 		JMenu menuGraph = new JMenu("그래프");
 		menuGraph.setMnemonic(KeyEvent.VK_G);
 		
+		// 파일 메뉴 생성
+		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
@@ -64,6 +75,7 @@ public class UIMain extends JFrame {
 				}
 			}
 		};
+		// 메뉴 생성 및 추가
 		item = new JMenuItem("DB 열기");
 		item.addActionListener(listener);
 		menuFile.add(item);
@@ -82,6 +94,8 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuFile.add(item);
 		
+		// 편집 메뉴 생성
+		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
@@ -101,6 +115,7 @@ public class UIMain extends JFrame {
 				}
 			}
 		};
+		// 메뉴 생성 및 추가
 		item = new JMenuItem("입력");
 		item.addActionListener(listener);
 		menuEdit.add(item);
@@ -123,6 +138,8 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuEdit.add(item);
 		
+		// 그래프 메뉴 생성
+		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				new UIGraph();
@@ -142,6 +159,7 @@ public class UIMain extends JFrame {
 				}*/
 			}
 		};
+		// 메뉴 생성 및 추가
 		item = new JMenuItem("출석");
 		item.addActionListener(listener);
 		menuGraph.add(item);
@@ -167,6 +185,7 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuGraph.add(item);
 		
+		// 메뉴 바에 메뉴 추가
 		menuBar.add(menuFile);
 		menuBar.add(menuEdit);
 		menuBar.add(menuGraph);
