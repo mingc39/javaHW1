@@ -22,6 +22,7 @@ public class UIMain extends JFrame {
 	private static final long serialVersionUID = -9063420066930412578L;
 	private boolean viewIndex = false;
 	private int nextStudent = 0;
+	private double[] raito = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125};
 	private DefaultTableModel tableModel;
 	private JTable table;
 	
@@ -31,7 +32,7 @@ public class UIMain extends JFrame {
 		setTitle("성적 관리");
 		
 		// 표 생성
-		tableModel = new DefaultTableModel(new String[] {"index", "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
+		tableModel = new DefaultTableModel(new String[] {"index", "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타", "총점", "학점"}, 0) {
 			private static final long serialVersionUID = -2265577528898631753L;
 			public boolean isCellEditable(int rowIndex, int mColIndex) {
 				return false;
@@ -119,7 +120,7 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "입력":
-					new UIInput().addStudentEventListener(new Listener());
+					new UIInput().addStudentEventListener(new listener());
 					break;
 				case "수정":
 					if(table.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "수정할 학생을 표에서 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
@@ -127,7 +128,7 @@ public class UIMain extends JFrame {
 						int row = table.getSelectedRow();
 						int[] scores = new int[8];
 						for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
-						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores), Integer.parseInt((String)table.getValueAt(row, 0))).addStudentEventListener(new Listener());;
+						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores), Integer.parseInt((String)table.getValueAt(row, 0))).addStudentEventListener(new listener());
 					}
 					break;
 				case "검색":
@@ -140,6 +141,7 @@ public class UIMain extends JFrame {
 					// new UIAttendance(getStudents());
 					break;
 				case "반영 비율":
+					new UIRaito(raito).addStudentEventListener(new listener());
 					break;
 				}
 			}
@@ -224,15 +226,29 @@ public class UIMain extends JFrame {
 		return students;
 	}
 	
+	// 총점 계산
+	private double calScore(Student student) {
+		double score = 0;
+		for(int i = 0; i < raito.length; i++)
+			score += student.getScores()[i] * raito[i];
+		return score;
+	}
+	private double calScore(double[] student) {
+		double score = 0;
+		for(int i = 0; i < raito.length; i++)
+			score += student[i] * raito[i];
+		return score;
+	}
+	
 	// UIInput 리스너
-	class Listener implements StudentEventListener {
+	class listener implements StudentEventListener {
 
 		@Override
 		public void studentEvent(StudentEvent e) {
 			
 			// 학생 추가
 			if(e.getUIInputMode() == UIInputMode.ADD) {
-				tableModel.addRow(new String[] {Integer.toString(nextStudent++), Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+				tableModel.addRow(new String[] {Integer.toString(nextStudent++), Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers()), Double.toString(calScore(e.getStudent())) });
 			
 			// 학생 수정
 			} else if(e.getUIInputMode() == UIInputMode.EDIT) {
@@ -241,6 +257,7 @@ public class UIMain extends JFrame {
 					if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
 						for(int i = 0; i < values.length; i++)
 							tableModel.setValueAt(values[i], row, i + 1);
+						tableModel.setValueAt(Double.toString(calScore(e.getStudent())), row, values.length + 1);
 						break;
 					}
 				}
@@ -252,6 +269,13 @@ public class UIMain extends JFrame {
 						tableModel.removeRow(row);
 						break;
 					}
+				}
+			} else {
+				double[] scores = new double[8];
+				for(int row = 0; row < table.getRowCount(); row++) {
+					for(int i = 0; i < 8; i++)
+						scores[i] = Double.parseDouble((String) tableModel.getValueAt(row, i + 3));
+					tableModel.setValueAt(Double.toString(calScore(scores)), row, 11);
 				}
 			}
 		}
