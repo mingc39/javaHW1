@@ -46,7 +46,7 @@ public class UIInput extends JFrame {
 		pt.setText(Integer.toString(student.getPt()));
 		report.setText(Integer.toString(student.getReport()));
 		others.setText(Integer.toString(student.getOthers()));
-		info.setText(row + 1 + "번 학생을 수정합니다.");
+		info.setText(row + "번 학생을 수정합니다.");
 		
 	}
 	// 추가 모드 생성자

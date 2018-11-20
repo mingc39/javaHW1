@@ -18,6 +18,7 @@ import javax.swing.table.TableRowSorter;
 public class UIMain extends JFrame {
 	
 	private static final long serialVersionUID = -9063420066930412578L;
+	private int nextStudent = 0;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	
@@ -27,15 +28,17 @@ public class UIMain extends JFrame {
 		setTitle("성적 관리");
 		
 		// 표 생성
-		tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
+		tableModel = new DefaultTableModel(new String[] {"", "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
 			private static final long serialVersionUID = -2265577528898631753L;
-
 			public boolean isCellEditable(int rowIndex, int mColIndex) {
 				return false;
 			}
 		};
 		table = new JTable(tableModel);
 		table.setRowSorter(new TableRowSorter<TableModel>(tableModel));
+		//table.getColumnModel().getColumn(0).setMinWidth(0);
+		//table.getColumnModel().getColumn(0).setMaxWidth(0);
+		//table.getColumnModel().getColumn(0).setWidth(0);
 		
 		// 메뉴 추가
 		menu(tableModel);
@@ -67,7 +70,7 @@ public class UIMain extends JFrame {
 		JMenu menuGraph = new JMenu("그래프");
 		menuGraph.setMnemonic(KeyEvent.VK_G);
 		
-		// 파일 메뉴 생성
+		// =======================<파일 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
@@ -105,7 +108,7 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuFile.add(item);
 		
-		// 편집 메뉴 생성
+		// =======================<편집 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
@@ -118,15 +121,17 @@ public class UIMain extends JFrame {
 					else {
 						int row = table.getSelectedRow();
 						int[] scores = new int[8];
-						for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 2));
-						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 0)), (String)table.getValueAt(row, 1), scores), row).addStudentEventListener(new Listener());;
+						for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
+						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores), Integer.parseInt((String)table.getValueAt(row, 0))).addStudentEventListener(new Listener());;
 					}
 					break;
 				case "검색":
+					// new UISearch(getStudents());
 					break;
 				case "평균":
 					break;
 				case "출석 체크":
+					// new UIAttendance(getStudents());
 					break;
 				case "반영 비율":
 					break;
@@ -156,25 +161,11 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuEdit.add(item);
 		
-		// 그래프 메뉴 생성
+		// =======================<그래프 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph();
-				/*switch(((JMenuItem) (e.getSource())).getText()) {
-				case "입력":
-					break;
-				case "수정":
-					break;
-				case "검색":
-					break;
-				case "평균":
-					break;
-				case "출석 체크":
-					break;
-				case "반영 비율":
-					break;
-				}*/
+				new UIGraph(getStudents(), ((JMenuItem) (e.getSource())).getText());
 			}
 		};
 		// 메뉴 생성 및 추가
@@ -211,20 +202,47 @@ public class UIMain extends JFrame {
 		
 	}
 	
+	public Student[] getStudents() {
+		Student[] students = new Student[table.getRowCount()];
+		
+		int[] scores = new int[8];
+		for(int row = 0; row < table.getRowCount(); row++) {
+			for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
+			students[row] = new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores);
+		}
+		
+		return students;
+	}
+	
 	// UIInput 리스너
 	class Listener implements StudentEventListener {
 
 		@Override
 		public void studentEvent(StudentEvent e) {
+			
+			// 학생 추가
 			if(e.getUIInputMode() == UIInputMode.ADD) {
-				tableModel.addRow(new String[] {Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+				tableModel.addRow(new String[] {Integer.toString(nextStudent++), Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+			
+			// 학생 수정
 			} else if(e.getUIInputMode() == UIInputMode.EDIT) {
 				String[] values = e.getStudent().getValues();
-				int row = e.getRow();
-				for(int i = 0; i < values.length; i++)
-					tableModel.setValueAt(values[i], row, i);
+				for(int row = 0; row < table.getRowCount(); row++) {
+					if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
+						for(int i = 0; i < values.length; i++)
+							tableModel.setValueAt(values[i], row, i + 1);
+						break;
+					}
+				}
+			
+			// 학생 삭제
 			} else if(e.getUIInputMode() == UIInputMode.DELETE) {
-				tableModel.removeRow(e.getRow());
+				for(int row = 0; row < table.getRowCount(); row++) {
+					if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
+						tableModel.removeRow(row);
+						break;
+					}
+				}
 			}
 		}
 		
