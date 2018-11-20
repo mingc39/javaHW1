@@ -14,22 +14,23 @@ import javax.swing.table.DefaultTableModel;
 //메인창
 public class UIMain extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9063420066930412578L;
-
+	private DefaultTableModel tableModel;
+	private JTable table;
+	
 	public UIMain() {
 		
 		// 창 제목 설정
 		setTitle("성적 관리");
 		
-		// 메뉴 추가
-		menu();
+		// 표 생성
+		tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0);
+		table = new JTable(tableModel);
 		
-		// 표 추가
-		DefaultTableModel tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 30);
-		JTable table = new JTable(tableModel);
+		// 메뉴 추가
+		menu(tableModel);
+		
+		// 창에 표 추가
 		JScrollPane scroll = new JScrollPane(table);
 		add(scroll);
 		
@@ -41,7 +42,7 @@ public class UIMain extends JFrame {
 	}
 	
 	// 메뉴 추가
-	void menu() {
+	void menu(DefaultTableModel tableModel) {
 		
 		// 변수
 		JMenuItem item;
@@ -100,7 +101,7 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "입력":
-					new UIInput();
+					new UIInput().addStudentEventListener(new Listener());
 					break;
 				case "수정":
 					break;
@@ -190,6 +191,15 @@ public class UIMain extends JFrame {
 		menuBar.add(menuEdit);
 		menuBar.add(menuGraph);
 		setJMenuBar(menuBar);
+		
+	}
+	
+	class Listener implements StudentEventListener {
+
+		@Override
+		public void studentEvent(StudentEvent e) {
+			tableModel.addRow(new String[] {Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+		}
 		
 	}
 
