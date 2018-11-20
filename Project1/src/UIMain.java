@@ -6,9 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 //UIMain.java
 //메인창
@@ -24,8 +27,15 @@ public class UIMain extends JFrame {
 		setTitle("성적 관리");
 		
 		// 표 생성
-		tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0);
+		tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
+			private static final long serialVersionUID = -2265577528898631753L;
+
+			public boolean isCellEditable(int rowIndex, int mColIndex) {
+				return false;
+			}
+		};
 		table = new JTable(tableModel);
+		table.setRowSorter(new TableRowSorter<TableModel>(tableModel));
 		
 		// 메뉴 추가
 		menu(tableModel);
@@ -104,6 +114,13 @@ public class UIMain extends JFrame {
 					new UIInput().addStudentEventListener(new Listener());
 					break;
 				case "수정":
+					if(table.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "수정할 학생을 표에서 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+					else {
+						int row = table.getSelectedRow();
+						int[] scores = new int[8];
+						for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 2));
+						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 0)), (String)table.getValueAt(row, 1), scores), row).addStudentEventListener(new Listener());;
+					}
 					break;
 				case "검색":
 					break;
@@ -194,11 +211,21 @@ public class UIMain extends JFrame {
 		
 	}
 	
+	// UIInput 리스너
 	class Listener implements StudentEventListener {
 
 		@Override
 		public void studentEvent(StudentEvent e) {
-			tableModel.addRow(new String[] {Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+			if(e.getUIInputMode() == UIInputMode.ADD) {
+				tableModel.addRow(new String[] {Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers())});
+			} else if(e.getUIInputMode() == UIInputMode.EDIT) {
+				String[] values = e.getStudent().getValues();
+				int row = e.getRow();
+				for(int i = 0; i < values.length; i++)
+					tableModel.setValueAt(values[i], row, i);
+			} else if(e.getUIInputMode() == UIInputMode.DELETE) {
+				tableModel.removeRow(e.getRow());
+			}
 		}
 		
 	}
