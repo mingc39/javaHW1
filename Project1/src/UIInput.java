@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 // UIInput.java
 // 입력 창
-public class UIInput extends JFrame {
+public class UIInput extends JDialog {
 	
 	// 변수 선언
 	private static final long serialVersionUID = 5688138324038957536L;
@@ -197,7 +197,6 @@ public class UIInput extends JFrame {
 		// 창 기본 설정
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
-		setResizable(false);
 		setVisible(true);
 		
 	}

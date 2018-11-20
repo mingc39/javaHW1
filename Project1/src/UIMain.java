@@ -1,3 +1,4 @@
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -18,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 public class UIMain extends JFrame {
 	
 	private static final long serialVersionUID = -9063420066930412578L;
+	private boolean viewIndex = false;
 	private int nextStudent = 0;
 	private DefaultTableModel tableModel;
 	private JTable table;
@@ -28,7 +31,7 @@ public class UIMain extends JFrame {
 		setTitle("성적 관리");
 		
 		// 표 생성
-		tableModel = new DefaultTableModel(new String[] {"", "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
+		tableModel = new DefaultTableModel(new String[] {"index", "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 0) {
 			private static final long serialVersionUID = -2265577528898631753L;
 			public boolean isCellEditable(int rowIndex, int mColIndex) {
 				return false;
@@ -36,9 +39,11 @@ public class UIMain extends JFrame {
 		};
 		table = new JTable(tableModel);
 		table.setRowSorter(new TableRowSorter<TableModel>(tableModel));
-		//table.getColumnModel().getColumn(0).setMinWidth(0);
-		//table.getColumnModel().getColumn(0).setMaxWidth(0);
-		//table.getColumnModel().getColumn(0).setWidth(0);
+		if(viewIndex == false) {
+			table.getColumnModel().getColumn(0).setMinWidth(0);
+			table.getColumnModel().getColumn(0).setMaxWidth(0);
+			table.getColumnModel().getColumn(0).setWidth(0);
+		}
 		
 		// 메뉴 추가
 		menu(tableModel);
@@ -129,6 +134,7 @@ public class UIMain extends JFrame {
 					// new UISearch(getStudents());
 					break;
 				case "평균":
+					new UIStatistics(getStudents());
 					break;
 				case "출석 체크":
 					// new UIAttendance(getStudents());
@@ -141,13 +147,16 @@ public class UIMain extends JFrame {
 		// 메뉴 생성 및 추가
 		item = new JMenuItem("입력");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('N', Event.CTRL_MASK));
 		menuEdit.add(item);
 		item = new JMenuItem("수정");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator();
 		item = new JMenuItem("검색");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK));
 		menuEdit.add(item);
 		item = new JMenuItem("평균");
 		item.addActionListener(listener);
@@ -202,6 +211,7 @@ public class UIMain extends JFrame {
 		
 	}
 	
+	// 모든 학생 정보를 Student 배열로 반환
 	public Student[] getStudents() {
 		Student[] students = new Student[table.getRowCount()];
 		
