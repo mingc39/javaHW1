@@ -46,7 +46,7 @@ public class UIInput extends JDialog {
 		pt.setText(Integer.toString(student.getPt()));
 		report.setText(Integer.toString(student.getReport()));
 		others.setText(Integer.toString(student.getOthers()));
-		info.setText(row + "번 학생을 수정합니다.");
+		info.setText("학생을 수정합니다.");
 		
 	}
 	// 추가 모드 생성자
@@ -242,6 +242,7 @@ public class UIInput extends JDialog {
 				break;
 			case "삭제":
 				if(mode == UIInputMode.ADD) dispose();
+				// TODO 뻘짓 치우고 주석처리 살리기 
 				// Yes or Yes! - "NO 선택지는 존중받지 못합니다" - https://youtu.be/mAKsZ26SabQ
 				else if(JOptionPane.showOptionDialog(null, "정말로 " + (row + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"예(Y)", "예(Y)"}, "예(Y)") != JOptionPane.CLOSED_OPTION) {
 				//else if(JOptionPane.showConfirmDialog(null, "정말로 " + (row + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {

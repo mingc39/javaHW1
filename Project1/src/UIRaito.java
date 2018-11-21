@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 public class UIRaito extends JDialog {
 	
 	private static final long serialVersionUID = -6404147315974902973L;
-	@SuppressWarnings("unused")
 	private double[] raito;
 	private JTextField attendance, midTest, finalTest, homework, quiz, pt, report, others;
 	protected LinkedList<StudentEventListener> listeners;
@@ -184,7 +183,7 @@ public class UIRaito extends JDialog {
 					temp[6] = Double.parseDouble(report.getText());
 					temp[7] = Double.parseDouble(others.getText());
 					for(double d : temp) {
-						if((d > 100) || (d < 0)) throw new ScoreRangeException();
+						if((d > 1) || (d < 0)) throw new ScoreRangeException();
 						total += d;
 					}
 					if(total != 1) throw new ScoreRangeException();

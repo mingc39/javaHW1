@@ -1,0 +1,102 @@
+=======<메인 함수 클래스>========
+Main.java: 메인 함수 클래스
+	public static 메소드
+	- main(String[] args): 메인 메소드
+	- testData(StudentTable, int): 주어진 StudentTable에 주어진 수 만큼의 학생을 임의로 생성해 입력한 뒤 반환
+
+=======<데이터 관련 클래스>========
+Student.java: 학생의 기본 정보를 담고 있는 클래스
+	- 객체간 학생의 정보를 하나로 묶어서 전달하기 위해 사용
+	- 가지고 있는 정보: 학번, 이름, 세부 점수(출석, 중간 시험, 기말 시험, 과제, 퀴즈, 발표, 보고서, 기타)
+	생성자
+	- Student(int, String, int, int, int, int, int, int, int, int): 주어진 정보를 가진 Student 객체 생성, 인자는 순서대로 studentID, name, attendance, midTest, finalTest, homework, quiz, pt, report, others
+	- Student(int, String, int[]): 주어진 정보를 가진 Student 객체 생성, 인자는 순서대로 studentID, name, 세부 점수 배열(크기: 8)
+	get 메소드
+	- studentID, attendance, midTest, finalTest, homework, quiz, pt, report, others
+	- name
+	- getValues: 학번, 이름, 세부 점수를 String 배열로 반환
+	- getScores: 세부 점수를 정수 배열로 반환
+	그 외의 public 메소드
+	- toString: 학번, 이름, 세부 점수를 합쳐 String으로 반환
+StudentTable.java: 학생 정보를 담고 있는 표 클래스
+	- 실제 학생 정보를 가지고 학생을 추가, 수정 및 학생의 학점을 계산
+	생성자
+	- StudentTable(): 학생 정보를 담을 새로운 표 생성
+	UIMain 객체와의 상호 작용을 위한 메소드: StudentTable 내의 중요한 변수가 수정될 수 있으니 사용하지 마세요.
+	- getGrade
+	- getGradeName
+	- getRaito
+	- getScroll
+	get 메소드
+	- getNewStudentEventListener: 새로운 Listener 객체(StudentEventListener 인터페이스 구현)를 생성해서 반환
+	- getSelectedRow: 표에서 선택된 줄의 번호를 반환
+	- getSelectedStudent: 표에서 선택된 행의 학생을 Student로 반환
+	- getSelectedStudentIndex: 표에서 선택된 행의 학생의 index 번호를 반환
+	- getStudent(int): 주어진 행의 학생을 Student로 반환
+	- getStudentAt(int): 주어진 행의 학생을 Student로 반환
+	- getStudents: 모든 학생의 정보를 Student 배열로 반환
+
+=======<이벤트 관련 클래스>========
+UIInputMode.java: UIInputMode 및 UIGrade, UIRaito에서 발생시키는 StudentEvent의 상황을 나타내는 열거형
+	- NONE: 새로 고침
+	- ADD: 학생 추가
+	- EDIT: 학생 수정
+	- DELETE: 학생 삭제
+StudentEvent.java: StudentEvent 이벤트 클래스
+	생성자
+	- StudentEvent(Object, Student): 주어진 source와 학생으로 이벤트 객체 생성, mode는 UIInputMode.NONE으로 설정
+	- StudentEvent(Object, Student, UIInputMode): 주어진 source와 학생, UIInputMode로 이벤트 객체 생성
+	- StudentEvent(Object, Student, UIInputMode, int): 주어진 source와 학생, UIInputMode, 학생 index 번호로 이벤트 객체 생성
+	get 메소드
+	- getRow
+	- getStudent
+	- getUIInputMode: mode를 반환
+StudentEventListener.java: StudentEvent의 리스너 인터페이스
+	- studentEvent(StudentEvent)
+
+=======<예외 클래스>========
+ScoreRangeException.java: 점수 및 비율이 범위를 넘어갔을떄 발생, 런타임 예외
+
+=======<UI 클래스>========
+UIMain.java: 메인 UI 프레임
+	- 메인 UI를 표시한다.
+	- 메뉴에서 기능 실행 시 StudentTable객체로 부터 필요한 정보를 읽어와 해당 기능 UI 클래스를 생성한다.
+	생성자
+	- UIMain(StudentTable): 주어진 StudentTable을 표시하는 메인 UI 프레임 생성
+UIInput.java: 학생을 추가/수정 하기 위한 값을 입력받는 UI 다이얼로그
+	- 정보를 입력받아 새 학생을 추가
+	- 존재하는 학생을 수정 또는 삭제
+	- 학생을 추가 및 수정 할때 설정된 리스너로 Student 이벤트 발생
+	- 이름을 제외한 모든 항목은 정수로 입력되어야 하며 학번과 이름을 제외한 항목의 범위는 0 ~ 100이다.
+	생성자
+	- UIInput(): 새로운 학생을 추가하는 UIInput 다이얼로그 창 생성
+	- UIInput(Student, int): 주어진 학생을 수정, 삭제 하는 UIInput 다이얼로그 창 생성
+	public 메소드
+	- addStudentEventListener(StudentEventListener): 주어진 StudentEventListener 추가
+	- removeStudentEventListener(StudentEventListener): 주어진 StudentEventListener 제거
+	protected 메소드
+	- fireStudentEvent(Student): StudentEvent 발생, mode가 UIInputMode.EDIT나 UIInputMode.DELETE인 경우 이벤트 발생 객체, 주어진 Student 객체, mode, row으로 이벤트 발생, 그렇지 않은 경우 이벤트 발생 객체, 주어진 Student 객체, mode로 이벤트 발생
+UIGrade.java: 학점 비율 설정 UI 다이얼로그
+	- 학점 비율을 설정한다.
+	- 각 항목은 0 ~ 1 사이의 실수 값을 입력받고 모든 항목의 합은 1이 되어야 한다.
+	생성자
+	- UIGrade(double[], String[], int): 주어진 현재 학점 비율 배열, 학점 이름 배열, 학점 종류 갯수로 UIGrade 다이얼로그 창 생성
+	public 메소드
+	- addStudentEventListener(StudentEventListener): 주어진 StudentEventListener 추가
+	- removeStudentEventListener(StudentEventListener): 주어진 StudentEventListener 제거
+	protected 메소드
+	- fireStudentEvent(Student): StudentEvent 발생, mode가 UIInputMode.EDIT나 UIInputMode.DELETE인 경우 이벤트 발생 객체, 주어진 Student 객체, mode, row으로 이벤트 발생, 그렇지 않은 경우 이벤트 발생 객체, 주어진 Student 객체, mode로 이벤트 발생
+UIRaito.java: 반영 비율 설정 UI 다이얼로그
+	- 세부 점수 별 총점 반영 비율을 설정한다.
+	- 각 항목은 0 ~ 1 사이의 실수 값을 입력받고 모든 항목의 합은 1이 되어야 한다.
+	생성자
+	- UIRaito(double[]): 주어진 현재 반영 비율 배열로 UIRaito 다이얼로그 창 생성
+	public 메소드
+	- addStudentEventListener(StudentEventListener): 주어진 StudentEventListener 추가
+	- removeStudentEventListener(StudentEventListener): 주어진 StudentEventListener 제거
+	protected 메소드
+	- fireStudentEvent(Student): StudentEvent 발생, mode가 UIInputMode.EDIT나 UIInputMode.DELETE인 경우 이벤트 발생 객체, 주어진 Student 객체, mode, row으로 이벤트 발생, 그렇지 않은 경우 이벤트 발생 객체, 주어진 Student 객체, mode로 이벤트 발생
+UIStatistics.java: 통계 표시 UI 다이얼로그
+	- 각 항목에 대한 평균을 표시한다.
+	생성자
+	- UIStatistics(Student[]): 주어진 Student 배열의 정보에 대한 평균을 표시하는 UIStatistics 다이얼로그 창 생성
