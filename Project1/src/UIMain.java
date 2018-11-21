@@ -127,8 +127,12 @@ public class UIMain extends JFrame {
 					else {
 						int row = table.getSelectedRow();
 						int[] scores = new int[8];
-						for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
-						new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores), Integer.parseInt((String)table.getValueAt(row, 0))).addStudentEventListener(new listener());
+						//for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
+						for(int i = 0; i < 8; i++) scores[i] = (int) table.getValueAt(row, i + 3);
+						/*new UIInput(new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2),
+								scores),Integer.parseInt((String)table.getValueAt(row, 0))).addStudentEventListener(new listener());*/
+						new UIInput(new Student((int) table.getValueAt(row, 1), (String) table.getValueAt(row, 2), scores),
+								(int) table.getValueAt(row, 0)).addStudentEventListener(new listener());
 					}
 					break;
 				case "검색":
@@ -215,12 +219,15 @@ public class UIMain extends JFrame {
 	
 	// 모든 학생 정보를 Student 배열로 반환
 	public Student[] getStudents() {
+		
 		Student[] students = new Student[table.getRowCount()];
 		
 		int[] scores = new int[8];
 		for(int row = 0; row < table.getRowCount(); row++) {
-			for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
-			students[row] = new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores);
+			//for(int i = 0; i < 8; i++) scores[i] = Integer.parseInt((String)table.getValueAt(row, i + 3));
+			for(int i = 0; i < 8; i++) scores[i] = (int) table.getValueAt(row, i + 3);
+			//students[row] = new Student(Integer.parseInt((String)table.getValueAt(row, 1)), (String)table.getValueAt(row, 2), scores);
+			students[row] = new Student((int) table.getValueAt(row, 1), (String)table.getValueAt(row, 2), scores);
 		}
 		
 		return students;
@@ -233,10 +240,10 @@ public class UIMain extends JFrame {
 			score += student.getScores()[i] * raito[i];
 		return score;
 	}
-	private double calScore(double[] student) {
+	private double calScore(int[] scores) {
 		double score = 0;
 		for(int i = 0; i < raito.length; i++)
-			score += student[i] * raito[i];
+			score += (double) scores[i] * raito[i];
 		return score;
 	}
 	
@@ -248,16 +255,35 @@ public class UIMain extends JFrame {
 			
 			// 학생 추가
 			if(e.getUIInputMode() == UIInputMode.ADD) {
-				tableModel.addRow(new String[] {Integer.toString(nextStudent++), Integer.toString(e.getStudent().getStudentID()), e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()), Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()), Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()), Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers()), Double.toString(calScore(e.getStudent())) });
-			
+				/*tableModel.addRow(new String[] {Integer.toString(nextStudent++), Integer.toString(e.getStudent().getStudentID()),
+				e.getStudent().getName(), Integer.toString(e.getStudent().getAttendance()), Integer.toString(e.getStudent().getMidTest()),
+				Integer.toString(e.getStudent().getFinalTest()), Integer.toString(e.getStudent().getHomework()),
+				Integer.toString(e.getStudent().getQuiz()), Integer.toString(e.getStudent().getPt()),
+				Integer.toString(e.getStudent().getReport()), Integer.toString(e.getStudent().getOthers()),
+				Double.toString(calScore(e.getStudent())) });
+				*/
+				Student s = e.getStudent();
+				tableModel.addRow(new Object[] { nextStudent++, s.getStudentID(), s.getName(), s.getAttendance(), s.getMidTest(),
+						s.getFinalTest(), s.getHomework(), s.getQuiz(), s.getPt(), s.getReport(), s.getOthers(), calScore(s) });
+				
 			// 학생 수정
 			} else if(e.getUIInputMode() == UIInputMode.EDIT) {
-				String[] values = e.getStudent().getValues();
+				//String[] values = e.getStudent().getValues();
+				int[] scores = e.getStudent().getScores();
 				for(int row = 0; row < table.getRowCount(); row++) {
-					if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
+					/*if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
 						for(int i = 0; i < values.length; i++)
 							tableModel.setValueAt(values[i], row, i + 1);
 						tableModel.setValueAt(Double.toString(calScore(e.getStudent())), row, values.length + 1);
+						break;
+					}*/
+					if((int) table.getValueAt(row, 0) == e.getRow()) {
+						tableModel.setValueAt(e.getStudent().getStudentID(), row, 1);
+						tableModel.setValueAt(e.getStudent().getName(), row, 2);
+						for(int i = 0; i < scores.length; i++) {
+							tableModel.setValueAt(scores[i], row, i + 3);
+						}
+						tableModel.setValueAt(calScore(e.getStudent()), row, 11);
 						break;
 					}
 				}
@@ -265,17 +291,28 @@ public class UIMain extends JFrame {
 			// 학생 삭제
 			} else if(e.getUIInputMode() == UIInputMode.DELETE) {
 				for(int row = 0; row < table.getRowCount(); row++) {
-					if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
+					/*if(table.getValueAt(row, 0).equals(Integer.toString(e.getRow()))) {
+						tableModel.removeRow(row);
+						break;
+					}*/
+					if((int) table.getValueAt(row, 0) == e.getRow()) {
 						tableModel.removeRow(row);
 						break;
 					}
 				}
+			
+			// 총점 다시 계산
 			} else {
-				double[] scores = new double[8];
+				int[] scores = new int[8];
+				// 모든 학생에 대해
 				for(int row = 0; row < table.getRowCount(); row++) {
+					// 점수들을 배열로 담아서
 					for(int i = 0; i < 8; i++)
-						scores[i] = Double.parseDouble((String) tableModel.getValueAt(row, i + 3));
-					tableModel.setValueAt(Double.toString(calScore(scores)), row, 11);
+						scores[i] = (int) tableModel.getValueAt(row, i + 3);
+						// scores[i] = Double.parseDouble((String) tableModel.getValueAt(row, i + 3));
+					// calScore 함수로 계산해서 표에 저장
+					//tableModel.setValueAt(Double.toString(calScore(scores)), row, 11);
+					tableModel.setValueAt(calScore(scores), row, 11);
 				}
 			}
 		}
