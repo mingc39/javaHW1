@@ -82,15 +82,20 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "DB 열기":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "DB 저장":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "CSV 열기":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "CSV 저장":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "종료":
-					System.exit(0);
+					if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+						System.exit(0);
 					break;
 				}
 			}
@@ -137,12 +142,14 @@ public class UIMain extends JFrame {
 					break;
 				case "검색":
 					// new UISearch(getStudents());
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "검색", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "평균":
 					new UIStatistics(getStudents());
 					break;
 				case "출석 체크":
 					// new UIAttendance(getStudents());
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "반영 비율":
 					new UIRaito(raito).addStudentEventListener(new listener());
@@ -159,21 +166,24 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("검색");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK));
 		menuEdit.add(item);
 		item = new JMenuItem("평균");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('T', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("출석 체크");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('U', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("반영 비율");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('R', Event.CTRL_MASK));
 		menuEdit.add(item);
 		
 		// =======================<그래프 메뉴 생성>=======================
