@@ -6,7 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//new UIMain(new StudentTable());
-		// 윗 부분은 원래 코드, 아래 부분은 테스트를 위해 30명의 학생 정볼르 임의로 생성
+		// TODO 윗 부분은 원래 코드, 아래 부분은 테스트를 위해 30명의 학생 정볼르 임의로 생성
 		new UIMain(testData(new StudentTable(), 30));
 
 	}
