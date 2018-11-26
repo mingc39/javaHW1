@@ -32,6 +32,14 @@ public class Student {
 		return score;
 	}
 	
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	
 	public String toString() {
 		String info = "학번: " + studentID + ", 이름: " + name;
 		for(int score : getScores()) info += ", " + score;
@@ -46,6 +54,14 @@ public class Student {
 	
 	public int[] getScores() {
 		return new int[] { attendance, midTest, finalTest, homework, quiz, pt, report, others };
+	}
+	
+	public double getTotal() {
+		return total;
+	}
+	
+	public String getGrade() {
+		return grade;
 	}
 
 	public int getStudentID() {
