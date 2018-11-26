@@ -31,6 +31,7 @@ public class StudentTable {
 			}
 		};
 		table = new JTable(tableModel);
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowSorter(new TableRowSorter<TableModel>(tableModel));
 		if(viewIndex == false) {
 			table.getColumnModel().getColumn(0).setMinWidth(0);

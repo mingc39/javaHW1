@@ -5,6 +5,8 @@ public class Student {
 	
 	private static final int MAX_SCORE = 100, MIN_SCORE = 0;
 	private int studentID, attendance, midTest, finalTest, homework, quiz, pt, report, others;
+	private double total;
+	private String grade;
 	private String name;
 	
 	public Student(int studentID, String name, int attendance, int midTest, int finalTest, int homework, int quiz, int pt,
