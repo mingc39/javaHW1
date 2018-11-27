@@ -173,7 +173,7 @@ public class UIMain extends JFrame {
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
+				JOptionPane.showMessageDialog(null, "기능이 없습니다.", "그래프", JOptionPane.INFORMATION_MESSAGE);
 			}
 		};
 		// 메뉴 생성 및 추가
