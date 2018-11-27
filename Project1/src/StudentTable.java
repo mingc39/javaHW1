@@ -30,8 +30,16 @@ public class StudentTable {
 		for(int i = 0; i < scoreName.length; i++) header[i + 3] = scoreName[i];
 		tableModel = new DefaultTableModel(header, 0) {
 			private static final long serialVersionUID = -2265577528898631753L;
+			
+			@Override
 			public boolean isCellEditable(int rowIndex, int mColIndex) {
 				return false;
+			}
+			
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if(columnIndex == 2) return String.class;
+				return Integer.class;
 			}
 		};
 		table = new JTable(tableModel);
@@ -41,7 +49,6 @@ public class StudentTable {
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
 		table.getColumnModel().getColumn(0).setWidth(0);
 		scroll = new JScrollPane(table);
-		
 	}
 	
 	// getter
