@@ -97,6 +97,8 @@ public class StudentTable {
 		for(int row = 0; row < table.getRowCount(); row++) {
 			for(int i = 0; i < 8; i++) scores[i] = (int) table.getValueAt(row, i + 3);
 			students[row] = new Student((int) table.getValueAt(row, 1), (String)table.getValueAt(row, 2), scores);
+			students[row].setTotal((double) table.getValueAt(row, 11));
+			students[row].setGrade((String) table.getValueAt(row, 12));
 		}
 		
 		return students;
