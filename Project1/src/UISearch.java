@@ -1,23 +1,16 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class UISearch extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6454243338637096822L;
 
 	private JButton button;
@@ -25,9 +18,11 @@ public class UISearch extends JFrame {
 	private JComboBox<String> cb;
 	private StudentTable st;
 	private String[] list = { "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타", "총점", "학점" };
+	private JFrame f;
 
 	public UISearch(Student[] stu) {
 		setTitle("검색");
+		f = this;
 
 		showNorth();
 		showSouth(stu);
@@ -108,10 +103,12 @@ public class UISearch extends JFrame {
 							st.addStudent(stu[i]);
 						break;
 					} 
-					st.refresh();
+					
 				}
 				
+				st.refresh();
 				p.add(st.getScroll());
+				f.pack();
 				
 			}
 		};
