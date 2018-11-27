@@ -175,7 +175,8 @@ public class UIMain extends JFrame {
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
+				//new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
+				new StudentDraw(studentTable.getStudents(),  ((JMenuItem) (e.getSource())).getText());
 			}
 		};
 		// 메뉴 생성 및 추가

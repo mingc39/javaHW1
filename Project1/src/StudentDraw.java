@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 public class StudentDraw extends JFrame {
 	DrawPanel dp;
 
-	public StudentDraw() {
+	public StudentDraw(Student[] students, String graphType) {
 		dp = new DrawPanel();
 		add(dp);
 		setSize(950, 400);
