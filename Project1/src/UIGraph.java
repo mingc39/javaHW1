@@ -12,7 +12,9 @@ public class UIGraph extends JFrame {
 	 */
 	private static final long serialVersionUID = -238794829285569602L;
 
-	public UIGraph() {
+	// students: 학생 배열
+	// graphType: 그래프 종류
+	public UIGraph(Student[] students, String graphType) {
 		
 		// 창 제목 설정
 		setTitle("그래프");

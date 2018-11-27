@@ -1,47 +1,52 @@
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 //UIMain.java
 //메인창
 public class UIMain extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9063420066930412578L;
-
-	public UIMain() {
+	private StudentTable studentTable;
+	
+	public UIMain(StudentTable studentTable) {
 		
 		// 창 제목 설정
 		setTitle("성적 관리");
 		
+		this.studentTable = studentTable;
+		
 		// 메뉴 추가
 		menu();
 		
-		// 표 추가
-		DefaultTableModel tableModel = new DefaultTableModel(new String[] {"학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"}, 30);
-		JTable table = new JTable(tableModel);
-		JScrollPane scroll = new JScrollPane(table);
-		add(scroll);
+		// 창에 표 추가
+		add(studentTable.getScroll());
 		
 		// 창 기본 설정
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+					System.exit(0);
+			}
+		});
 		setSize(1000,500);
 		setVisible(true);
 		
 	}
 	
 	// 메뉴 추가
-	void menu() {
+	private void menu() {
 		
 		// 변수
 		JMenuItem item;
@@ -56,21 +61,26 @@ public class UIMain extends JFrame {
 		JMenu menuGraph = new JMenu("그래프");
 		menuGraph.setMnemonic(KeyEvent.VK_G);
 		
-		// 파일 메뉴 생성
+		// =======================<파일 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "DB 열기":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "DB 저장":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "CSV 열기":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "CSV 저장":
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "종료":
-					System.exit(0);
+					if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+						System.exit(0);
 					break;
 				}
 			}
@@ -94,23 +104,36 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuFile.add(item);
 		
-		// 편집 메뉴 생성
+		// =======================<편집 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "입력":
-					new UIInput();
+					new UIInput().addStudentEventListener(studentTable.getNewStudentEventListener());
 					break;
 				case "수정":
+					if(studentTable.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "수정할 학생을 표에서 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
+					else {
+						new UIInput(studentTable.getSelectedStudent(), (int) studentTable.getSelectedStudentIndex()).addStudentEventListener(studentTable.getNewStudentEventListener());
+					}
 					break;
 				case "검색":
+					// new UISearch(studentTable.getStudents());
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "검색", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "평균":
+					new UIStatistics(studentTable.getStudents());
 					break;
 				case "출석 체크":
+					// new UIAttendance(studentTable.getStudents());
+					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "반영 비율":
+					new UIRaito(studentTable.getRaito()).addStudentEventListener(studentTable.getNewStudentEventListener());
+					break;
+				case "학점 비율":
+					new UIGrade(studentTable.getGrade(), studentTable.getGradeName(), 8).addStudentEventListener(studentTable.getNewStudentEventListener());
 					break;
 				}
 			}
@@ -118,45 +141,41 @@ public class UIMain extends JFrame {
 		// 메뉴 생성 및 추가
 		item = new JMenuItem("입력");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('N', Event.CTRL_MASK));
 		menuEdit.add(item);
 		item = new JMenuItem("수정");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("검색");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK));
 		menuEdit.add(item);
 		item = new JMenuItem("평균");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('T', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("출석 체크");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('U', Event.CTRL_MASK));
 		menuEdit.add(item);
-		menuEdit.addSeparator();
+		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("반영 비율");
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('R', Event.CTRL_MASK));
+		menuEdit.add(item);
+		item = new JMenuItem("학점 비율");
+		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('G', Event.CTRL_MASK));
 		menuEdit.add(item);
 		
-		// 그래프 메뉴 생성
+		// =======================<그래프 메뉴 생성>=======================
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph();
-				/*switch(((JMenuItem) (e.getSource())).getText()) {
-				case "입력":
-					break;
-				case "수정":
-					break;
-				case "검색":
-					break;
-				case "평균":
-					break;
-				case "출석 체크":
-					break;
-				case "반영 비율":
-					break;
-				}*/
+				new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
 			}
 		};
 		// 메뉴 생성 및 추가
@@ -192,5 +211,5 @@ public class UIMain extends JFrame {
 		setJMenuBar(menuBar);
 		
 	}
-
+	
 }
