@@ -3,8 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,9 +18,9 @@ public class UIGrade extends JDialog {
 	private static final long serialVersionUID = -6404147315974902973L;
 	private double[] grade;
 	private JTextField[] gradeTextField;
-	protected LinkedList<StudentEventListener> listeners;
+	private StudentTable studentTable;
 	
-	public UIGrade(double[] grade, String[] name, int count) {
+	public UIGrade(StudentTable studentTable) {
 		
 		// 창 제목 설정
 		setTitle("학점 비율 설정");
@@ -30,22 +28,25 @@ public class UIGrade extends JDialog {
 		setLayout(new BorderLayout());
 		
 		// 변수
-		JPanel center, south;
-		JPanel panel, panel2;
+		JPanel center, south, panel2;
+		JPanel panel = new JPanel();
 		JButton button;
 		Listener listener = new Listener();
-		gradeTextField = new JTextField[8];
+		String[] name = studentTable.getGradeName();
 		
-		listeners = new LinkedList<>();
+		grade = studentTable.getGrade();
+		this.studentTable = studentTable;
+		gradeTextField = new JTextField[grade.length];
 		
 		// 중앙 패널 생성
 		center = new JPanel(new GridLayout(0, 1));
-		panel = new JPanel();
-		for(int i = 0; i < count; i++) {
+		
+		for(int i = 0; i < name.length; i++) {
 			if(i % 4 == 0) panel = new JPanel(new GridLayout(1, 4));
 			panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			panel2.add(new JLabel(name[i]));
-			gradeTextField[i] = new JTextField(5);;
+			gradeTextField[i] = new JTextField(5);
+			gradeTextField[i].setText(Double.toString(grade[i]));
 			panel2.add(gradeTextField[i]);
 			panel.add(panel2);
 			if(i % 4 == 3) center.add(panel);
@@ -64,10 +65,6 @@ public class UIGrade extends JDialog {
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		
-		for(int i = 0; i < count; i++)
-			gradeTextField[i].setText(Double.toString(grade[i]));
-		this.grade = grade;
-		
 		// 창 기본 설정
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
@@ -75,44 +72,21 @@ public class UIGrade extends JDialog {
 		
 	}
 	
-	// 이벤트 리스너 추가
-		public void addStudentEventListener(StudentEventListener l) {
-			listeners.add(l);
-		}
-		
-		// 이번트 리스너 제거
-		public void removeStudentEventListener(StudentEventListener l) {
-			listeners.remove(l);
-		}
-		
-		// 이벤트 발생
-		protected void fireStudentEvent() {
-			StudentEvent e = new StudentEvent(this, null, UIInputMode.NONE);
-			
-			Iterator<StudentEventListener> l = listeners.iterator();
-			while(l.hasNext()) {
-				((StudentEventListener)l.next()).studentEvent(e);
-			}
-		}
-	
 	// 버튼 액션 리스너
 	class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			switch(((JButton)e.getSource()).getText()) {
 			case "확인":
-				double[] temp = new double[grade.length];
 				double total = 0;
 				try {
-					for(int i = 0; i < grade.length; i++)
-						temp[i] = Double.parseDouble(gradeTextField[i].getText());
-					for(double d : temp) {
+					for(int i = 0; i < grade.length; i++) grade[i] = Double.parseDouble(gradeTextField[i].getText());
+					for(double d : grade) {
 						if((d > 1) || (d < 0)) throw new ScoreRangeException();
 						total += d;
 					}
 					if(total != 1) throw new ScoreRangeException();
-					for(int i = 0; i < 8; i++)
-						grade[i] = temp[i];
-					fireStudentEvent();
+					studentTable.setGrade(grade);
+					studentTable.refresh();
 					dispose();
 				} catch(NumberFormatException exception) {
 					JOptionPane.showMessageDialog(null, "모든 항목은 실수로 입력되어야 합니다.", "오류", JOptionPane.ERROR_MESSAGE);

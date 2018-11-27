@@ -3,8 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,10 +17,10 @@ public class UIRaito extends JDialog {
 	
 	private static final long serialVersionUID = -6404147315974902973L;
 	private double[] raito;
-	private JTextField attendance, midTest, finalTest, homework, quiz, pt, report, others;
-	protected LinkedList<StudentEventListener> listeners;
+	private JTextField[] textFields;
+	private StudentTable studentTable;
 	
-	public UIRaito(double[] raito) {
+	public UIRaito(StudentTable studentTable) {
 		
 		// 창 제목 설정
 		setTitle("반영 비율 설정");
@@ -30,91 +28,29 @@ public class UIRaito extends JDialog {
 		setLayout(new BorderLayout());
 		
 		// 변수
-		JPanel center, south;
-		JPanel panel, panel2;
-		JLabel label;
-		JTextField text;
+		JPanel center, south, panel2;
+		JPanel panel = new JPanel();
 		JButton button;
 		Listener listener = new Listener();
+		String[] name = studentTable.getScoreName();
 		
-		listeners = new LinkedList<>();
+		raito = studentTable.getRaito();
+		this.studentTable = studentTable;
+		textFields = new JTextField[raito.length];
 		
 		// 중앙 패널 생성
 		center = new JPanel(new GridLayout(2, 1));
 		
-		// 첫째 줄
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("출석");
-		panel2.add(label);
-		text = new JTextField(5);
-		attendance = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("중간 시험");
-		panel2.add(label);
-		text = new JTextField(5);
-		midTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("기말 시험");
-		panel2.add(label);
-		text = new JTextField(5);
-		finalTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("과제 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		homework = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		center.add(panel);
-		
-		// 둘째 줄
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("퀴즈 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		quiz = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("발표 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		pt = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("보고서 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		report = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("기타 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		others = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		center.add(panel);
+		for(int i = 0; i < raito.length; i++) {
+			if(i % 4 == 0) panel = new JPanel(new GridLayout(1, 4));
+			panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			panel2.add(new JLabel(name[i]));
+			textFields[i] = new JTextField(5);
+			textFields[i].setText(Double.toString(raito[i]));
+			panel2.add(textFields[i]);
+			panel.add(panel2);
+			if(i % 4 == 3) center.add(panel);
+		}
 		
 		// 아래쪽 패널 생성
 		south = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
@@ -129,16 +65,6 @@ public class UIRaito extends JDialog {
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		
-		attendance.setText(Double.toString(raito[0]));
-		midTest.setText(Double.toString(raito[1]));
-		finalTest.setText(Double.toString(raito[2]));
-		homework.setText(Double.toString(raito[3]));
-		quiz.setText(Double.toString(raito[4]));
-		pt.setText(Double.toString(raito[5]));
-		report.setText(Double.toString(raito[6]));
-		others.setText(Double.toString(raito[7]));
-		this.raito = raito;
-		
 		// 창 기본 설정
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
@@ -146,50 +72,21 @@ public class UIRaito extends JDialog {
 		
 	}
 	
-	// 이벤트 리스너 추가
-		public void addStudentEventListener(StudentEventListener l) {
-			listeners.add(l);
-		}
-		
-		// 이번트 리스너 제거
-		public void removeStudentEventListener(StudentEventListener l) {
-			listeners.remove(l);
-		}
-		
-		// 이벤트 발생
-		protected void fireStudentEvent() {
-			StudentEvent e = new StudentEvent(this, null, UIInputMode.NONE);
-			
-			Iterator<StudentEventListener> l = listeners.iterator();
-			while(l.hasNext()) {
-				((StudentEventListener)l.next()).studentEvent(e);
-			}
-		}
-	
 	// 버튼 액션 리스너
 	class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			switch(((JButton)e.getSource()).getText()) {
 			case "확인":
-				double[] temp = new double[8];
 				double total = 0;
 				try {
-					temp[0] = Double.parseDouble(attendance.getText());
-					temp[1] = Double.parseDouble(midTest.getText());
-					temp[2] = Double.parseDouble(finalTest.getText());
-					temp[3] = Double.parseDouble(homework.getText());
-					temp[4] = Double.parseDouble(quiz.getText());
-					temp[5] = Double.parseDouble(pt.getText());
-					temp[6] = Double.parseDouble(report.getText());
-					temp[7] = Double.parseDouble(others.getText());
-					for(double d : temp) {
+					for(int i = 0; i < raito.length; i++) raito[i] = Double.parseDouble(textFields[i].getText());
+					for(double d : raito) {
 						if((d > 1) || (d < 0)) throw new ScoreRangeException();
 						total += d;
 					}
 					if(total != 1) throw new ScoreRangeException();
-					for(int i = 0; i < 8; i++)
-						raito[i] = temp[i];
-					fireStudentEvent();
+					studentTable.setRaito(raito);
+					studentTable.refresh();
 					dispose();
 				} catch(NumberFormatException exception) {
 					JOptionPane.showMessageDialog(null, "모든 항목은 실수로 입력되어야 합니다.", "오류", JOptionPane.ERROR_MESSAGE);

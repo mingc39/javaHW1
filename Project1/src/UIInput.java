@@ -3,8 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,41 +17,37 @@ public class UIInput extends JDialog {
 	
 	// 변수 선언
 	private static final long serialVersionUID = 5688138324038957536L;
-	private int row;
-	private JLabel info;
-	private JTextField studentID, name, attendance, midTest, finalTest, homework, quiz, pt, report, others;
-	protected LinkedList<StudentEventListener> listeners;
-	private UIInputMode mode;
+	private int index;
+	private JTextField studentID, name;
+	private JTextField[] textFields;
+	private StudentTable st;
+	private boolean edit = false;
 
 	// 생성자
 	// 수정 모드 생성자
-	public UIInput(Student student, int row) {
+	public UIInput(StudentTable st, int index) {
+		draw("학생 수정", "학생을 수정합니다.", st.getScoreName());
+		this.st = st;
+		this.index = index;
+		edit = true;
 		
-		// 창 생성
-		this();
-		setTitle("학생 수정");
-		
-		// 변수 설정
-		this.row = row;
-		mode = UIInputMode.EDIT;
+		Student student = st.getSelectedStudent();
 		studentID.setText(Integer.toString(student.getStudentID()));
 		name.setText(student.getName());
-		attendance.setText(Integer.toString(student.getAttendance()));
-		midTest.setText(Integer.toString(student.getMidTest()));
-		finalTest.setText(Integer.toString(student.getFinalTest()));
-		homework.setText(Integer.toString(student.getHomework()));
-		quiz.setText(Integer.toString(student.getQuiz()));
-		pt.setText(Integer.toString(student.getPt()));
-		report.setText(Integer.toString(student.getReport()));
-		others.setText(Integer.toString(student.getOthers()));
-		info.setText("학생을 수정합니다.");
-		
+		for(int i = 0; i < textFields.length; i++) textFields[i].setText(Integer.toString(student.getScores()[i]));
 	}
 	// 추가 모드 생성자
-	public UIInput() {
+	public UIInput(StudentTable st) {
+		draw("학생 추가", "새 학생을 추가합니다.", st.getScoreName());
+		this.st = st;
+		edit = false;
+	}
+	
+	// 창 그리기
+	private void draw(String title, String info, String[] tableHeader) {
 		
 		// 창 제목 설정
-		setTitle("학생 추가");
+		setTitle(title);
 		// 레이 아웃 설정
 		setLayout(new BorderLayout());
 		
@@ -65,8 +59,7 @@ public class UIInput extends JDialog {
 		JButton button;
 		Listener listener = new Listener();
 
-		listeners = new LinkedList<>();
-		mode = UIInputMode.ADD;
+		textFields = new JTextField[tableHeader.length];
 		
 		// 중앙 패널 생성
 		center = new JPanel(new GridLayout(3, 1));
@@ -75,8 +68,7 @@ public class UIInput extends JDialog {
 		panel = new JPanel(new GridLayout(1, 4));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		label = new JLabel("새 학생을 추가합니다.");
-		info = label;
+		label = new JLabel(info);
 		panel2.add(label);
 		panel.add(panel2);
 		
@@ -107,77 +99,15 @@ public class UIInput extends JDialog {
 		
 		center.add(panel);
 		
-		// 둘째 줄
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("출석");
-		panel2.add(label);
-		text = new JTextField(5);
-		attendance = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("중간 시험");
-		panel2.add(label);
-		text = new JTextField(5);
-		midTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("기말 시험");
-		panel2.add(label);
-		text = new JTextField(5);
-		finalTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("과제 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		homework = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		center.add(panel);
-		
-		// 셋째 줄
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("퀴즈 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		quiz = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("발표 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		pt = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("보고서 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		report = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("기타 점수");
-		panel2.add(label);
-		text = new JTextField(5);
-		others = text;
-		panel2.add(text);
-		panel.add(panel2);
+		for(int i = 0; i < tableHeader.length; i++) {
+			if(i % 4 == 0) panel = new JPanel(new GridLayout(1, 4));
+			panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			panel2.add(new JLabel(tableHeader[i]));
+			textFields[i] = new JTextField(5);
+			panel2.add(textFields[i]);
+			panel.add(panel2);
+			if(i % 4 == 3) center.add(panel);
+		}
 		
 		center.add(panel);
 		
@@ -201,35 +131,17 @@ public class UIInput extends JDialog {
 		
 	}
 	
-	// 이벤트 리스너 추가
-	public void addStudentEventListener(StudentEventListener l) {
-		listeners.add(l);
-	}
-	
-	// 이번트 리스너 제거
-	public void removeStudentEventListener(StudentEventListener l) {
-		listeners.remove(l);
-	}
-	
-	// 이벤트 발생
-	protected void fireStudentEvent(Student student) {
-		StudentEvent e;
-		if((mode == UIInputMode.EDIT) || (mode == UIInputMode.DELETE)) e = new StudentEvent(this, student, mode, row);
-		else e = new StudentEvent(this, student, mode);
-		
-		Iterator<StudentEventListener> l = listeners.iterator();
-		while(l.hasNext()) {
-			((StudentEventListener)l.next()).studentEvent(e);
-		}
-	}
-	
 	// 버튼 액션 리스너
 	class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			switch(((JButton)e.getSource()).getText()) {
 			case "확인":
 				try {
-					fireStudentEvent(new Student(Integer.parseInt(studentID.getText()), name.getText(), Integer.parseInt(attendance.getText()), Integer.parseInt(midTest.getText()), Integer.parseInt(finalTest.getText()), Integer.parseInt(homework.getText()), Integer.parseInt(quiz.getText()), Integer.parseInt(pt.getText()), Integer.parseInt(report.getText()), Integer.parseInt(others.getText())));
+					int scores[] = new int[textFields.length];
+					for(int i = 0; i < textFields.length; i++) scores[i] = Integer.parseInt(textFields[i].getText());
+					Student stu = new Student((Integer.parseInt(studentID.getText())), name.getText(), scores);
+					if(edit) st.editStudent(stu, index);
+					else st.addStudent(stu);
 					dispose();
 				} catch(NumberFormatException exception) {
 					JOptionPane.showMessageDialog(null, "이름을 제외한 모든 항목은 정수로 입력되어야 합니다.", "오류", JOptionPane.ERROR_MESSAGE);
@@ -241,13 +153,12 @@ public class UIInput extends JDialog {
 				dispose();
 				break;
 			case "삭제":
-				if(mode == UIInputMode.ADD) dispose();
+				if(!edit) dispose();
 				// TODO 뻘짓 치우고 주석처리 살리기 
 				// Yes or Yes! - "NO 선택지는 존중받지 못합니다" - https://youtu.be/mAKsZ26SabQ
-				else if(JOptionPane.showOptionDialog(null, "정말로 " + (row + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"예(Y)", "예(Y)"}, "예(Y)") != JOptionPane.CLOSED_OPTION) {
-				//else if(JOptionPane.showConfirmDialog(null, "정말로 " + (row + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-					mode = UIInputMode.DELETE;
-					fireStudentEvent(null);
+				if(JOptionPane.showOptionDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"예(Y)", "예(Y)"}, "예(Y)") != JOptionPane.CLOSED_OPTION) {
+				//if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+					st.removeStudent(index);
 					dispose();
 				}
 				break;
