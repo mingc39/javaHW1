@@ -25,9 +25,11 @@ public class UISearch extends JFrame {
 	private JComboBox<String> cb;
 	private StudentTable st;
 	private String[] list = { "학번", "이름", "출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타", "총점", "학점" };
+	private JFrame f;
 
 	public UISearch(Student[] stu) {
 		setTitle("검색");
+		f = this;
 
 		showNorth();
 		showSouth(stu);
@@ -108,10 +110,12 @@ public class UISearch extends JFrame {
 							st.addStudent(stu[i]);
 						break;
 					} 
-					st.refresh();
+					
 				}
 				
+				st.refresh();
 				p.add(st.getScroll());
+				f.pack();
 				
 			}
 		};
