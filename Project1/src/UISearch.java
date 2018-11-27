@@ -10,9 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class UISearch extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6454243338637096822L;
 
 	private JButton button;
