@@ -27,6 +27,7 @@ public class UISearch extends JFrame {
 		showNorth();
 		showSouth(stu);
 		
+		this.setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
 		setVisible(true);
