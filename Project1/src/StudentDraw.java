@@ -17,7 +17,7 @@ public class StudentDraw extends JFrame {
 		dp = new DrawPanel();
 		add(dp);
 		setSize(950, 400);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
 
