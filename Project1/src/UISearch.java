@@ -61,7 +61,7 @@ public class UISearch extends JFrame {
 					p.removeAll();
 					st=new StudentTable();
 				}
-				for (int i = 0; i < 30; i++) {
+				for (int i = 0; i <stu.length ; i++) {
 					switch (cb.getSelectedIndex()) {
 					case 0:
 						if (field.getText().equals(String.valueOf(stu[i].getStudentID())))
