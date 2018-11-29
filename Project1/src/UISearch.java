@@ -72,7 +72,7 @@ public class UISearch extends JFrame {
 							st.addStudent(stu[i]);
 						break;
 					case 2:
-						if (field.getText().equals(String.valueOf(stu[i].getAttendance())))
+						if (field.getText().equals(String.valueOf(stu[i].getAttendanceScore())))
 							st.addStudent(stu[i]);
 						break;
 					case 3:
