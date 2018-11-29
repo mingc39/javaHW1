@@ -22,6 +22,7 @@ public class UIInput extends JDialog {
 	private JTextField[] textFields;
 	private StudentTable st;
 	private boolean edit = false;
+	private JButton deleteButton;
 
 	// 생성자
 	// 수정 모드 생성자
@@ -41,6 +42,7 @@ public class UIInput extends JDialog {
 		draw("학생 추가", "새 학생을 추가합니다.", st.getScoreName());
 		this.st = st;
 		edit = false;
+		deleteButton.setEnabled(false);
 	}
 	
 	// 창 그리기
@@ -94,6 +96,7 @@ public class UIInput extends JDialog {
 		panel2.add(button);
 		button = new JButton("삭제");
 		button.addActionListener(listener);
+		deleteButton = button;
 		panel2.add(button);
 		panel.add(panel2);
 		
