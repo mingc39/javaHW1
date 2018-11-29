@@ -4,6 +4,7 @@
 public class Student {
 	
 	private static final int MAX_SCORE = 100, MIN_SCORE = 0;
+	private int[][] attendance;
 	private int[] scores;
 	private int studentID;
 	private double total;
@@ -29,12 +30,28 @@ public class Student {
 		return score;
 	}
 	
+	public void setStudentID(int studentID) {
+		this.studentID = studentID;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setScores(int[] scores) {
+		this.scores = scores;
+	}
+	
 	public void setTotal(double total) {
 		this.total = total;
 	}
 	
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	
+	public void setAttandence(int[][] attandence) {
+		this.attendance = attandence;
 	}
 	
 	public String toString() {
@@ -65,9 +82,13 @@ public class Student {
 	public int getStudentID() {
 		return studentID;
 	}
+	
+	public int[][] getAttendance() {
+		return attendance;
+	}
 
 	//---------------------------------
-	public int getAttendance() {
+	public int getAttendanceScore() {
 		return scores[0];
 	}
 

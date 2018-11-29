@@ -24,9 +24,9 @@ public class StudentTable {
 	public StudentTable() {
 		
 		// 표 생성
-		String[] header = new String[scoreName.length + 5];
+		String[] header = new String[scoreName.length + 6];
 		header[0] = "index"; header[1] = "학번"; header[2] = "이름";
-		header[header.length - 2] = "총점"; header[header.length - 1] = "학점";
+		header[header.length - 3] = "총점"; header[header.length - 2] = "학점"; header[header.length - 1] = "";
 		for(int i = 0; i < scoreName.length; i++) header[i + 3] = scoreName[i];
 		tableModel = new DefaultTableModel(header, 0) {
 			private static final long serialVersionUID = -2265577528898631753L;
@@ -48,6 +48,9 @@ public class StudentTable {
 		table.getColumnModel().getColumn(0).setMinWidth(0);
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
 		table.getColumnModel().getColumn(0).setWidth(0);
+		table.getColumnModel().getColumn(header.length - 1).setMinWidth(0);
+		table.getColumnModel().getColumn(header.length - 1).setMaxWidth(0);
+		table.getColumnModel().getColumn(header.length - 1).setWidth(0);
 		scroll = new JScrollPane(table);
 	}
 	
@@ -157,10 +160,11 @@ public class StudentTable {
 		int[] scores = student.getScores();
 		
 		// 배열에 자료 추가
-		Object[] values = new Object[scores.length + 4];
+		Object[] values = new Object[scores.length + 6];
 		values[0] = nextStudent++; values[1] = student.getStudentID(); values[2] = student.getName();
 		for(int i = 0; i < scores.length; i++) values[i + 3] = scores[i];
-		values[values.length - 1] = calScore(student);
+		values[values.length - 3] = calScore(student);
+		values[values.length - 1] = new int[16][];
 		
 		// 표에 자료 추가
 		tableModel.addRow(values);
