@@ -12,18 +12,18 @@ import javax.swing.SwingConstants;
 public class UIStatistics extends JDialog {
 	
 	private static final long serialVersionUID = -3217063290629952967L;
-	private int totals[], studentCount;
-	private String[] itemNames;
 	
-	public UIStatistics(Student[] students) {
+	public UIStatistics(StudentTable studentTable) {
 		
 		// 창 제목 설정
 		setTitle("통계 정보");
 		
-		// 통계 항목
-		itemNames = new String[] {
-				"출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"
-		};
+		// 변수
+		Student[] students = studentTable.getStudents();
+		int[] totals;
+		int studentCount;
+		String[] itemNames = studentTable.getScoreName();;
+		
 		// 합계 계산
 		totals = new int[itemNames.length];
 		for(@SuppressWarnings("unused") int i : totals) i = 0;
@@ -50,7 +50,8 @@ public class UIStatistics extends JDialog {
 		panel.setLayout(new GridLayout(0, 2));
 		for(int i = 0; i < itemNames.length; i++) {
 			panel.add(new JLabel(itemNames[i] + ": ", SwingConstants.RIGHT));
-			panel.add(new JLabel(Double.toString( (double) (totals[i] / studentCount) )));
+			//panel.add(new JLabel(Double.toString( ((double) totals[i]) / studentCount )));
+			panel.add(new JLabel(String.format("%.2f", ((double) totals[i]) / studentCount ) ));
 		}
 		add(panel, BorderLayout.CENTER);
 		

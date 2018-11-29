@@ -3,8 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,52 +12,47 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 // UIInput.java
-// ÀÔ·Â Ã¢
+// ì…ë ¥ ì°½
 public class UIInput extends JDialog {
 	
-	// º¯¼ö ¼±¾ğ
+	// ë³€ìˆ˜ ì„ ì–¸
 	private static final long serialVersionUID = 5688138324038957536L;
-	private int row;
-	private JLabel info;
-	private JTextField studentID, name, attendance, midTest, finalTest, homework, quiz, pt, report, others;
-	protected LinkedList<StudentEventListener> listeners;
-	private UIInputMode mode;
-	
-	
 
-	// »ı¼ºÀÚ
-	// ¼öÁ¤ ¸ğµå »ı¼ºÀÚ
-	public UIInput(Student student, int row) {
+	private int index;
+	private JTextField studentID, name;
+	private JTextField[] textFields;
+	private StudentTable st;
+	private boolean edit = false;
+
+	// ìƒì„±ì
+	// ìˆ˜ì • ëª¨ë“œ ìƒì„±ì
+	public UIInput(StudentTable st, int index) {
+		draw("í•™ìƒ ìˆ˜ì •", "í•™ìƒì„ ìˆ˜ì •í•©ë‹ˆë‹¤.", st.getScoreName());
+		this.st = st;
+		this.index = index;
+		edit = true;
 		
-		// Ã¢ »ı¼º
-		this();
-		setTitle("ÇĞ»ı ¼öÁ¤");
-		
-		// º¯¼ö ¼³Á¤
-		this.row = row;
-		mode = UIInputMode.EDIT;
+		Student student = st.getSelectedStudent();
 		studentID.setText(Integer.toString(student.getStudentID()));
 		name.setText(student.getName());
-		attendance.setText(Integer.toString(student.getAttendance()));
-		midTest.setText(Integer.toString(student.getMidTest()));
-		finalTest.setText(Integer.toString(student.getFinalTest()));
-		homework.setText(Integer.toString(student.getHomework()));
-		quiz.setText(Integer.toString(student.getQuiz()));
-		pt.setText(Integer.toString(student.getPt()));
-		report.setText(Integer.toString(student.getReport()));
-		others.setText(Integer.toString(student.getOthers()));
-		info.setText("ÇĞ»ıÀ» ¼öÁ¤ÇÕ´Ï´Ù.");
-		
+		for(int i = 0; i < textFields.length; i++) textFields[i].setText(Integer.toString(student.getScores()[i]));
 	}
-	// Ãß°¡ ¸ğµå »ı¼ºÀÚ
-	public UIInput() {
+	// ì¶”ê°€ ëª¨ë“œ ìƒì„±ì
+	public UIInput(StudentTable st) {
+		draw("í•™ìƒ ì¶”ê°€", "ìƒˆ í•™ìƒì„ ì¶”ê°€í•©ë‹ˆë‹¤.", st.getScoreName());
+		this.st = st;
+		edit = false;
+	}
+	
+	// ì°½ ê·¸ë¦¬ê¸°
+	private void draw(String title, String info, String[] tableHeader) {
 		
-		// Ã¢ Á¦¸ñ ¼³Á¤
-		setTitle("ÇĞ»ı Ãß°¡");
-		// ·¹ÀÌ ¾Æ¿ô ¼³Á¤
+		// ì°½ ì œëª© ì„¤ì •
+		setTitle(title);
+		// ë ˆì´ ì•„ì›ƒ ì„¤ì •
 		setLayout(new BorderLayout());
 		
-		// º¯¼ö
+		// ë³€ìˆ˜
 		JPanel center, south;
 		JPanel panel, panel2;
 		JLabel label;
@@ -67,23 +60,21 @@ public class UIInput extends JDialog {
 		JButton button;
 		Listener listener = new Listener();
 
-		listeners = new LinkedList<>();
-		mode = UIInputMode.ADD;
+		textFields = new JTextField[tableHeader.length];
 		
-		// Áß¾Ó ÆĞ³Î »ı¼º
+		// ì¤‘ì•™ íŒ¨ë„ ìƒì„±
 		center = new JPanel(new GridLayout(3, 1));
 		
-		// Ã¹Â° ÁÙ
+		// ì²«ì§¸ ì¤„
 		panel = new JPanel(new GridLayout(1, 4));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		label = new JLabel("»õ ÇĞ»ıÀ» Ãß°¡ÇÕ´Ï´Ù.");
-		info = label;
+		label = new JLabel(info);
 		panel2.add(label);
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("ÇĞ¹ø");
+		label = new JLabel("í•™ë²ˆ");
 		panel2.add(label);
 		text = new JTextField(10);
 		studentID = text;
@@ -91,7 +82,7 @@ public class UIInput extends JDialog {
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("ÀÌ¸§");
+		label = new JLabel("ì´ë¦„");
 		panel2.add(label);
 		text = new JTextField(10);
 		name = text;
@@ -99,161 +90,80 @@ public class UIInput extends JDialog {
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		button = new JButton("Ãâ¼®");
+		button = new JButton("ì¶œì„");
 		button.addActionListener(listener);
 		panel2.add(button);
-		button = new JButton("»èÁ¦");
+		button = new JButton("ì‚­ì œ");
 		button.addActionListener(listener);
 		panel2.add(button);
 		panel.add(panel2);
 		
 		center.add(panel);
 		
-		// µÑÂ° ÁÙ
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("Ãâ¼®");
-		panel2.add(label);
-		text = new JTextField(5);
-		attendance = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("Áß°£ ½ÃÇè");
-		panel2.add(label);
-		text = new JTextField(5);
-		midTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("±â¸» ½ÃÇè");
-		panel2.add(label);
-		text = new JTextField(5);
-		finalTest = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("°úÁ¦ Á¡¼ö");
-		panel2.add(label);
-		text = new JTextField(5);
-		homework = text;
-		panel2.add(text);
-		panel.add(panel2);
+		for(int i = 0; i < tableHeader.length; i++) {
+			if(i % 4 == 0) panel = new JPanel(new GridLayout(1, 4));
+			panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			panel2.add(new JLabel(tableHeader[i]));
+			textFields[i] = new JTextField(5);
+			panel2.add(textFields[i]);
+			panel.add(panel2);
+			if(i % 4 == 3) center.add(panel);
+		}
 		
 		center.add(panel);
 		
-		// ¼ÂÂ° ÁÙ
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("ÄûÁî Á¡¼ö");
-		panel2.add(label);
-		text = new JTextField(5);
-		quiz = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("¹ßÇ¥ Á¡¼ö");
-		panel2.add(label);
-		text = new JTextField(5);
-		pt = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("º¸°í¼­ Á¡¼ö");
-		panel2.add(label);
-		text = new JTextField(5);
-		report = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("±âÅ¸ Á¡¼ö");
-		panel2.add(label);
-		text = new JTextField(5);
-		others = text;
-		panel2.add(text);
-		panel.add(panel2);
-		
-		center.add(panel);
-		
-		// ¾Æ·¡ÂÊ ÆĞ³Î »ı¼º
+		// ì•„ë˜ìª½ íŒ¨ë„ ìƒì„±
 		south = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
-		button = new JButton("È®ÀÎ");
+		button = new JButton("í™•ì¸");
 		button.addActionListener(listener);
 		south.add(button);
-		button = new JButton("Ãë¼Ò");
+		button = new JButton("ì·¨ì†Œ");
 		button.addActionListener(listener);
 		south.add(button);
 		
-		// ÇÁ·¹ÀÓ¿¡ ÆĞ³Î Ãß°¡
+		// í”„ë ˆì„ì— íŒ¨ë„ ì¶”ê°€
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		
-		// Ã¢ ±âº» ¼³Á¤
+		// ì°½ ê¸°ë³¸ ì„¤ì •
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		setVisible(true);
 		
 	}
 	
-	// ÀÌº¥Æ® ¸®½º³Ê Ãß°¡
-	public void addStudentEventListener(StudentEventListener l) {
-		listeners.add(l);
-	}
-	
-	// ÀÌ¹øÆ® ¸®½º³Ê Á¦°Å
-	public void removeStudentEventListener(StudentEventListener l) {
-		listeners.remove(l);
-	}
-	
-	// ÀÌº¥Æ® ¹ß»ı
-	protected void fireStudentEvent(Student student) {
-		StudentEvent e;
-		if((mode == UIInputMode.EDIT) || (mode == UIInputMode.DELETE)) e = new StudentEvent(this, student, mode, row);
-		else e = new StudentEvent(this, student, mode);
-		
-		Iterator<StudentEventListener> l = listeners.iterator();
-		while(l.hasNext()) {
-			((StudentEventListener)l.next()).studentEvent(e);
-		}
-	}
-	
-	// ¹öÆ° ¾×¼Ç ¸®½º³Ê
+	// ë²„íŠ¼ ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆ
 	class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			switch(((JButton)e.getSource()).getText()) {
-			case "È®ÀÎ":
+			case "í™•ì¸":
 				try {
-					fireStudentEvent(new Student(Integer.parseInt(studentID.getText()), name.getText(), Integer.parseInt(attendance.getText()), Integer.parseInt(midTest.getText()), Integer.parseInt(finalTest.getText()), Integer.parseInt(homework.getText()), Integer.parseInt(quiz.getText()), Integer.parseInt(pt.getText()), Integer.parseInt(report.getText()), Integer.parseInt(others.getText())));
+					int scores[] = new int[textFields.length];
+					for(int i = 0; i < textFields.length; i++) scores[i] = Integer.parseInt(textFields[i].getText());
+					Student stu = new Student((Integer.parseInt(studentID.getText())), name.getText(), scores);
+					if(edit) st.editStudent(stu, index);
+					else st.addStudent(stu);
 					dispose();
 				} catch(NumberFormatException exception) {
-					JOptionPane.showMessageDialog(null, "ÀÌ¸§À» Á¦¿ÜÇÑ ¸ğµç Ç×¸ñÀº Á¤¼ö·Î ÀÔ·ÂµÇ¾î¾ß ÇÕ´Ï´Ù.", "¿À·ù", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ì´ë¦„ì„ ì œì™¸í•œ ëª¨ë“  í•­ëª©ì€ ì •ìˆ˜ë¡œ ì…ë ¥ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.", "ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
 				} catch(ScoreRangeException exception) {
-					JOptionPane.showMessageDialog(null, "Á¡¼öÀÇ ¹üÀ§¸¦ ÃÊ°úÇÏ¿´½À´Ï´Ù.", "¿À·ù", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ì ìˆ˜ì˜ ë²”ìœ„ë¥¼ ì´ˆê³¼í•˜ì˜€ìŠµë‹ˆë‹¤.", "ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
 				}
 				break;
-			case "Ãë¼Ò":
+			case "ì·¨ì†Œ":
 				dispose();
 				break;
-			case "»èÁ¦":
-				if(mode == UIInputMode.ADD) dispose();
-				// TODO »¹Áş Ä¡¿ì°í ÁÖ¼®Ã³¸® »ì¸®±â 
-				// Yes or Yes! - "NO ¼±ÅÃÁö´Â Á¸Áß¹ŞÁö ¸øÇÕ´Ï´Ù" - https://youtu.be/mAKsZ26SabQ
-				else if(JOptionPane.showOptionDialog(null, "Á¤¸»·Î " + (row + 1) + "¹ø ÇĞ»ıÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "ÇĞ»ı »èÁ¦", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"¿¹(Y)", "¿¹(Y)"}, "¿¹(Y)") != JOptionPane.CLOSED_OPTION) {
-				//else if(JOptionPane.showConfirmDialog(null, "Á¤¸»·Î " + (row + 1) + "¹ø ÇĞ»ıÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "ÇĞ»ı »èÁ¦", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-					mode = UIInputMode.DELETE;
-					fireStudentEvent(null);
+			case "ì‚­ì œ":
+				if(!edit) dispose();
+				// TODO ë»˜ì§“ ì¹˜ìš°ê³  ì£¼ì„ì²˜ë¦¬ ì‚´ë¦¬ê¸° 
+				// Yes or Yes! - "NO ì„ íƒì§€ëŠ” ì¡´ì¤‘ë°›ì§€ ëª»í•©ë‹ˆë‹¤" - https://youtu.be/mAKsZ26SabQ
+				if(JOptionPane.showOptionDialog(null, "ì •ë§ë¡œ " + (st.getSelectedRow() + 1) + "ë²ˆ í•™ìƒì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "í•™ìƒ ì‚­ì œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"ì˜ˆ(Y)", "ì˜ˆ(Y)"}, "ì˜ˆ(Y)") != JOptionPane.CLOSED_OPTION) {
+				//if(JOptionPane.showConfirmDialog(null, "ì •ë§ë¡œ " + (st.getSelectedRow() + 1) + "ë²ˆ í•™ìƒì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "í•™ìƒ ì‚­ì œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+					st.removeStudent(index);
 					dispose();
 				}
 				break;
-			case "Ãâ¼®":
+			case "ì¶œì„":
 				if(mode==UIInputMode.ADD) {
 					new UIUCheck();
 				}else if(mode==UIInputMode.EDIT) {

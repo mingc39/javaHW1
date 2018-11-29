@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 //UIMain.java
-//¸ŞÀÎÃ¢
+//ë©”ì¸ì°½
 public class UIMain extends JFrame {
 	
 	private static final long serialVersionUID = -9063420066930412578L;
@@ -21,22 +21,22 @@ public class UIMain extends JFrame {
 	
 	public UIMain(StudentTable studentTable) {
 		
-		// Ã¢ Á¦¸ñ ¼³Á¤
-		setTitle("¼ºÀû °ü¸®");
+		// ì°½ ì œëª© ì„¤ì •
+		setTitle("ì„±ì  ê´€ë¦¬");
 		
 		this.studentTable = studentTable;
 		
-		// ¸Ş´º Ãß°¡
+		// ë©”ë‰´ ì¶”ê°€
 		menu();
 		
-		// Ã¢¿¡ Ç¥ Ãß°¡
+		// ì°½ì— í‘œ ì¶”ê°€
 		add(studentTable.getScroll());
 		
-		// Ã¢ ±âº» ¼³Á¤
+		// ì°½ ê¸°ë³¸ ì„¤ì •
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Á¤¸»·Î Á¾·áÇÏ½Ã°Ú½À´Ï±î?", "Á¾·á", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+				if(JOptionPane.showConfirmDialog(null, "ì •ë§ë¡œ ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "ì¢…ë£Œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
 					System.exit(0);
 			}
 		});
@@ -45,166 +45,164 @@ public class UIMain extends JFrame {
 		
 	}
 	
-	// ¸Ş´º Ãß°¡
+	// ë©”ë‰´ ì¶”ê°€
 	private void menu() {
 		
-		// º¯¼ö
+		// ë³€ìˆ˜
 		JMenuItem item;
 		ActionListener listener;
 		
-		// ¸Ş´º ¹Ù, ¸Ş´º °´Ã¼ »ı¼º
+		// ë©”ë‰´ ë°”, ë©”ë‰´ ê°ì²´ ìƒì„±
 		JMenuBar menuBar = new JMenuBar();
-		JMenu menuFile = new JMenu("ÆÄÀÏ");
+		JMenu menuFile = new JMenu("íŒŒì¼");
 		menuFile.setMnemonic(KeyEvent.VK_F);
-		JMenu menuEdit = new JMenu("¼öÁ¤");
+		JMenu menuEdit = new JMenu("ìˆ˜ì •");
 		menuEdit.setMnemonic(KeyEvent.VK_E);
-		JMenu menuGraph = new JMenu("±×·¡ÇÁ");
+		JMenu menuGraph = new JMenu("ê·¸ë˜í”„");
 		menuGraph.setMnemonic(KeyEvent.VK_G);
 		
-		// =======================<ÆÄÀÏ ¸Ş´º »ı¼º>=======================
-		// ¸®½º³Ê »ı¼º
+		// =======================<íŒŒì¼ ë©”ë‰´ ìƒì„±>=======================
+		// ë¦¬ìŠ¤ë„ˆ ìƒì„±
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
-				case "DB ¿­±â":
-					JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "DB", JOptionPane.INFORMATION_MESSAGE);
+				case "DB ì—´ê¸°":
+					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "DB ÀúÀå":
-					JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "DB", JOptionPane.INFORMATION_MESSAGE);
+				case "DB ì €ì¥":
+					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "CSV ¿­±â":
-					JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "CSV", JOptionPane.INFORMATION_MESSAGE);
+				case "CSV ì—´ê¸°":
+					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "CSV ÀúÀå":
-					JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "CSV", JOptionPane.INFORMATION_MESSAGE);
+				case "CSV ì €ì¥":
+					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "CSV", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "Á¾·á":
-					if(JOptionPane.showConfirmDialog(null, "Á¤¸»·Î Á¾·áÇÏ½Ã°Ú½À´Ï±î?", "Á¾·á", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+				case "ì¢…ë£Œ":
+					if(JOptionPane.showConfirmDialog(null, "ì •ë§ë¡œ ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "ì¢…ë£Œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
 						System.exit(0);
 					break;
 				}
 			}
 		};
-		// ¸Ş´º »ı¼º ¹× Ãß°¡
-		item = new JMenuItem("DB ¿­±â");
+		// ë©”ë‰´ ìƒì„± ë° ì¶”ê°€
+		item = new JMenuItem("DB ì—´ê¸°");
 		item.addActionListener(listener);
 		menuFile.add(item);
-		item = new JMenuItem("DB ÀúÀå");
-		item.addActionListener(listener);
-		menuFile.add(item);
-		menuFile.addSeparator();
-		item = new JMenuItem("CSV ¿­±â", KeyEvent.VK_O);
-		item.addActionListener(listener);
-		menuFile.add(item);
-		item = new JMenuItem("CSV ÀúÀå", KeyEvent.VK_S);
+		item = new JMenuItem("DB ì €ì¥");
 		item.addActionListener(listener);
 		menuFile.add(item);
 		menuFile.addSeparator();
-		item = new JMenuItem("Á¾·á");
+		item = new JMenuItem("CSV ì—´ê¸°", KeyEvent.VK_O);
+		item.addActionListener(listener);
+		menuFile.add(item);
+		item = new JMenuItem("CSV ì €ì¥", KeyEvent.VK_S);
+		item.addActionListener(listener);
+		menuFile.add(item);
+		menuFile.addSeparator();
+		item = new JMenuItem("ì¢…ë£Œ");
 		item.addActionListener(listener);
 		menuFile.add(item);
 		
-		// =======================<ÆíÁı ¸Ş´º »ı¼º>=======================
-		// ¸®½º³Ê »ı¼º
+		// =======================<í¸ì§‘ ë©”ë‰´ ìƒì„±>=======================
+		// ë¦¬ìŠ¤ë„ˆ ìƒì„±
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
-				case "ÀÔ·Â":
-					new UIInput().addStudentEventListener(studentTable.getNewStudentEventListener());
+				case "ì…ë ¥":
+					new UIInput(studentTable);
 					break;
-				case "¼öÁ¤":
-					if(studentTable.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "¼öÁ¤ÇÒ ÇĞ»ıÀ» Ç¥¿¡¼­ ¼±ÅÃÇØÁÖ¼¼¿ä.", "¿À·ù", JOptionPane.ERROR_MESSAGE);
+				case "ìˆ˜ì •":
+					if(studentTable.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "ìˆ˜ì •í•  í•™ìƒì„ í‘œì—ì„œ ì„ íƒí•´ì£¼ì„¸ìš”.", "ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
 					else {
-						new UIInput(studentTable.getSelectedStudent(), (int) studentTable.getSelectedStudentIndex()).addStudentEventListener(studentTable.getNewStudentEventListener());
+						new UIInput(studentTable, studentTable.getSelectedStudentIndex());
 					}
 					break;
-				case "°Ë»ö":
-					new UISearch(studentTable.getStudents());
-					//JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "°Ë»ö", JOptionPane.INFORMATION_MESSAGE);
+				case "ê²€ìƒ‰":
+<					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "ê²€ìƒ‰", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "Æò±Õ":
-					new UIStatistics(studentTable.getStudents());
+				case "í‰ê· ":
+					new UIStatistics(studentTable);
 					break;
-				case "Ãâ¼® Ã¼Å©":
-					 new UIAttendance(studentTable.getStudents());
-//					JOptionPane.showMessageDialog(null, "±â´ÉÀÌ ¾ø½À´Ï´Ù.", "Ãâ¼® Ã¼Å©", JOptionPane.INFORMATION_MESSAGE);
+				case "ì¶œì„ ì²´í¬":
+					JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "ì¶œì„ ì²´í¬", JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case "¹İ¿µ ºñÀ²":
-					new UIRaito(studentTable.getRaito()).addStudentEventListener(studentTable.getNewStudentEventListener());
+				case "ë°˜ì˜ ë¹„ìœ¨":
+					new UIRaito(studentTable);
 					break;
-				case "ÇĞÁ¡ ºñÀ²":
-					new UIGrade(studentTable.getGrade(), studentTable.getGradeName(), 8).addStudentEventListener(studentTable.getNewStudentEventListener());
+				case "í•™ì  ë¹„ìœ¨":
+					new UIGrade(studentTable);
 					break;
 				}
 			}
 		};
-		// ¸Ş´º »ı¼º ¹× Ãß°¡
-		item = new JMenuItem("ÀÔ·Â");
+		// ë©”ë‰´ ìƒì„± ë° ì¶”ê°€
+		item = new JMenuItem("ì…ë ¥");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('N', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("¼öÁ¤");
+		item = new JMenuItem("ìˆ˜ì •");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("°Ë»ö");
+		item = new JMenuItem("ê²€ìƒ‰");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("Æò±Õ");
+		item = new JMenuItem("í‰ê· ");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('T', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("Ãâ¼® Ã¼Å©");
+		item = new JMenuItem("ì¶œì„ ì²´í¬");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('U', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("¹İ¿µ ºñÀ²");
+		item = new JMenuItem("ë°˜ì˜ ë¹„ìœ¨");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('R', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("ÇĞÁ¡ ºñÀ²");
+		item = new JMenuItem("í•™ì  ë¹„ìœ¨");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('G', Event.CTRL_MASK));
 		menuEdit.add(item);
 		
-		// =======================<±×·¡ÇÁ ¸Ş´º »ı¼º>=======================
-		// ¸®½º³Ê »ı¼º
+		// =======================<ê·¸ë˜í”„ ë©”ë‰´ ìƒì„±>=======================
+		// ë¦¬ìŠ¤ë„ˆ ìƒì„±
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
+				JOptionPane.showMessageDialog(null, "ê¸°ëŠ¥ì´ ì—†ìŠµë‹ˆë‹¤.", "ê·¸ë˜í”„", JOptionPane.INFORMATION_MESSAGE);
 			}
 		};
-		// ¸Ş´º »ı¼º ¹× Ãß°¡
-		item = new JMenuItem("Ãâ¼®");
+		// ë©”ë‰´ ìƒì„± ë° ì¶”ê°€
+		item = new JMenuItem("ì¶œì„");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("Áß°£ ½ÃÇè");
+		item = new JMenuItem("ì¤‘ê°„ ì‹œí—˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("±â¸» ½ÃÇè");
+		item = new JMenuItem("ê¸°ë§ ì‹œí—˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("°úÁ¦ Á¡¼ö");
+		item = new JMenuItem("ê³¼ì œ ì ìˆ˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("ÄûÁî Á¡¼ö");
+		item = new JMenuItem("í€´ì¦ˆ ì ìˆ˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("¹ßÇ¥ Á¡¼ö");
+		item = new JMenuItem("ë°œí‘œ ì ìˆ˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("º¸°í¼­");
+		item = new JMenuItem("ë³´ê³ ì„œ");
 		item.addActionListener(listener);
 		menuGraph.add(item);
-		item = new JMenuItem("±âÅ¸ Á¡¼ö");
+		item = new JMenuItem("ê¸°íƒ€ ì ìˆ˜");
 		item.addActionListener(listener);
 		menuGraph.add(item);
 		
-		// ¸Ş´º ¹Ù¿¡ ¸Ş´º Ãß°¡
+		// ë©”ë‰´ ë°”ì— ë©”ë‰´ ì¶”ê°€
 		menuBar.add(menuFile);
 		menuBar.add(menuEdit);
 		menuBar.add(menuGraph);
