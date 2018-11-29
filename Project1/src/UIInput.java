@@ -12,22 +12,21 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 // UIInput.java
-// ì…ë ¥ ì°½
+// ÀÔ·Â Ã¢
 public class UIInput extends JDialog {
 	
-	// ë³€ìˆ˜ ì„ ì–¸
+	// º¯¼ö ¼±¾ğ
 	private static final long serialVersionUID = 5688138324038957536L;
-
 	private int index;
 	private JTextField studentID, name;
 	private JTextField[] textFields;
 	private StudentTable st;
 	private boolean edit = false;
 
-	// ìƒì„±ì
-	// ìˆ˜ì • ëª¨ë“œ ìƒì„±ì
+	// »ı¼ºÀÚ
+	// ¼öÁ¤ ¸ğµå »ı¼ºÀÚ
 	public UIInput(StudentTable st, int index) {
-		draw("í•™ìƒ ìˆ˜ì •", "í•™ìƒì„ ìˆ˜ì •í•©ë‹ˆë‹¤.", st.getScoreName());
+		draw("ÇĞ»ı ¼öÁ¤", "ÇĞ»ıÀ» ¼öÁ¤ÇÕ´Ï´Ù.", st.getScoreName());
 		this.st = st;
 		this.index = index;
 		edit = true;
@@ -37,22 +36,22 @@ public class UIInput extends JDialog {
 		name.setText(student.getName());
 		for(int i = 0; i < textFields.length; i++) textFields[i].setText(Integer.toString(student.getScores()[i]));
 	}
-	// ì¶”ê°€ ëª¨ë“œ ìƒì„±ì
+	// Ãß°¡ ¸ğµå »ı¼ºÀÚ
 	public UIInput(StudentTable st) {
-		draw("í•™ìƒ ì¶”ê°€", "ìƒˆ í•™ìƒì„ ì¶”ê°€í•©ë‹ˆë‹¤.", st.getScoreName());
+		draw("ÇĞ»ı Ãß°¡", "»õ ÇĞ»ıÀ» Ãß°¡ÇÕ´Ï´Ù.", st.getScoreName());
 		this.st = st;
 		edit = false;
 	}
 	
-	// ì°½ ê·¸ë¦¬ê¸°
+	// Ã¢ ±×¸®±â
 	private void draw(String title, String info, String[] tableHeader) {
 		
-		// ì°½ ì œëª© ì„¤ì •
+		// Ã¢ Á¦¸ñ ¼³Á¤
 		setTitle(title);
-		// ë ˆì´ ì•„ì›ƒ ì„¤ì •
+		// ·¹ÀÌ ¾Æ¿ô ¼³Á¤
 		setLayout(new BorderLayout());
 		
-		// ë³€ìˆ˜
+		// º¯¼ö
 		JPanel center, south;
 		JPanel panel, panel2;
 		JLabel label;
@@ -62,10 +61,10 @@ public class UIInput extends JDialog {
 
 		textFields = new JTextField[tableHeader.length];
 		
-		// ì¤‘ì•™ íŒ¨ë„ ìƒì„±
+		// Áß¾Ó ÆĞ³Î »ı¼º
 		center = new JPanel(new GridLayout(3, 1));
 		
-		// ì²«ì§¸ ì¤„
+		// Ã¹Â° ÁÙ
 		panel = new JPanel(new GridLayout(1, 4));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -74,7 +73,7 @@ public class UIInput extends JDialog {
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("í•™ë²ˆ");
+		label = new JLabel("ÇĞ¹ø");
 		panel2.add(label);
 		text = new JTextField(10);
 		studentID = text;
@@ -82,7 +81,7 @@ public class UIInput extends JDialog {
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		label = new JLabel("ì´ë¦„");
+		label = new JLabel("ÀÌ¸§");
 		panel2.add(label);
 		text = new JTextField(10);
 		name = text;
@@ -90,10 +89,10 @@ public class UIInput extends JDialog {
 		panel.add(panel2);
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		button = new JButton("ì¶œì„");
+		button = new JButton("Ãâ¼®");
 		button.addActionListener(listener);
 		panel2.add(button);
-		button = new JButton("ì‚­ì œ");
+		button = new JButton("»èÁ¦");
 		button.addActionListener(listener);
 		panel2.add(button);
 		panel.add(panel2);
@@ -112,31 +111,31 @@ public class UIInput extends JDialog {
 		
 		center.add(panel);
 		
-		// ì•„ë˜ìª½ íŒ¨ë„ ìƒì„±
+		// ¾Æ·¡ÂÊ ÆĞ³Î »ı¼º
 		south = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
-		button = new JButton("í™•ì¸");
+		button = new JButton("È®ÀÎ");
 		button.addActionListener(listener);
 		south.add(button);
-		button = new JButton("ì·¨ì†Œ");
+		button = new JButton("Ãë¼Ò");
 		button.addActionListener(listener);
 		south.add(button);
 		
-		// í”„ë ˆì„ì— íŒ¨ë„ ì¶”ê°€
+		// ÇÁ·¹ÀÓ¿¡ ÆĞ³Î Ãß°¡
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		
-		// ì°½ ê¸°ë³¸ ì„¤ì •
+		// Ã¢ ±âº» ¼³Á¤
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 		setVisible(true);
 		
 	}
 	
-	// ë²„íŠ¼ ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆ
+	// ¹öÆ° ¾×¼Ç ¸®½º³Ê
 	class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			switch(((JButton)e.getSource()).getText()) {
-			case "í™•ì¸":
+			case "È®ÀÎ":
 				try {
 					int scores[] = new int[textFields.length];
 					for(int i = 0; i < textFields.length; i++) scores[i] = Integer.parseInt(textFields[i].getText());
@@ -145,30 +144,25 @@ public class UIInput extends JDialog {
 					else st.addStudent(stu);
 					dispose();
 				} catch(NumberFormatException exception) {
-					JOptionPane.showMessageDialog(null, "ì´ë¦„ì„ ì œì™¸í•œ ëª¨ë“  í•­ëª©ì€ ì •ìˆ˜ë¡œ ì…ë ¥ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.", "ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ÀÌ¸§À» Á¦¿ÜÇÑ ¸ğµç Ç×¸ñÀº Á¤¼ö·Î ÀÔ·ÂµÇ¾î¾ß ÇÕ´Ï´Ù.", "¿À·ù", JOptionPane.ERROR_MESSAGE);
 				} catch(ScoreRangeException exception) {
-					JOptionPane.showMessageDialog(null, "ì ìˆ˜ì˜ ë²”ìœ„ë¥¼ ì´ˆê³¼í•˜ì˜€ìŠµë‹ˆë‹¤.", "ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Á¡¼öÀÇ ¹üÀ§¸¦ ÃÊ°úÇÏ¿´½À´Ï´Ù.", "¿À·ù", JOptionPane.ERROR_MESSAGE);
 				}
 				break;
-			case "ì·¨ì†Œ":
+			case "Ãë¼Ò":
 				dispose();
 				break;
-			case "ì‚­ì œ":
+			case "»èÁ¦":
 				if(!edit) dispose();
-				// TODO ë»˜ì§“ ì¹˜ìš°ê³  ì£¼ì„ì²˜ë¦¬ ì‚´ë¦¬ê¸° 
-				// Yes or Yes! - "NO ì„ íƒì§€ëŠ” ì¡´ì¤‘ë°›ì§€ ëª»í•©ë‹ˆë‹¤" - https://youtu.be/mAKsZ26SabQ
-				if(JOptionPane.showOptionDialog(null, "ì •ë§ë¡œ " + (st.getSelectedRow() + 1) + "ë²ˆ í•™ìƒì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "í•™ìƒ ì‚­ì œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"ì˜ˆ(Y)", "ì˜ˆ(Y)"}, "ì˜ˆ(Y)") != JOptionPane.CLOSED_OPTION) {
-				//if(JOptionPane.showConfirmDialog(null, "ì •ë§ë¡œ " + (st.getSelectedRow() + 1) + "ë²ˆ í•™ìƒì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "í•™ìƒ ì‚­ì œ", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+				// TODO »¹Áş Ä¡¿ì°í ÁÖ¼®Ã³¸® »ì¸®±â 
+				// Yes or Yes! - "NO ¼±ÅÃÁö´Â Á¸Áß¹ŞÁö ¸øÇÕ´Ï´Ù" - https://youtu.be/mAKsZ26SabQ
+				if(JOptionPane.showOptionDialog(null, "Á¤¸»·Î " + (st.getSelectedRow() + 1) + "¹ø ÇĞ»ıÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "ÇĞ»ı »èÁ¦", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"¿¹(Y)", "¿¹(Y)"}, "¿¹(Y)") != JOptionPane.CLOSED_OPTION) {
+				//if(JOptionPane.showConfirmDialog(null, "Á¤¸»·Î " + (st.getSelectedRow() + 1) + "¹ø ÇĞ»ıÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "ÇĞ»ı »èÁ¦", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 					st.removeStudent(index);
 					dispose();
 				}
 				break;
-			case "ì¶œì„":
-				if(mode==UIInputMode.ADD) {
-					new UIUCheck();
-				}else if(mode==UIInputMode.EDIT) {
-					new UIUCheck(row);
-				}
+			case "Ãâ¼®":
 				break;
 			}
 		}
