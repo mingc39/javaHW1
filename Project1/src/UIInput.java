@@ -24,6 +24,8 @@ public class UIInput extends JDialog {
 	private JTextField studentID, name, attendance, midTest, finalTest, homework, quiz, pt, report, others;
 	protected LinkedList<StudentEventListener> listeners;
 	private UIInputMode mode;
+	
+	
 
 	// 생성자
 	// 수정 모드 생성자
@@ -252,6 +254,11 @@ public class UIInput extends JDialog {
 				}
 				break;
 			case "출석":
+				if(mode==UIInputMode.ADD) {
+					new UIUCheck();
+				}else if(mode==UIInputMode.EDIT) {
+					new UIUCheck(row);
+				}
 				break;
 			}
 		}

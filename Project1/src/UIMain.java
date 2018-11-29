@@ -126,8 +126,8 @@ public class UIMain extends JFrame {
 					new UIStatistics(studentTable.getStudents());
 					break;
 				case "출석 체크":
-					// new UIAttendance(getStudents());
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
+					 new UIAttendance(studentTable.getStudents());
+//					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "반영 비율":
 					new UIRaito(studentTable.getRaito()).addStudentEventListener(studentTable.getNewStudentEventListener());
