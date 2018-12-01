@@ -1,7 +1,7 @@
-//í•´ì•¼í• ê²ƒ 
-//stdents ë°°ì—´ì„ ë°›ì•„ì™€ì•¼í•¨ 
-//ë‹¨ graphTypeì— ë”°ë¼ stdentsë°°ì—´ ì•ˆì˜ íƒ€ì…ë³€ìˆ˜ë¥¼ ë°›ì•„ì™€ì„œ 
-//ê·¸ê±¸ ì‚¬ìš©í•´ì„œ ì ìˆ˜ëŒ€ë³„ë¡œ ë‚˜ëˆ„ê³ , ê·¸ë˜í”„ë¥¼ ê·¸ë¦°ë‹¤.
+//ÇØ¾ßÇÒ°Í 
+//stdents ¹è¿­À» ¹Ş¾Æ¿Í¾ßÇÔ 
+//´Ü graphType¿¡ µû¶ó stdents¹è¿­ ¾ÈÀÇ Å¸ÀÔº¯¼ö¸¦ ¹Ş¾Æ¿Í¼­ 
+//±×°É »ç¿ëÇØ¼­ Á¡¼ö´ëº°·Î ³ª´©°í, ±×·¡ÇÁ¸¦ ±×¸°´Ù.
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -50,52 +50,52 @@ public class StudentDraw extends JFrame {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(5));
-			g2.drawLine(30, 30, 30, 330); // ì„¸ë¡œì„ 
-			g2.drawLine(30, 330, 850, 330); // ê°€ë¡œì„ 
+			g2.drawLine(30, 30, 30, 330); // ¼¼·Î¼±
+			g2.drawLine(30, 330, 850, 330); // °¡·Î¼±
 			this.setBackground(Color.WHITE);
 			g2.setColor(Color.BLACK);  
-			g2.drawString("í•™ìƒìˆ˜", 10, 20); //ê·¸ë˜í”„ìƒ í•™ìƒìˆ˜ì˜ ìœ„ì¹˜
+			g2.drawString("ÇĞ»ı¼ö", 10, 20); //±×·¡ÇÁ»ó ÇĞ»ı¼öÀÇ À§Ä¡
 			g2.setColor(Color.BLACK); 
-			g2.drawString("ì ìˆ˜" , 860 , 335); //ê·¸ë˜í”„ìƒ ì ìˆ˜ì˜ ìœ„ì¹˜
-			int num[] = new int[11]; //ì•„ì´ë“¤ì˜ ì ìˆ˜ ë¹„ìœ¨
+			g2.drawString("Á¡¼ö" , 860 , 335); //±×·¡ÇÁ»ó Á¡¼öÀÇ À§Ä¡
+			int num[] = new int[11]; //¾ÆÀÌµéÀÇ Á¡¼ö ºñÀ²
 			num[2]=22;
-			for (int i = 0; i < std.size/*ê°ì²´ìˆ˜*/(); i++) {
+			for (int i = 0; i < std.size/*°´Ã¼¼ö*/(); i++) {
 				int score = std.get(i);
 				if(0<=score&&score<10) {
-					num[0] ++; //10ì ë¯¸ë§Œ
+					num[0] ++; //10Á¡¹Ì¸¸
 				}else if(10<=score&&score<20) {
-					num[1] ++; //10ì ëŒ€
+					num[1] ++; //10Á¡´ë
 				}else if(20<=score&&score<30) {
-					num[2] ++; //20ì ëŒ€
+					num[2] ++; //20Á¡´ë
 				}else if(30<=score&&score<40) {
-					num[3] ++; //30ì ëŒ€
+					num[3] ++; //30Á¡´ë
 				}else if(40<=score&&score<50) {
-					num[4] ++; //40ì ëŒ€
+					num[4] ++; //40Á¡´ë
 				}else if(50<=score&&score<60) {
-					num[5] ++; //50ì ëŒ€
+					num[5] ++; //50Á¡´ë
 				}else if(60<=score&&score<70) {
-					num[6] ++; //60ì ëŒ€
+					num[6] ++; //60Á¡´ë
 				}else if(70<=score&&score<80) {
-					num[7] ++; //70ì ëŒ€
+					num[7] ++; //70Á¡´ë
 				}else if(80<=score&&score<90) {
-					num[8] ++; //80ì ëŒ€
+					num[8] ++; //80Á¡´ë
 				}else if(90<=score&&score<100) {
-					num[9] ++; //90ì ëŒ€
+					num[9] ++; //90Á¡´ë
 				}else if(score==100) {
-					num[10] ++; //100ì 
+					num[10] ++; //100Á¡
 				}
-				//ìœ„ì—ëŠ” ì ìˆ˜ë¥¼ ë°›ì•„ì„œ ê·¸ê±°ì— ë”°ë¥¸ ì ìˆ˜ë³„ëŒ€ì˜ ì‚¬ëŒì„ ë‚˜ëˆ„ê³ 
-				//ì•„ë˜ëŠ” ë‹¤ì‹œ ë°˜ë³µë¬¸ì„ ì¨ì„œ numì˜ ìˆ˜ë§Œí¼ ë†’ì´ë¥¼ ì¡°ì •í•˜ê²Œ ë§Œë“ ë‹¤.
-				//ìŠ¤ìœ„ì¹˜ ì¼€ì´ìŠ¤ë‘ ë‚˜ëˆ„ëŠ” ëª« ì´ìš©
+				//À§¿¡´Â Á¡¼ö¸¦ ¹Ş¾Æ¼­ ±×°Å¿¡ µû¸¥ Á¡¼öº°´ëÀÇ »ç¶÷À» ³ª´©°í
+				//¾Æ·¡´Â ´Ù½Ã ¹İº¹¹®À» ½á¼­ numÀÇ ¼ö¸¸Å­ ³ôÀÌ¸¦ Á¶Á¤ÇÏ°Ô ¸¸µç´Ù.
+				//½ºÀ§Ä¡ ÄÉÀÌ½º¶û ³ª´©´Â ¸ò ÀÌ¿ë
 			}
 			
 			for(int i=0; i<=10; i++) {
 				int height = 330 - (3 * num[i]);
-				g2.setColor(Color.BLACK); //ì„¸ë¡œì˜ ì ìˆ˜ -> í•™ìƒìˆ˜ 
-				g2.drawString(num[i] + "", 10, height); // ì„¸ë¡œì¶•ì˜ ì ìˆ˜ í‘œê¸°
+				g2.setColor(Color.BLACK); //¼¼·ÎÀÇ Á¡¼ö -> ÇĞ»ı¼ö 
+				g2.drawString(num[i] + "", 10, height); // ¼¼·ÎÃàÀÇ Á¡¼ö Ç¥±â
 				g2.setColor(Color.BLUE);
-				g2.fillRect(40 + (i * 75), height, 30, 330 - height); // ê·¸ë˜í”„ì˜ í¬ê¸°ì„¤ì • (x,y,ê°€ë¡œ,ì„¸ë¡œ)
-				g2.setColor(Color.BLACK); //ê°€ë¡œì˜ ìˆœì„œ  -> ì ìˆ˜ëŒ€
+				g2.fillRect(40 + (i * 75), height, 30, 330 - height); // ±×·¡ÇÁÀÇ Å©±â¼³Á¤ (x,y,°¡·Î,¼¼·Î)
+				g2.setColor(Color.BLACK); //°¡·ÎÀÇ ¼ø¼­  -> Á¡¼ö´ë
 				g2.drawString((i*10) + "", 40 + (i * 75) +12, 350);
 			}
 		}
