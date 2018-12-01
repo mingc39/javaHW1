@@ -128,10 +128,50 @@ public class UIMain extends JFrame {
 					new UIAttendance(studentTable.getStudents());
 					break;
 				case "반영 비율":
-					new UIRaito(studentTable);
+					//new UIRaito(studentTable);
+					new UISetting(studentTable) {
+
+						private static final long serialVersionUID = 3312792879135047715L;
+
+						@Override
+						protected void applySetting() {
+							studentTable.setRaito(raito);
+						}
+
+						@Override
+						protected void setName() {
+							name = studentTable.getScoreName();
+						}
+
+						@Override
+						protected void setData() {
+							raito = studentTable.getRaito();
+						}
+						
+					};
 					break;
 				case "학점 비율":
-					new UIGrade(studentTable);
+					//new UIGrade(studentTable);
+					new UISetting(studentTable) {
+
+						private static final long serialVersionUID = -8526134229675530544L;
+
+						@Override
+						protected void applySetting() {
+							studentTable.setGrade(raito);
+						}
+
+						@Override
+						protected void setName() {
+							name = studentTable.getGradeName();
+						}
+
+						@Override
+						protected void setData() {
+							raito = studentTable.getGrade();
+						}
+						
+					};
 					break;
 				}
 			}

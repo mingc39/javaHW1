@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 public class UIAttendance extends JFrame {
 
+	private static final long serialVersionUID = -4385594165417421902L;
 	private JButton week, student, check;
 	private JLabel label;
 	private JPanel p, panel;
