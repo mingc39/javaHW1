@@ -110,30 +110,28 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "입력":
-					new UIInput().addStudentEventListener(studentTable.getNewStudentEventListener());
+					new UIInput(studentTable);
 					break;
 				case "수정":
 					if(studentTable.getSelectedRow() < 0) JOptionPane.showMessageDialog(null, "수정할 학생을 표에서 선택해주세요.", "오류", JOptionPane.ERROR_MESSAGE);
 					else {
-						new UIInput(studentTable.getSelectedStudent(), (int) studentTable.getSelectedStudentIndex()).addStudentEventListener(studentTable.getNewStudentEventListener());
+						new UIInput(studentTable, studentTable.getSelectedStudentIndex());
 					}
 					break;
 				case "검색":
-					// new UISearch(studentTable.getStudents());
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "검색", JOptionPane.INFORMATION_MESSAGE);
+					new UISearch(studentTable.getStudents());
 					break;
 				case "평균":
-					new UIStatistics(studentTable.getStudents());
+					new UIStatistics(studentTable);
 					break;
 				case "출석 체크":
-					// new UIAttendance(studentTable.getStudents());
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
+					new UIAttendance(studentTable.getStudents());
 					break;
 				case "반영 비율":
-					new UIRaito(studentTable.getRaito()).addStudentEventListener(studentTable.getNewStudentEventListener());
+					new UIRaito(studentTable);
 					break;
 				case "학점 비율":
-					new UIGrade(studentTable.getGrade(), studentTable.getGradeName(), 8).addStudentEventListener(studentTable.getNewStudentEventListener());
+					new UIGrade(studentTable);
 					break;
 				}
 			}
@@ -175,7 +173,7 @@ public class UIMain extends JFrame {
 		// 리스너 생성
 		listener = new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				new UIGraph(studentTable.getStudents(), ((JMenuItem) (e.getSource())).getText());
+				JOptionPane.showMessageDialog(null, "기능이 없습니다.", "그래프", JOptionPane.INFORMATION_MESSAGE);
 			}
 		};
 		// 메뉴 생성 및 추가
