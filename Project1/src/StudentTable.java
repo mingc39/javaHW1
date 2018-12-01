@@ -155,19 +155,21 @@ public class StudentTable {
 		
 		// 학생 객체에서 점수 배열 받아오기
 		int[] scores = student.getScores();
-		
+	
 		// 배열에 자료 추가
 		Object[] values = new Object[scores.length + 6];
 		values[0] = nextStudent++; values[1] = student.getStudentID(); values[2] = student.getName();
 		for(int i = 0; i < scores.length; i++) values[i + 3] = scores[i];
 		values[values.length - 3] = calScore(student);
-		values[values.length - 1] = new int[16][];
+		
+		values[values.length - 1] = new int[16][2];
 		
 		// 표에 자료 추가
 		tableModel.addRow(values);
 		
 		// 학점 계산
 		calGradeAll();
+		
 		
 	}
 	
@@ -191,6 +193,7 @@ public class StudentTable {
 				break;
 			}
 		}
+		System.out.println(s.getAttendance());
 		
 	}
 	

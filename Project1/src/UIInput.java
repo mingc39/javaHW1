@@ -22,7 +22,6 @@ public class UIInput extends JDialog {
 	private JTextField[] textFields;
 	private StudentTable st;
 	private boolean edit = false;
-	private JButton deleteButton;
 
 	// 생성자
 	// 수정 모드 생성자
@@ -42,7 +41,6 @@ public class UIInput extends JDialog {
 		draw("학생 추가", "새 학생을 추가합니다.", st.getScoreName());
 		this.st = st;
 		edit = false;
-		deleteButton.setEnabled(false);
 	}
 	
 	// 창 그리기
@@ -96,7 +94,6 @@ public class UIInput extends JDialog {
 		panel2.add(button);
 		button = new JButton("삭제");
 		button.addActionListener(listener);
-		deleteButton = button;
 		panel2.add(button);
 		panel.add(panel2);
 		
@@ -157,18 +154,24 @@ public class UIInput extends JDialog {
 				break;
 			case "삭제":
 				if(!edit) dispose();
-				// TODO 뻘짓 치우고 주석처리 살리기 
-				// Yes or Yes! - "NO 선택지는 존중받지 못합니다" - https://youtu.be/mAKsZ26SabQ
-				if(JOptionPane.showOptionDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"예(Y)", "예(Y)"}, "예(Y)") != JOptionPane.CLOSED_OPTION) {
-				//if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 					st.removeStudent(index);
 					dispose();
 				}
 				break;
 			case "출석":
+				if(edit) {
+					//수정
+					new UIUCheck(st.getStudents(),index);
+				}
+				else {
+					//입력
+					new UIUCheck(st.getStudents());
+				}
 				break;
 			}
 		}
 	}
 
 }
+
