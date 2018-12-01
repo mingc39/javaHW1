@@ -18,6 +18,7 @@ public class UIInput extends JDialog {
 	// 변수 선언
 	private static final long serialVersionUID = 5688138324038957536L;
 	private int index;
+	private int[][] attendance;
 	private JTextField studentID, name;
 	private JTextField[] textFields;
 	private StudentTable st;
@@ -35,6 +36,7 @@ public class UIInput extends JDialog {
 		studentID.setText(Integer.toString(student.getStudentID()));
 		name.setText(student.getName());
 		for(int i = 0; i < textFields.length; i++) textFields[i].setText(Integer.toString(student.getScores()[i]));
+		attendance = student.getAttendance();
 	}
 	// 추가 모드 생성자
 	public UIInput(StudentTable st) {
@@ -139,7 +141,7 @@ public class UIInput extends JDialog {
 				try {
 					int scores[] = new int[textFields.length];
 					for(int i = 0; i < textFields.length; i++) scores[i] = Integer.parseInt(textFields[i].getText());
-					Student stu = new Student((Integer.parseInt(studentID.getText())), name.getText(), scores);
+					Student stu = new Student((Integer.parseInt(studentID.getText())), name.getText(), scores, attendance);
 					if(edit) st.editStudent(stu, index);
 					else st.addStudent(stu);
 					dispose();
@@ -160,14 +162,8 @@ public class UIInput extends JDialog {
 				}
 				break;
 			case "출석":
-				if(edit) {
-					//수정
-					new UIUCheck(st.getStudents(),index);
-				}
-				else {
-					//입력
-					new UIUCheck(st.getStudents());
-				}
+				if(attendance == null) attendance = new int[16][];
+				new UIUCheck(attendance);
 				break;
 			}
 		}

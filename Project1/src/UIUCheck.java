@@ -21,12 +21,14 @@ public class UIUCheck extends JFrame {
 	String str = "", result = "";
 	Box ver, days, info, box;
 	JButton save; // 저장버튼
-	int[][] a = new int[16][2];
+	Student student;
+	int[][] attendance, a = new int[16][2];
 	int tf;
 	int nextint = 0;
 	int nextint2 = 0;
 
-	public UIUCheck(Student[] stu) {
+	// 쓸모가 없는 생성자
+	public UIUCheck(StudentTable stu) {
 		setTitle("나는 수정-입력의 출석입니다.");
 
 		box = Box.createVerticalBox();
@@ -151,16 +153,32 @@ public class UIUCheck extends JFrame {
 		setVisible(true);
 	}
 
-	public UIUCheck(Student[] stu, int index) {
+	// 쓸모가 있는 생성자
+	public UIUCheck(int[][] attendance) {
 		setTitle("나는 수정-수정의 출석입니다.");
 
 		box = Box.createVerticalBox();
 		save = new JButton("저장");
+		
+		// 학생 출결 정보 받아오기
+		/* 
+		 * 변수 정보
+		 * attendance: 매개변수로 받아온 실제 출석 값
+		 * a: 화면에 표시하고 사용자로부터 입력받을 출석 값
+		 */
+		this.attendance = attendance;
+		a = attendance.clone();
+		for(int i = 0; i < 16; i++) if(a[i] != null) a[i] = a[i].clone();
 
 		for (int i = 1; i < 17; i++) {
 			p = new JPanel();
 			tue = new JLabel("화요일");
 			thr = new JLabel("목요일");
+			
+			// 해당 주차의 출석 정보가 없으면 생성후 결석으로 초기화
+			if(a[i - 1] == null) {
+				a[i - 1] = new int[] {2, 2};
+			}
 
 			attend = new JRadioButton("출석");
 			absent = new JRadioButton("결석               ");
@@ -170,8 +188,21 @@ public class UIUCheck extends JFrame {
 			check.add(attend);
 			check.add(absent);
 			check.add(late);
+			// 기존의 출석값대로 라디오 박스에 체크
+			switch(a[i - 1][0]) {
+			case 0:
+				attend.setSelected(true);
+				break;
+			case 1:
+				late.setSelected(true);
+				break;
+			case 2:
+				absent.setSelected(true);
+				break;
+			}
 
-			ActionListener al = new ActionListener() {
+			// 안씀
+			ActionListener al = new ActionListener() {				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String s = e.getActionCommand();
@@ -186,6 +217,7 @@ public class UIUCheck extends JFrame {
 
 				}
 			};
+			al = new listener(i - 1, 0);
 			attend.addActionListener(al);
 			absent.addActionListener(al);
 			late.addActionListener(al);
@@ -219,7 +251,20 @@ public class UIUCheck extends JFrame {
 			check.add(attend);
 			check.add(absent);
 			check.add(late);
+			// 기존의 출석값대로 라디오 박스에 체크
+			switch(a[i - 1][1]) {
+			case 0:
+				attend.setSelected(true);
+				break;
+			case 1:
+				late.setSelected(true);
+				break;
+			case 2:
+				absent.setSelected(true);
+				break;
+			}
 			
+			// 잉여리스너
 			ActionListener aal = new ActionListener() {
 
 				@Override
@@ -235,6 +280,7 @@ public class UIUCheck extends JFrame {
 					a[nextint2++][1] = tf;
 				}
 			};
+			aal = new listener(i - 1, 1);
 			attend.addActionListener(aal);
 			absent.addActionListener(aal);
 			late.addActionListener(aal);
@@ -255,9 +301,10 @@ public class UIUCheck extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				stu[index].setAttandence(a);
-//				System.out.println(stu[index].getAttendance());
-				System.out.println(stu[index].getAttendanceScore());
+				// 실제 출석부 값을 화면에 표시된 값으로 교체
+				for(int i = 0; i < 16; i++) attendance[i] = a[i]; 
+				//stu.editStudent(student, index);
+				//System.out.println(stu.getAttendanceScore());
 			}
 		};
 
@@ -272,6 +319,32 @@ public class UIUCheck extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
 		setVisible(true);
+	}
+	
+	// 라디오 박스를 위한 액션 리스너
+	class listener implements ActionListener {
+		
+		// 주차와 수업 요일 저장을 위한 변수
+		private int w, c;
+		
+		// 생성자
+		public listener(int w, int c) {
+			this.w = w; this.c = c;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String s = e.getActionCommand();
+			// 지정된 주차와 요일의 출석 값 설정
+			if (s.equals(attend.getText())) {
+				a[w][c] = 0;
+			} else if (s.equals(late.getText())) {
+				a[w][c] = 1;
+			} else if (s.equals(absent.getText())) {
+				a[w][c] = 2;
+			}
+		}
+		
 	}
 
 }

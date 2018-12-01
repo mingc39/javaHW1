@@ -66,7 +66,13 @@ public class StudentTable {
 	public Student getStudent(int selectedRow) {
 		int[] scores = new int[scoreName.length];
 		for(int i = 0; i < scoreName.length; i++) scores[i] = (int) table.getValueAt(selectedRow, i + 3);
-		Student student = new Student((int) table.getValueAt(selectedRow, 1), (String) table.getValueAt(selectedRow, 2), scores);
+		int[][] attendance = (int[][]) table.getValueAt(selectedRow, table.getColumnCount() - 1);
+		if(attendance != null) {
+			attendance = attendance.clone();
+			for(int i = 0; i < 16; i++)
+				if(attendance[i] != null) attendance[i] = attendance[i].clone();
+		}
+		Student student = new Student((int) table.getValueAt(selectedRow, 1), (String) table.getValueAt(selectedRow, 2), scores, attendance);
 		student.setTotal((double) table.getValueAt(selectedRow, scoreName.length + 3));
 		student.setGrade((String) table.getValueAt(selectedRow, scoreName.length + 4));
 		return student;
@@ -75,7 +81,13 @@ public class StudentTable {
 	public Student getStudentAt(int selectedRow) {
 		int[] scores = new int[scoreName.length];
 		for(int i = 0; i < scoreName.length; i++) scores[i] = (int) table.getValueAt(selectedRow, i + 3);
-		Student student = new Student((int) table.getValueAt(selectedRow, 1), (String) table.getValueAt(selectedRow, 2), scores);
+		int[][] attendance = (int[][]) table.getValueAt(selectedRow, table.getColumnCount() - 1);
+		if(attendance != null) {
+			attendance = attendance.clone();
+			for(int i = 0; i < 16; i++)
+				if(attendance[i] != null) attendance[i] = attendance[i].clone();
+		}
+		Student student = new Student((int) table.getValueAt(selectedRow, 1), (String) table.getValueAt(selectedRow, 2), scores, attendance);
 		student.setTotal((double) table.getValueAt(selectedRow, scoreName.length + 3));
 		student.setGrade((String) table.getValueAt(selectedRow, scoreName.length + 4));
 		return student;
@@ -87,6 +99,16 @@ public class StudentTable {
 	
 	public int getSelectedStudentIndex() {
 		return (int) table.getValueAt(table.getSelectedRow(), 0);
+	}
+	
+	public Student getStudentByIndex(int index) {
+		
+		// index가 일치하는 학생 찾아 반환
+		for(int row = 0; row < tableModel.getRowCount(); row++) {
+			if((int) tableModel.getValueAt(row, 0) == index) 
+				return getStudent(row);
+		}
+		return null;
 	}
 	
 	public double[] getRaito() {
@@ -161,8 +183,7 @@ public class StudentTable {
 		values[0] = nextStudent++; values[1] = student.getStudentID(); values[2] = student.getName();
 		for(int i = 0; i < scores.length; i++) values[i + 3] = scores[i];
 		values[values.length - 3] = calScore(student);
-		
-		values[values.length - 1] = new int[16][2];
+		values[values.length - 1] = student.getAttendance();
 		
 		// 표에 자료 추가
 		tableModel.addRow(values);
@@ -190,10 +211,10 @@ public class StudentTable {
 				}
 				tableModel.setValueAt(calScore(s), row, scores.length + 3);
 				calGradeAll();
+				tableModel.setValueAt(s.getAttendance(), row, scores.length + 5);
 				break;
 			}
 		}
-		System.out.println(s.getAttendance());
 		
 	}
 	
