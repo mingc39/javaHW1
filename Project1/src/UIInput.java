@@ -163,6 +163,14 @@ public class UIInput extends JDialog {
 				}
 				break;
 			case "출석":
+				if(edit) {
+					//수정
+					new UIUCheck(st.getStudents(),index);
+				}
+				else {
+					//입력
+					new UIUCheck(st.getStudents());
+				}
 				break;
 			}
 		}

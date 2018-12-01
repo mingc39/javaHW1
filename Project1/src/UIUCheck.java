@@ -22,8 +22,12 @@ public class UIUCheck extends JFrame {
 	String str = "", result = "";
 	Box ver, days, info, box;
 	JButton save; // 저장버튼
+	int[][] a = new int[16][2];
+	int tf;
+	int nextint = 0;
+	int nextint2 = 0;
 
-	public UIUCheck() {
+	public UIUCheck(Student[] stu) {
 		setTitle("나는 수정-입력의 출석입니다.");
 
 		box = Box.createVerticalBox();
@@ -43,25 +47,24 @@ public class UIUCheck extends JFrame {
 			check.add(absent);
 			check.add(late);
 
-			ActionListener aal = new ActionListener() {
+			ActionListener al = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String s = e.getActionCommand();
-
 					if (s.equals(attend.getText())) {
-						str = s;
-					} else if (s.equals(absent.getText())) {
-						str = s;
+						tf = 0;
 					} else if (s.equals(late.getText())) {
-						str = s;
+						tf = 1;
+					} else if (s.equals(absent.getText())) {
+						tf = 2;
 					}
-					
+					a[nextint++][0] = tf;
 
 				}
 			};
-			attend.addActionListener(aal);
-			absent.addActionListener(aal);
-			late.addActionListener(aal);
+			attend.addActionListener(al);
+			absent.addActionListener(al);
+			late.addActionListener(al);
 
 			w = i + "주               ";
 			week = new JLabel(w);
@@ -93,24 +96,24 @@ public class UIUCheck extends JFrame {
 			check.add(absent);
 			check.add(late);
 
-			ActionListener alT = new ActionListener() {
+			ActionListener aal = new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String s = e.getActionCommand();
 					if (s.equals(attend.getText())) {
-						str = s;
-					} else if (s.equals(absent.getText())) {
-						str = s;
+						tf = 0;
 					} else if (s.equals(late.getText())) {
-						str = s;
+						tf = 1;
+					} else if (s.equals(absent.getText())) {
+						tf = 2;
 					}
-					
+					a[nextint2++][1] = tf;
 				}
 			};
-			attend.addActionListener(alT);
-			absent.addActionListener(alT);
-			late.addActionListener(alT);
+			attend.addActionListener(aal);
+			absent.addActionListener(aal);
+			late.addActionListener(aal);
 
 			ver = Box.createVerticalBox();
 			ver.add(days);
@@ -124,17 +127,21 @@ public class UIUCheck extends JFrame {
 			box.add(p);
 		}
 
-		ActionListener al = new ActionListener() {
+		ActionListener sal = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				result += str;
-				System.out.println(result);
-
+				for (int i = 0; i < 16; i++) {
+					for (int j = 0; j < 2; j++) {
+						System.out.println(a[i][j]);
+					}
+				}
+				
+				
 			}
 		};
 
-		save.addActionListener(al);
+		save.addActionListener(sal);
 		this.add(box, BorderLayout.CENTER);
 		p = new JPanel();
 		p.add(save, BorderLayout.CENTER);
@@ -145,7 +152,7 @@ public class UIUCheck extends JFrame {
 		setVisible(true);
 	}
 
-	public UIUCheck(int index) {
+	public UIUCheck(Student[] stu, int index) {
 		setTitle("나는 수정-수정의 출석입니다.");
 
 		box = Box.createVerticalBox();
@@ -165,6 +172,25 @@ public class UIUCheck extends JFrame {
 			check.add(absent);
 			check.add(late);
 
+			ActionListener al = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String s = e.getActionCommand();
+					if (s.equals(attend.getText())) {
+						tf = 0;
+					} else if (s.equals(late.getText())) {
+						tf = 1;
+					} else if (s.equals(absent.getText())) {
+						tf = 2;
+					}
+					a[nextint++][0] = tf;
+
+				}
+			};
+			attend.addActionListener(al);
+			absent.addActionListener(al);
+			late.addActionListener(al);
+
 			w = i + "주               ";
 			week = new JLabel(w);
 
@@ -194,6 +220,26 @@ public class UIUCheck extends JFrame {
 			check.add(attend);
 			check.add(absent);
 			check.add(late);
+			
+			ActionListener aal = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String s = e.getActionCommand();
+					if (s.equals(attend.getText())) {
+						tf = 0;
+					} else if (s.equals(late.getText())) {
+						tf = 1;
+					} else if (s.equals(absent.getText())) {
+						tf = 2;
+					}
+					a[nextint2++][1] = tf;
+				}
+			};
+			attend.addActionListener(aal);
+			absent.addActionListener(aal);
+			late.addActionListener(aal);
+
 
 			ver = Box.createVerticalBox();
 			ver.add(days);
@@ -206,6 +252,18 @@ public class UIUCheck extends JFrame {
 			p.add(ver);
 			box.add(p);
 		}
+		ActionListener sal = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stu[index].setAttandence(a);
+//				System.out.println(stu[index].getAttendance());
+				System.out.println(stu[index].getAttendanceScore());
+			}
+		};
+
+		save.addActionListener(sal);
+
 
 		this.add(box, BorderLayout.CENTER);
 		p = new JPanel();

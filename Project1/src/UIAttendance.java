@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,13 +13,13 @@ public class UIAttendance extends JFrame {
 
 	private JButton week, student, check;
 	private JLabel label;
-	private JPanel p;
+	private JPanel p, panel;
 	private JFrame f;
 
 	public UIAttendance(Student[] stu) {
 		f = this;
 		setTitle("출석체크");
-		p = new JPanel();
+		panel = new JPanel();
 		week = new JButton("주별 출석체크");
 		student = new JButton("학생별 출석체크");
 
@@ -30,8 +29,14 @@ public class UIAttendance extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String s = e.getActionCommand();
 				if (s.equals(week.getText())) {
+					if (p != null) {
+						p.removeAll();
+					}
 					WeekCheck(stu);
 				} else if (s.equals(student.getText())) {
+					if (p != null) {
+						p.removeAll();
+					}
 					StudentCheck(stu);
 				}
 			}
@@ -39,10 +44,10 @@ public class UIAttendance extends JFrame {
 
 		week.addActionListener(al);
 		student.addActionListener(al);
-		p.add(week);
-		p.add(student);
-		
-		this.add(p);
+		panel.add(week);
+		panel.add(student);
+
+		this.add(panel);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
@@ -90,6 +95,7 @@ public class UIAttendance extends JFrame {
 
 	}
 
+	// 특정 학생의 모든 주(16주) 출결 상태
 	void StudentCheck(Student[] stu) {
 		String[] w = new String[stu.length];
 		for (int i = 0; i < stu.length; i++) {
@@ -104,11 +110,34 @@ public class UIAttendance extends JFrame {
 		h.add(check);
 		Box ver = Box.createVerticalBox();
 		ver.add(h);
-//		p.add(list);
-//		p.add(check);
-		p.add(ver,BorderLayout.SOUTH);
-		this.add(p);
-		f.pack();
 
+		p.add(ver);
+		ActionListener c = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int num[][] = stu[list.getSelectedIndex()].getAttendance();
+				for(int i=0;i<16;i++) {
+					for(int j=0;j<2;j++) {
+						switch(num[i][j]) {
+						case 0:
+							label=new JLabel("출석");
+							break;
+						case 1:
+							label=new JLabel("지각");
+							break;
+						case 2:
+							label=new JLabel("결석");
+							break;
+						}
+						p.add(label);
+					}
+				}
+				
+			}
+		};
+		check.addActionListener(c);
+
+		this.add(p, BorderLayout.SOUTH);
+		f.pack();
 	}
 }

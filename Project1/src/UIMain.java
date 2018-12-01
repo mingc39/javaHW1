@@ -119,13 +119,13 @@ public class UIMain extends JFrame {
 					}
 					break;
 				case "검색":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "검색", JOptionPane.INFORMATION_MESSAGE);
+					new UISearch(studentTable.getStudents());
 					break;
 				case "평균":
 					new UIStatistics(studentTable);
 					break;
 				case "출석 체크":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "출석 체크", JOptionPane.INFORMATION_MESSAGE);
+					new UIAttendance(studentTable.getStudents());
 					break;
 				case "반영 비율":
 					new UIRaito(studentTable);
