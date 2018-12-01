@@ -154,10 +154,7 @@ public class UIInput extends JDialog {
 				break;
 			case "삭제":
 				if(!edit) dispose();
-				// TODO 뻘짓 치우고 주석처리 살리기 
-				// Yes or Yes! - "NO 선택지는 존중받지 못합니다" - https://youtu.be/mAKsZ26SabQ
-				if(JOptionPane.showOptionDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {"예(Y)", "예(Y)"}, "예(Y)") != JOptionPane.CLOSED_OPTION) {
-				//if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 					st.removeStudent(index);
 					dispose();
 				}
@@ -177,3 +174,4 @@ public class UIInput extends JDialog {
 	}
 
 }
+

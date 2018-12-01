@@ -143,12 +143,9 @@ public class StudentTable {
 	
 	public String toString() {
 		String info = "";
-		for(int col = 0; col < table.getColumnCount(); col++)
-			info += table.getColumnName(col) + ",";
 		for(int row = 0; row < table.getRowCount(); row++) {
-			info += "\n";
-			for(int col = 0; col < table.getColumnCount(); col++)
-				info += table.getValueAt(row, col) + ",";
+			if(row != 0) info += "\n";
+			info += getStudent(row).toString();
 		}
 		return info;
 	}

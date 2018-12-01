@@ -62,9 +62,17 @@ public class Student {
 	}
 
 	public String toString() {
-		String info = "학번: " + studentID + ", 이름: " + name;
-		for (int score : getScores())
-			info += ", " + score;
+
+		String info = studentID + ", " + name;
+		for(int score : getScores()) info += ", " + score;
+		if(attendance == null) return info;
+		for(int[] a : attendance) {
+			if(a == null) continue;
+			for(int i : a) {
+				info += ", " + i;
+			}
+		}
+
 		return info;
 	}
 
