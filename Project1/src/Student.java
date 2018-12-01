@@ -2,64 +2,97 @@
 // 학생을 나타내는 클래스
 
 public class Student {
-	
+
 	private static final int MAX_SCORE = 100, MIN_SCORE = 0;
-	private int studentID, attendance, midTest, finalTest, homework, quiz, pt, report, others;
+	private int[][] attendance;
+	private int[] scores;
+	private int studentID;
 	private double total;
 	private String grade;
 	private String name;
-	
-	public Student(int studentID, String name, int attendance, int midTest, int finalTest, int homework, int quiz, int pt,
-			int report, int others) throws ScoreRangeException {
+
+	// ------------------------------------------------------
+	public Student(int studentID, String name, int attendance, int midTest, int finalTest, int homework, int quiz,
+			int pt, int report, int others) throws ScoreRangeException {
+		this(studentID, name, new int[] { attendance, midTest, finalTest, homework, quiz, pt, report, others });
+	}
+	// ------------------------------------------------------
+
+	public Student(int studentID, String name, int[] scores) throws ScoreRangeException {
 		this.studentID = studentID;
 		this.name = name;
-		this.attendance = checkScoreRange(attendance);
-		this.midTest = checkScoreRange(midTest);
-		this.finalTest = checkScoreRange(finalTest);
-		this.homework = checkScoreRange(homework);
-		this.quiz = checkScoreRange(quiz);
-		this.pt = checkScoreRange(pt);
-		this.report = checkScoreRange(report);
-		this.others = checkScoreRange(others);
+		for (int i : scores)
+			checkScoreRange(i);
+		this.scores = scores.clone();
 	}
-	
-	public Student(int studentID, String name, int[] scores) throws ScoreRangeException {
-		this(studentID, name, scores[0], scores[1], scores[2], scores[3], scores[4], scores[5], scores[6], scores[7]);
-	}
-	
+
 	private int checkScoreRange(int score) throws ScoreRangeException {
-		if((score > MAX_SCORE) || (score < MIN_SCORE)) throw new ScoreRangeException();
+		if ((score > MAX_SCORE) || (score < MIN_SCORE))
+			throw new ScoreRangeException();
 		return score;
 	}
-	
+
+	public void setStudentID(int studentID) {
+		this.studentID = studentID;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setScores(int[] scores) {
+		this.scores = scores;
+	}
+
 	public void setTotal(double total) {
 		this.total = total;
 	}
-	
+
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
-	
+
+	public void setAttandence(int[][] attandence) {
+		this.attendance = attandence;
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 2; j++) {
+				System.out.println(this.attendance[i][j]);
+			}
+		}
+	}
+
 	public String toString() {
-		String info = "학번: " + studentID + ", 이름: " + name;
+
+		String info = studentID + ", " + name;
 		for(int score : getScores()) info += ", " + score;
+		if(attendance == null) return info;
+		for(int[] a : attendance) {
+			if(a == null) continue;
+			for(int i : a) {
+				info += ", " + i;
+			}
+		}
+
 		return info;
 	}
-	
+
 	public String[] getValues() {
-		return new String[] { Integer.toString(studentID), name, Integer.toString(attendance), Integer.toString(midTest), Integer.toString(finalTest),
-				Integer.toString(homework), Integer.toString(quiz), Integer.toString(pt), Integer.toString(report),
-				Integer.toString(others)};
+		String[] values = new String[scores.length + 2];
+		values[0] = Integer.toString(studentID);
+		values[1] = name;
+		for (int i = 0; i < scores.length; i++)
+			values[i + 2] = Integer.toString(scores[i]);
+		return values;
 	}
-	
+
 	public int[] getScores() {
-		return new int[] { attendance, midTest, finalTest, homework, quiz, pt, report, others };
+		return scores;
 	}
-	
+
 	public double getTotal() {
 		return total;
 	}
-	
+
 	public String getGrade() {
 		return grade;
 	}
@@ -68,40 +101,46 @@ public class Student {
 		return studentID;
 	}
 
-	public int getAttendance() {
+	public int[][] getAttendance() {
 		return attendance;
 	}
 
+	// ---------------------------------
+	public int getAttendanceScore() {
+		return scores[0];
+	}
+
 	public int getMidTest() {
-		return midTest;
+		return scores[1];
 	}
 
 	public int getFinalTest() {
-		return finalTest;
+		return scores[2];
 	}
 
 	public int getHomework() {
-		return homework;
+		return scores[3];
 	}
 
 	public int getQuiz() {
-		return quiz;
+		return scores[4];
 	}
 
 	public int getPt() {
-		return pt;
+		return scores[5];
 	}
 
 	public int getReport() {
-		return report;
+		return scores[6];
 	}
 
 	public int getOthers() {
-		return others;
+		return scores[7];
 	}
+	// -----------------------------------------------
 
 	public String getName() {
 		return name;
 	}
-	
+
 }

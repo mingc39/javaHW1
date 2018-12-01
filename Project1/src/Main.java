@@ -15,7 +15,7 @@ public class Main {
 	public static StudentTable testData(StudentTable st, int num) {
 		Random rand = new Random();
 		for(int i = 1; i <= num; i++)
-			st.addStudent(new Student(rand.nextInt(90000000) + 10000000, i + "번 학생", rand.nextInt(101), rand.nextInt(101), rand.nextInt(101),
+			st.addStudent(new Student(rand.nextInt(90000000) + 10000000, String.format("%02d번 학생", i), rand.nextInt(101), rand.nextInt(101), rand.nextInt(101),
 					rand.nextInt(101), rand.nextInt(101), rand.nextInt(101), rand.nextInt(101), rand.nextInt(101) ));
 		st.refresh();
 		return st;
