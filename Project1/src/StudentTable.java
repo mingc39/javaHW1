@@ -123,7 +123,7 @@ public class StudentTable {
 			if(score > 1 || score < 0) return false;
 		}
 		if(total != 1) return false;
-		this.raito = raito;
+		this.raito = raito.clone();
 		return true;
 	}
 	
@@ -139,7 +139,7 @@ public class StudentTable {
 			if(score > 1 || score < 0) return false;
 		}
 		if(total != 1) return false;
-		this.grade = grade;
+		this.grade = grade.clone();
 		return true;
 	}
 	
