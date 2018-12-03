@@ -28,7 +28,7 @@ public class Student {
 	
 	public Student(int studentID, String name, int[] scores, int[][] attendance) throws ScoreRangeException {
 		this(studentID, name, scores);
-		setAttandence(attendance);
+		setAttendance(attendance);
 	}
 
 	private int checkScoreRange(int score) throws ScoreRangeException {
@@ -57,7 +57,7 @@ public class Student {
 		this.grade = grade;
 	}
 
-	public void setAttandence(int[][] attandence) {
+	public void setAttendance(int[][] attandence) {
 		this.attendance = attandence;
 	}
 
