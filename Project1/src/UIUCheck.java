@@ -27,32 +27,31 @@ public class UIUCheck extends JFrame {
 	int nextint = 0;
 	int nextint2 = 0;
 
-
 	// 쓸모가 있는 생성자
 	public UIUCheck(int[][] attendance) {
 		setTitle("출석체크");
 
 		box = Box.createVerticalBox();
 		save = new JButton("저장");
-		
+
 		// 학생 출결 정보 받아오기
-		/* 
-		 * 변수 정보
-		 * attendance: 매개변수로 받아온 실제 출석 값
-		 * a: 화면에 표시하고 사용자로부터 입력받을 출석 값
+		/*
+		 * 변수 정보 attendance: 매개변수로 받아온 실제 출석 값 a: 화면에 표시하고 사용자로부터 입력받을 출석 값
 		 */
 		this.attendance = attendance;
 		a = attendance.clone();
-		for(int i = 0; i < 16; i++) if(a[i] != null) a[i] = a[i].clone();
+		for (int i = 0; i < 16; i++)
+			if (a[i] != null)
+				a[i] = a[i].clone();
 
 		for (int i = 1; i < 17; i++) {
 			p = new JPanel();
 			tue = new JLabel("화요일");
 			thr = new JLabel("목요일");
-			
+
 			// 해당 주차의 출석 정보가 없으면 생성후 결석으로 초기화
-			if(a[i - 1] == null) {
-				a[i - 1] = new int[] {2, 2};
+			if (a[i - 1] == null) {
+				a[i - 1] = new int[] { 2, 2 };
 			}
 
 			attend = new JRadioButton("출석");
@@ -64,7 +63,7 @@ public class UIUCheck extends JFrame {
 			check.add(absent);
 			check.add(late);
 			// 기존의 출석값대로 라디오 박스에 체크
-			switch(a[i - 1][0]) {
+			switch (a[i - 1][0]) {
 			case 0:
 				attend.setSelected(true);
 				break;
@@ -76,26 +75,9 @@ public class UIUCheck extends JFrame {
 				break;
 			}
 
-			// 안씀
-			ActionListener al = new ActionListener() {				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					String s = e.getActionCommand();
-					if (s.equals(attend.getText())) {
-						tf = 0;
-					} else if (s.equals(late.getText())) {
-						tf = 1;
-					} else if (s.equals(absent.getText())) {
-						tf = 2;
-					}
-					a[nextint++][0] = tf;
-
-				}
-			};
-			al = new listener(i - 1, 0);
-			attend.addActionListener(al);
-			absent.addActionListener(al);
-			late.addActionListener(al);
+			attend.addActionListener(new listener(i - 1, 0));
+			absent.addActionListener(new listener(i - 1, 0));
+			late.addActionListener(new listener(i - 1, 0));
 
 			w = i + "주               ";
 			week = new JLabel(w);
@@ -127,7 +109,7 @@ public class UIUCheck extends JFrame {
 			check.add(absent);
 			check.add(late);
 			// 기존의 출석값대로 라디오 박스에 체크
-			switch(a[i - 1][1]) {
+			switch (a[i - 1][1]) {
 			case 0:
 				attend.setSelected(true);
 				break;
@@ -138,28 +120,10 @@ public class UIUCheck extends JFrame {
 				absent.setSelected(true);
 				break;
 			}
-			
-			// 잉여리스너
-			ActionListener aal = new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					String s = e.getActionCommand();
-					if (s.equals(attend.getText())) {
-						tf = 0;
-					} else if (s.equals(late.getText())) {
-						tf = 1;
-					} else if (s.equals(absent.getText())) {
-						tf = 2;
-					}
-					a[nextint2++][1] = tf;
-				}
-			};
-			aal = new listener(i - 1, 1);
-			attend.addActionListener(aal);
-			absent.addActionListener(aal);
-			late.addActionListener(aal);
-
+			attend.addActionListener(new listener(i - 1, 1));
+			absent.addActionListener(new listener(i - 1, 1));
+			late.addActionListener(new listener(i - 1, 1));
 
 			ver = Box.createVerticalBox();
 			ver.add(days);
@@ -177,15 +141,15 @@ public class UIUCheck extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 실제 출석부 값을 화면에 표시된 값으로 교체
-				for(int i = 0; i < 16; i++) attendance[i] = a[i]; 
-				//stu.editStudent(student, index);
-				//System.out.println(stu.getAttendanceScore());
-				
+				for (int i = 0; i < 16; i++)
+					attendance[i] = a[i];
+				// stu.editStudent(student, index);
+				// System.out.println(stu.getAttendanceScore());
+
 			}
 		};
 
 		save.addActionListener(sal);
-
 
 		this.add(box, BorderLayout.CENTER);
 		p = new JPanel();
@@ -196,16 +160,17 @@ public class UIUCheck extends JFrame {
 		this.pack();
 		setVisible(true);
 	}
-	
+
 	// 라디오 박스를 위한 액션 리스너
 	class listener implements ActionListener {
-		
+
 		// 주차와 수업 요일 저장을 위한 변수
 		private int w, c;
-		
+
 		// 생성자
 		public listener(int w, int c) {
-			this.w = w; this.c = c;
+			this.w = w;
+			this.c = c;
 		}
 
 		@Override
@@ -220,7 +185,7 @@ public class UIUCheck extends JFrame {
 				a[w][c] = 2;
 			}
 		}
-		
+
 	}
 
 }
