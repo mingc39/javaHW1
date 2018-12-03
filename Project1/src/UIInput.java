@@ -23,14 +23,16 @@ public class UIInput extends JDialog {
 	private JTextField[] textFields;
 	private StudentTable st;
 	private boolean edit = false;
+	private String[] tableHeader;
 
 	// 생성자
 	// 수정 모드 생성자
 	public UIInput(StudentTable st, int index) {
-		draw("학생 수정", "학생을 수정합니다.", st.getScoreName());
 		this.st = st;
 		this.index = index;
+		tableHeader = st.getScoreName();
 		edit = true;
+		draw("학생 수정");
 		
 		Student student = st.getSelectedStudent();
 		studentID.setText(Integer.toString(student.getStudentID()));
@@ -40,13 +42,14 @@ public class UIInput extends JDialog {
 	}
 	// 추가 모드 생성자
 	public UIInput(StudentTable st) {
-		draw("학생 추가", "새 학생을 추가합니다.", st.getScoreName());
 		this.st = st;
+		tableHeader = st.getScoreName();
 		edit = false;
+		draw("학생 추가");
 	}
 	
 	// 창 그리기
-	private void draw(String title, String info, String[] tableHeader) {
+	private void draw(String title) {
 		
 		// 창 제목 설정
 		setTitle(title);
@@ -67,17 +70,12 @@ public class UIInput extends JDialog {
 		center = new JPanel(new GridLayout(3, 1));
 		
 		// 첫째 줄
-		panel = new JPanel(new GridLayout(1, 4));
-		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		label = new JLabel(info);
-		panel2.add(label);
-		panel.add(panel2);
+		panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		label = new JLabel("학번");
 		panel2.add(label);
-		text = new JTextField(10);
+		text = new JTextField(8);
 		studentID = text;
 		panel2.add(text);
 		panel.add(panel2);
@@ -85,22 +83,21 @@ public class UIInput extends JDialog {
 		panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		label = new JLabel("이름");
 		panel2.add(label);
-		text = new JTextField(10);
+		text = new JTextField(6);
 		name = text;
 		panel2.add(text);
 		panel.add(panel2);
 		
-		panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		button = new JButton("출석");
+		button = new JButton("출석 체크");
 		button.addActionListener(listener);
-		panel2.add(button);
-		button = new JButton("삭제");
+		panel.add(button);
+		button = new JButton("출석 점수 계산");
 		button.addActionListener(listener);
-		panel2.add(button);
-		panel.add(panel2);
+		panel.add(button);
 		
 		center.add(panel);
 		
+		// 둘째 줄 이하
 		for(int i = 0; i < tableHeader.length; i++) {
 			if(i % 4 == 0) panel = new JPanel(new GridLayout(1, 4));
 			panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -154,16 +151,42 @@ public class UIInput extends JDialog {
 			case "취소":
 				dispose();
 				break;
-			case "삭제":
-				if(!edit) dispose();
-				if(JOptionPane.showConfirmDialog(null, "정말로 " + (st.getSelectedRow() + 1) + "번 학생을 삭제하시겠습니까?", "학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-					st.removeStudent(index);
-					dispose();
-				}
-				break;
-			case "출석":
+			case "출석 체크":
 				if(attendance == null) attendance = new int[16][];
 				new UIUCheck(attendance);
+				break;
+			case "출석 점수 계산":
+				int attendanceScoreIndex, attendanceScore, absent = 0, late = 0;
+				int lateToAbsent = st.getLateToAbsent();
+				double absentSubtract = st.getAbsentSubtract();
+				double lateSubtract = st.getLateSubtract();
+				for(attendanceScoreIndex = 0; attendanceScoreIndex < tableHeader.length; attendanceScoreIndex++)
+					if(tableHeader[attendanceScoreIndex].equals("출석")) break;
+				if(attendanceScoreIndex == tableHeader.length) break;
+				if(attendance != null) {
+					for(int[] j : attendance) {
+						if(j == null) continue;
+						else {
+							for(int k : j) {
+								switch(k) {
+								case 1:
+									late++;
+									break;
+								case 2:
+									absent++;
+									break;
+								}
+							}
+						}
+					}
+				}
+				if(lateToAbsent != 0) {
+					absent += late / lateToAbsent;
+					late = late % lateToAbsent;
+				}
+				attendanceScore = (int) (st.MAX_SCORE - (absent * absentSubtract) - (late * lateSubtract));
+				if(attendanceScore < 0) attendanceScore = 0;
+				textFields[attendanceScoreIndex].setText(Integer.toString(attendanceScore));
 				break;
 			}
 		}

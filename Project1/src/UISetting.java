@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 // UISetting.java
 // 비율 설정 창
@@ -20,12 +21,14 @@ public abstract class UISetting extends JDialog {
 	protected String[] name;
 	private JTextField[] textFields;
 	protected StudentTable studentTable;
+	protected String info;
+	private boolean doCheck;
 	
 	// 생성자
-	public UISetting(StudentTable studentTable) {
+	public UISetting(StudentTable studentTable, String title, boolean doCheck) {
 		
 		// 창 제목 설정
-		setTitle("학점 비율 설정");
+		setTitle(title);
 		// 레이 아웃 설정
 		setLayout(new BorderLayout());
 		
@@ -36,11 +39,15 @@ public abstract class UISetting extends JDialog {
 		Listener listener = new Listener();
 		
 		this.studentTable = studentTable;
+		this.doCheck = doCheck;
 		
+		setInfo();
 		setName();
 		setData();
 		
 		textFields = new JTextField[raito.length];
+		
+		if(info != null) add(new JLabel(info, SwingConstants.CENTER), BorderLayout.NORTH);
 		
 		// 중앙 패널 생성
 		center = new JPanel(new GridLayout(0, 1));
@@ -82,6 +89,8 @@ public abstract class UISetting extends JDialog {
 	protected abstract void setName();
 	// 기존 설정값 가져오기
 	protected abstract void setData();
+	// 안내 문구 설정
+	protected void setInfo() {};
 	
 	// 버튼 액션 리스너
 	class Listener implements ActionListener {
@@ -92,11 +101,13 @@ public abstract class UISetting extends JDialog {
 				try {
 					// 새로운 설정 값들이 유효한지 확인
 					for(int i = 0; i < raito.length; i++) raito[i] = Double.parseDouble(textFields[i].getText());
-					for(double d : raito) {
-						if((d > 1) || (d < 0)) throw new ScoreRangeException();
-						total += d;
+					if(doCheck) {
+						for(double d : raito) {
+							if((d > 1) || (d < 0)) throw new ScoreRangeException();
+							total += d;
+						}
+						if(total != 1) throw new ScoreRangeException();
 					}
-					if(total != 1) throw new ScoreRangeException();
 					
 					// 새로운 설정 적용
 					applySetting();

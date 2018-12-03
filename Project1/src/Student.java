@@ -3,7 +3,7 @@
 
 public class Student {
 
-	private static final int MAX_SCORE = 100, MIN_SCORE = 0;
+	public final int MAX_SCORE = 100, MIN_SCORE = 0;
 	private int[][] attendance;
 	private int[] scores;
 	private int studentID;

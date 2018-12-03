@@ -118,6 +118,11 @@ public class UIMain extends JFrame {
 						new UIInput(studentTable, studentTable.getSelectedStudentIndex());
 					}
 					break;
+				case "삭제":
+					if(JOptionPane.showConfirmDialog(null, "정말로 " + studentTable.getSelectedStudent().getName() + " 학생을 삭제하시겠습니까?",
+							"학생 삭제", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+						studentTable.removeStudent(studentTable.getSelectedStudentIndex());
+					break;
 				case "검색":
 					new UISearch(studentTable.getStudents());
 					break;
@@ -128,8 +133,7 @@ public class UIMain extends JFrame {
 					new UIAttendance(studentTable.getStudents());
 					break;
 				case "반영 비율":
-					//new UIRaito(studentTable);
-					new UISetting(studentTable) {
+					new UISetting(studentTable, "반영 비율 설정", true) {
 
 						private static final long serialVersionUID = 3312792879135047715L;
 
@@ -151,8 +155,7 @@ public class UIMain extends JFrame {
 					};
 					break;
 				case "학점 비율":
-					//new UIGrade(studentTable);
-					new UISetting(studentTable) {
+					new UISetting(studentTable, "학점 비율 설정", true) {
 
 						private static final long serialVersionUID = -8526134229675530544L;
 
@@ -173,6 +176,52 @@ public class UIMain extends JFrame {
 						
 					};
 					break;
+				case "출석 설정":
+					new UISetting(studentTable, "출결 점수 설정", false) {
+
+						private static final long serialVersionUID = 1429846739837239674L;
+
+						@Override
+						protected void applySetting() throws ScoreRangeException {
+							for(double d : raito)
+								if(d < 0) throw new ScoreRangeException();
+							
+							int absentLimit = (int) raito[0];
+							int lateToAbsent = (int) raito[1];
+							double absentSubtract = raito[2];
+							double lateSubtract = raito[3];
+							
+							studentTable.setAbsentLimit(absentLimit);
+							studentTable.setLateToAbsent(lateToAbsent);
+							studentTable.setAbsentSubtract(absentSubtract);
+							studentTable.setLateSubtract(lateSubtract);
+						}
+
+						@Override
+						protected void setName() {
+							name = new String[] { "F처리 결석수", "지각 결석 변환", "결석 감점", "지각 감점" };
+						}
+
+						@Override
+						protected void setData() {
+							raito = new double[] { studentTable.getAbsentLimit(), studentTable.getLateToAbsent(),
+									studentTable.getAbsentSubtract(), studentTable.getLateSubtract() };
+						}
+						
+						@Override
+						protected void setInfo() {
+							info = "<html>"
+									+ "값이 양의 정수 또는 0(기능 사용 안함)인 설정 항목<br>"
+									+ "- F처리 결석수: 학생의 결석수가 F처리 결석수 이상이면 F학점을 부여합니다.<br>"
+									+ "- 지각 결석 변환: 설정 값 만큼의 지각을 1회 결석으로 취급합니다.<br>"
+									+ "값이 양의 실수인 설정 항목<br>"
+									+ "- 결석 감점: 결석 1회마다 감점시킬 출결 점수입니다.<br>"
+									+ "- 지각 감점: 지각 1회마다 감점시킬 출결 점수입니다.<br>"
+									+ "</html>";
+						}
+						
+					};
+					break;
 				}
 			}
 		};
@@ -184,6 +233,10 @@ public class UIMain extends JFrame {
 		item = new JMenuItem("수정");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
+		menuEdit.add(item);
+		item = new JMenuItem("삭제");
+		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('D', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
 		item = new JMenuItem("검색");
@@ -207,6 +260,10 @@ public class UIMain extends JFrame {
 		item = new JMenuItem("학점 비율");
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('G', Event.CTRL_MASK));
+		menuEdit.add(item);
+		item = new JMenuItem("출석 설정");
+		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('B', Event.CTRL_MASK));
 		menuEdit.add(item);
 		
 		// =======================<그래프 메뉴 생성>=======================

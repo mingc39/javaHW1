@@ -11,6 +11,7 @@ import javax.swing.table.TableRowSorter;
 public class StudentTable {
 	
 	// 변수 선언
+	public final int MAX_SCORE = 100, MIN_SCORE = 0;
 	private int nextStudent = 0;
 	private String[] scoreName = {"출석", "중간 시험", "기말 시험", "과제", "퀴즈", "발표", "보고서", "기타"};
 	private double[] raito = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125};
@@ -19,6 +20,8 @@ public class StudentTable {
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private JScrollPane scroll;
+	private int absentLimit = 4, lateToAbsent = 3;
+	private double lateSubtract = 0, absentSubtract = 1;
 	
 	// 생성자
 	public StudentTable() {
@@ -53,7 +56,7 @@ public class StudentTable {
 		table.getColumnModel().getColumn(header.length - 1).setWidth(0);
 		scroll = new JScrollPane(table);
 	}
-	
+		
 	// getter
 	public JScrollPane getScroll() {
 		return scroll;
@@ -151,6 +154,38 @@ public class StudentTable {
 		return scoreName.clone();
 	}
 	
+	public int getAbsentLimit() {
+		return absentLimit;
+	}
+
+	public int getLateToAbsent() {
+		return lateToAbsent;
+	}
+
+	public double getLateSubtract() {
+		return lateSubtract;
+	}
+
+	public double getAbsentSubtract() {
+		return absentSubtract;
+	}
+
+	public void setAbsentLimit(int absentLimit) {
+		this.absentLimit = absentLimit;
+	}
+
+	public void setLateToAbsent(int lateToAbsent) {
+		this.lateToAbsent = lateToAbsent;
+	}
+
+	public void setLateSubtract(double lateSubtract) {
+		this.lateSubtract = lateSubtract;
+	}
+
+	public void setAbsentSubtract(double absentSubtract) {
+		this.absentSubtract = absentSubtract;
+	}
+
 	// 모든 학생 정보를 Student 배열로 반환
 	public Student[] getStudents() {
 		
@@ -210,8 +245,8 @@ public class StudentTable {
 					tableModel.setValueAt(scores[i], row, i + 3);
 				}
 				tableModel.setValueAt(calScore(s), row, scores.length + 3);
-				calGradeAll();
 				tableModel.setValueAt(s.getAttendance(), row, scores.length + 5);
+				calGradeAll();
 				break;
 			}
 		}
@@ -245,7 +280,7 @@ public class StudentTable {
 	public void calScoreAll() {
 		int[] scores = new int[scoreName.length];
 		// 모든 학생에 대해
-		for(int row = 0; row < table.getRowCount(); row++) {
+		for(int row = 0; row < tableModel.getRowCount(); row++) {
 			// 점수들을 배열로 담아서
 			for(int i = 0; i < scoreName.length; i++)
 				scores[i] = (int) tableModel.getValueAt(row, i + 3);
@@ -258,11 +293,11 @@ public class StudentTable {
 	public String calGrade(double score) {
 		
 		// 배열 생성
-		double[] scores = new double[table.getRowCount()];
+		double[] scores = new double[tableModel.getRowCount()];
 		
 		// 총점 가져오기
-		for(int i = 0; i < table.getRowCount(); i++) {
-			scores[i] = (double) table.getValueAt(i, scoreName.length + 3);
+		for(int i = 0; i < tableModel.getRowCount(); i++) {
+			scores[i] = (double) tableModel.getValueAt(i, scoreName.length + 3);			
 		}
 		
 		// 총점 정렬
@@ -284,11 +319,34 @@ public class StudentTable {
 	public void calGradeAll() {
 		
 		// 배열 선언
-		double[] scores = new double[table.getRowCount()];
+		double[] scores = new double[tableModel.getRowCount()];
 		
 		// 총검 가져오기
-		for(int i = 0; i < table.getRowCount(); i++) {
-			scores[i] = (double) table.getValueAt(i, scoreName.length + 3);
+		int[][] attendance;
+		int absent, late;
+		for(int i = 0; i < tableModel.getRowCount(); i++) {
+			scores[i] = (double) tableModel.getValueAt(i, scoreName.length + 3);
+			attendance = (int[][]) tableModel.getValueAt(i, scoreName.length + 5);
+			absent = 0; late = 0;
+			if(attendance == null) continue;
+			for(int[] j : attendance) {
+				if(j == null) continue;
+				else {
+					for(int k : j) {
+						switch(k) {
+						case 1:
+							late++;
+							break;
+						case 2:
+							absent++;
+							break;
+						}
+					}
+				}
+			}
+			if(lateToAbsent != 0) absent += late / lateToAbsent;
+			if(absent >= absentLimit && absentLimit != 0) scores[i] = -1;
+			
 		}
 		
 		// 총점 정렬
@@ -297,7 +355,12 @@ public class StudentTable {
 		
 		// 총점 계산 및 저장
 		for(int row = 0; row < table.getRowCount(); row++) {
-			double score = (double) tableModel.getValueAt(row, 11);
+			double score = (double) tableModel.getValueAt(row, scoreName.length + 3);
+			
+			if(scores[row] < 0) {
+				tableModel.setValueAt(gradeName[gradeName.length - 1], row, scoreName.length + 4);
+				continue;
+			}
 			
 			for(int i = 0; i < scores.length; i++) {
 				
