@@ -13,19 +13,14 @@ import javax.swing.JRadioButton;
 public class UIUCheck extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	JPanel p;
-	JLabel week, tue, thr;
-	ButtonGroup check;
-	JRadioButton attend, absent, late; // 출석 결석 지각 라디오 버튼
-	String w = ""; // 1~16주 를 나타낼 문자열
-	String str = "", result = "";
-	Box ver, days, info, box;
-	JButton save; // 저장버튼
-	Student student;
-	int[][] attendance, a = new int[16][2];
-	int tf;
-	int nextint = 0;
-	int nextint2 = 0;
+	private JPanel p;
+	private JLabel week, tue, thr;
+	private ButtonGroup check;
+	private JRadioButton attend, absent, late; // 출석 결석 지각 라디오 버튼
+	private Box ver, days, info, box;
+	private JButton save; // 저장버튼
+	private int[][] attendance, a = new int[16][2];
+	
 
 	// 쓸모가 있는 생성자
 	public UIUCheck(int[][] attendance) {
@@ -79,8 +74,7 @@ public class UIUCheck extends JFrame {
 			absent.addActionListener(new listener(i - 1, 0));
 			late.addActionListener(new listener(i - 1, 0));
 
-			w = i + "주               ";
-			week = new JLabel(w);
+			week = new JLabel(i + "주               ");
 
 			days = Box.createHorizontalBox();
 			days.add(tue);
@@ -145,7 +139,7 @@ public class UIUCheck extends JFrame {
 					attendance[i] = a[i];
 				// stu.editStudent(student, index);
 				// System.out.println(stu.getAttendanceScore());
-
+				dispose();
 			}
 		};
 
