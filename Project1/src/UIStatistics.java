@@ -26,7 +26,7 @@ public class UIStatistics extends JDialog {
 		
 		// 합계 계산
 		totals = new int[itemNames.length];
-		for(@SuppressWarnings("unused") int i : totals) i = 0;
+		for(int i = 0; i < totals.length; i++) totals[i] = 0;
 		studentCount = students.length;
 		int[] scores;
 		for(Student s : students) {
