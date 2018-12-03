@@ -14,7 +14,6 @@ public class UIUCheck extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel p;
-	private JLabel week, tue, thr;
 	private ButtonGroup check;
 	private JRadioButton attend, absent, late; // 출석 결석 지각 라디오 버튼
 	private Box ver, days, info, box;
@@ -41,8 +40,6 @@ public class UIUCheck extends JFrame {
 
 		for (int i = 1; i < 17; i++) {
 			p = new JPanel();
-			tue = new JLabel("화요일");
-			thr = new JLabel("목요일");
 
 			// 해당 주차의 출석 정보가 없으면 생성후 결석으로 초기화
 			if (a[i - 1] == null) {
@@ -74,10 +71,8 @@ public class UIUCheck extends JFrame {
 			absent.addActionListener(new listener(i - 1, 0));
 			late.addActionListener(new listener(i - 1, 0));
 
-			week = new JLabel(i + "주               ");
-
 			days = Box.createHorizontalBox();
-			days.add(tue);
+			days.add(new JLabel("화요일"));
 
 			ver = Box.createVerticalBox();
 			ver.add(days);
@@ -88,11 +83,11 @@ public class UIUCheck extends JFrame {
 			info.add(absent);
 			ver.add(info);
 
-			p.add(week);
+			p.add(new JLabel(i + "주               "));
 			p.add(ver);
 
 			days = Box.createHorizontalBox();
-			days.add(thr);
+			days.add(new JLabel("목요일"));
 
 			attend = new JRadioButton("출석");
 			late = new JRadioButton("지각");
