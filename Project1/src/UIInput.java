@@ -184,7 +184,7 @@ public class UIInput extends JDialog {
 					absent += late / lateToAbsent;
 					late = late % lateToAbsent;
 				}
-				attendanceScore = (int) (st.MAX_SCORE - (absent * absentSubtract) - (late * lateSubtract));
+				attendanceScore = st.MAX_SCORE - (int) ((absent * absentSubtract) + (late * lateSubtract));
 				if(attendanceScore < 0) attendanceScore = 0;
 				textFields[attendanceScoreIndex].setText(Integer.toString(attendanceScore));
 				break;
