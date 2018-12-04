@@ -3,7 +3,7 @@
 
 public class Student {
 
-	private static final int MAX_SCORE = 100, MIN_SCORE = 0;
+	public final int MAX_SCORE = 100, MIN_SCORE = 0;
 	private int[][] attendance;
 	private int[] scores;
 	private int studentID;
@@ -24,6 +24,11 @@ public class Student {
 		for (int i : scores)
 			checkScoreRange(i);
 		this.scores = scores.clone();
+	}
+	
+	public Student(int studentID, String name, int[] scores, int[][] attendance) throws ScoreRangeException {
+		this(studentID, name, scores);
+		setAttendance(attendance);
 	}
 
 	private int checkScoreRange(int score) throws ScoreRangeException {
@@ -52,13 +57,8 @@ public class Student {
 		this.grade = grade;
 	}
 
-	public void setAttandence(int[][] attandence) {
+	public void setAttendance(int[][] attandence) {
 		this.attendance = attandence;
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 2; j++) {
-				System.out.println(this.attendance[i][j]);
-			}
-		}
 	}
 
 	public String toString() {
@@ -102,7 +102,8 @@ public class Student {
 	}
 
 	public int[][] getAttendance() {
-		return attendance;
+		if(attendance == null) return null;
+		return attendance.clone();
 	}
 
 	// ---------------------------------
