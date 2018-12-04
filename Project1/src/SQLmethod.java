@@ -39,7 +39,7 @@ public class SQLmethod {
 		PreparedStatement pstmt = con.prepareStatement(sql.toString());
 		pstmt.setInt(1, stu.getStudentID());
 		pstmt.setString(2, stu.getName());
-		pstmt.setInt(3, stu.getAttendance());
+		pstmt.setInt(3, stu.getAttendanceScore());
 		pstmt.setInt(4, stu.getMidTest());
 		pstmt.setInt(5, stu.getFinalTest());
 		pstmt.setInt(6, stu.getHomework());
