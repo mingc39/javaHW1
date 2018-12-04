@@ -17,6 +17,7 @@ public class UIAttendance extends JFrame {
 	private JPanel p, panel;
 	private JFrame f;
 
+
 	public UIAttendance(Student[] stu) {
 		f = this;
 		setTitle("출석체크");
@@ -39,6 +40,7 @@ public class UIAttendance extends JFrame {
 						p.removeAll();
 					}
 					StudentCheck(stu);
+
 				}
 			}
 		};
@@ -62,12 +64,15 @@ public class UIAttendance extends JFrame {
 		JComboBox<String> list = new JComboBox<>(w);
 		check = new JButton("확인");
 		p = new JPanel();
+
 		Box h = Box.createHorizontalBox();
 		h.add(list);
 		h.add(check);
+
 		Box ver = Box.createVerticalBox();
 		ver.add(h);
 		p.add(ver);
+
 		Box v = Box.createVerticalBox();
 		ActionListener c = new ActionListener() {
 
@@ -77,11 +82,37 @@ public class UIAttendance extends JFrame {
 				if (v != null) {
 					v.removeAll();
 				}
-				label = new JLabel("학번               이름");
-				v.add(label);
-				for (int i = 0; i < stu.length; i++) {
-					label = new JLabel(stu[i].getStudentID() + "     " + stu[i].getName());
-					v.add(label);
+
+				v.add(new JLabel("학번               이름"));
+
+				for (int i = 0; i <stu.length; i++) {
+					int a[][] = stu[i].getAttendance();
+					String tue = "", thr = "";
+
+					switch (a[list.getSelectedIndex()][0]) {
+					case 0:
+						tue = "출석";
+						break;
+					case 1:
+						tue = "지각";
+						break;
+					case 2:
+						tue = "결석";
+						break;
+					}
+					switch (a[list.getSelectedIndex()][1]) {
+					case 0:
+						thr = "출석";
+						break;
+					case 1:
+						thr = "지각";
+						break;
+					case 2:
+						thr = "결석";
+						break;
+					}
+					v.add(new JLabel(stu[i].getStudentID() + "     " + stu[i].getName() + "   화요일   " + tue
+							+ "   목요일   " + thr));
 
 				}
 				ver.add(v);
@@ -107,33 +138,49 @@ public class UIAttendance extends JFrame {
 		p = new JPanel();
 
 		Box h = Box.createHorizontalBox();
+		Box ver = Box.createVerticalBox();
+
 		h.add(list);
 		h.add(check);
-		Box ver = Box.createVerticalBox();
+
 		ver.add(h);
 
 		p.add(ver);
+		
+		Box v = Box.createVerticalBox();
+		ver.add(v);
 		ActionListener c = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int num[][] = stu[list.getSelectedIndex()].getAttendance();
-				for(int i=0;i<16;i++) {
-					for(int j=0;j<2;j++) {
-						switch(num[i][j]) {
+				Box hor=Box.createHorizontalBox();
+				
+				for (int i = 0; i < 16; i++) {
+					hor.add(new JLabel((i + 1) + "주차"));
+					for (int j = 0; j < 2; j++) {
+						if (j == 0) {
+							hor.add(new JLabel("화요일 "));
+						} else {
+							hor.add(new JLabel("목요일 "));
+						}
+						switch (num[i][j]) {
 						case 0:
-							label=new JLabel("출석");
+							label = new JLabel("출석");
 							break;
 						case 1:
-							label=new JLabel("지각");
+							label = new JLabel("지각");
 							break;
 						case 2:
-							label=new JLabel("결석");
+							label = new JLabel("결석");
 							break;
 						}
-						p.add(label);
+						hor.add(label);
 					}
+					v.add(hor);
+					
 				}
-				
+				p.add(v);
+				f.pack();
 			}
 		};
 		check.addActionListener(c);

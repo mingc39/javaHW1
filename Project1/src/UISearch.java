@@ -33,7 +33,7 @@ public class UISearch extends JFrame {
 		setVisible(true);
 	}
 
-	void showNorth() {
+	private void showNorth() {
 		JPanel p = new JPanel();
 		JLabel input = new JLabel("ют╥б ");
 
@@ -49,7 +49,7 @@ public class UISearch extends JFrame {
 		this.add(p,BorderLayout.NORTH);
 	}
 
-	void showSouth(Student[] stu) {
+	private void showSouth(Student[] stu) {
 		JPanel p = new JPanel();
 		st = new StudentTable();
 
