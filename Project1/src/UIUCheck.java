@@ -18,7 +18,7 @@ public class UIUCheck extends JFrame {
 	private JRadioButton attend, absent, late; // 출석 결석 지각 라디오 버튼
 	private Box ver, days, info, box;
 	private JButton save; // 저장버튼
-	private int[][] attendance, a = new int[16][2];
+	private int[][] a = new int[16][2];
 	
 
 	// 쓸모가 있는 생성자
@@ -32,7 +32,6 @@ public class UIUCheck extends JFrame {
 		/*
 		 * 변수 정보 attendance: 매개변수로 받아온 실제 출석 값 a: 화면에 표시하고 사용자로부터 입력받을 출석 값
 		 */
-		this.attendance = attendance;
 		a = attendance.clone();
 		for (int i = 0; i < 16; i++)
 			if (a[i] != null)
