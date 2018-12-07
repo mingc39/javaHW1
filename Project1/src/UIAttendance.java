@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,8 +15,9 @@ public class UIAttendance extends JFrame {
 	private static final long serialVersionUID = -4385594165417421902L;
 	private JButton week, student, check;
 	private JLabel label;
-	private JPanel p, panel;
+	private JPanel p = new JPanel(new BorderLayout()), panel;
 	private JFrame f;
+	private Box box = Box.createHorizontalBox();
 
 
 	public UIAttendance(Student[] stu) {
@@ -50,7 +52,8 @@ public class UIAttendance extends JFrame {
 		panel.add(week);
 		panel.add(student);
 
-		this.add(panel);
+		this.add(panel, BorderLayout.NORTH);
+		this.add(p, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
@@ -63,15 +66,12 @@ public class UIAttendance extends JFrame {
 				"16주" };
 		JComboBox<String> list = new JComboBox<>(w);
 		check = new JButton("확인");
-		p = new JPanel();
+		//p = new JPanel();
 
-		Box h = Box.createHorizontalBox();
+		JPanel h = new JPanel();
 		h.add(list);
 		h.add(check);
-
-		Box ver = Box.createVerticalBox();
-		ver.add(h);
-		p.add(ver);
+		p.add(h, BorderLayout.NORTH);
 
 		Box v = Box.createVerticalBox();
 		ActionListener c = new ActionListener() {
@@ -115,14 +115,13 @@ public class UIAttendance extends JFrame {
 							+ "   목요일   " + thr));
 
 				}
-				ver.add(v);
-				p.add(v);
+				//ver.add(v);
+				p.add(v, BorderLayout.CENTER);
 				f.pack();
 			}
 		};
 		check.addActionListener(c);
 
-		add(p, BorderLayout.SOUTH);
 		f.pack();
 
 	}
@@ -135,27 +134,29 @@ public class UIAttendance extends JFrame {
 		}
 		JComboBox<String> list = new JComboBox<>(w);
 		check = new JButton("확인");
-		p = new JPanel();
 
-		Box h = Box.createHorizontalBox();
+		JPanel h = new JPanel(new FlowLayout());
 		Box ver = Box.createVerticalBox();
 
 		h.add(list);
 		h.add(check);
 
-		ver.add(h);
+		p.add(h, BorderLayout.NORTH);
 
-		p.add(ver);
-		
-		Box v = Box.createVerticalBox();
-		ver.add(v);
 		ActionListener c = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int num[][] = stu[list.getSelectedIndex()].getAttendance();
-				Box hor=Box.createHorizontalBox();
+				box.removeAll();
+				Box horr = box;
+				JPanel hor;
+				
+				if (ver != null) {
+					ver.removeAll();
+				}
 				
 				for (int i = 0; i < 16; i++) {
+					hor = new JPanel(new FlowLayout());
 					hor.add(new JLabel((i + 1) + "주차"));
 					for (int j = 0; j < 2; j++) {
 						if (j == 0) {
@@ -175,17 +176,15 @@ public class UIAttendance extends JFrame {
 							break;
 						}
 						hor.add(label);
+						ver.add(hor);
 					}
-					v.add(hor);
-					
 				}
-				p.add(v);
+				p.add(ver, BorderLayout.CENTER);
 				f.pack();
 			}
 		};
 		check.addActionListener(c);
 
-		this.add(p, BorderLayout.SOUTH);
 		f.pack();
 	}
 }
