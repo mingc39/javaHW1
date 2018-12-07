@@ -91,7 +91,7 @@ public class CSV {
 				String line = "";
 				line += stus.getStudentID() + ",";
 				line += stus.getName() + ",";
-				line += stus.getAttendance() + ",";
+				line += stus.getAttendanceScore() + ",";
 				line += stus.getMidTest() + ",";
 				line += stus.getFinalTest() + ",";
 				line += stus.getHomework() + ",";
