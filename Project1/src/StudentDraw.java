@@ -1,7 +1,7 @@
-//í•´ì•¼í• ê²ƒ 
-//stdents ë°°ì—´ì„ ë°›ì•„ì™€ì•¼í•¨ 
-//ë‹¨ graphTypeì— ë”°ë¼ stdentsë°°ì—´ ì•ˆì˜ íƒ€ì…ë³€ìˆ˜ë¥¼ ë°›ì•„ì™€ì„œ 
-//ê·¸ê±¸ ì‚¬ìš©í•´ì„œ ì ìˆ˜ëŒ€ë³„ë¡œ ë‚˜ëˆ„ê³ , ê·¸ë˜í”„ë¥¼ ê·¸ë¦°ë‹¤.
+//ÇØ¾ßÇÒ°Í 
+//stdents ¹è¿­À» ¹Ş¾Æ¿Í¾ßÇÔ 
+//´Ü graphType¿¡ µû¶ó stdents¹è¿­ ¾ÈÀÇ Å¸ÀÔº¯¼ö¸¦ ¹Ş¾Æ¿Í¼­ 
+//±×°É »ç¿ëÇØ¼­ Á¡¼ö´ëº°·Î ³ª´©°í, ±×·¡ÇÁ¸¦ ±×¸°´Ù.
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,10 +10,13 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class StudentDraw extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2770773134514289244L;
 	DrawPanel dp;
 	Student[] st;
 	String gt;
@@ -23,28 +26,28 @@ public class StudentDraw extends JFrame {
 		st =students;
 		gt =graphType;
 		dp = new DrawPanel();
-		//ì¶œì„,ì¤‘ê°„ ì‹œí—˜, ê¸°ë§ ì‹œí—˜, ê³¼ì œ ì ìˆ˜, í€´ì¦ˆ ì ìˆ˜, ë°œí‘œ, ì ìˆ˜, ë³´ê³ ì„œ, ê¸°íƒ€ ì ìˆ˜
+		//Ãâ¼®,Áß°£ ½ÃÇè, ±â¸» ½ÃÇè, °úÁ¦ Á¡¼ö, ÄûÁî Á¡¼ö, ¹ßÇ¥, Á¡¼ö, º¸°í¼­, ±âÅ¸ Á¡¼ö
 		switch(gt) {
-			case"ì¶œì„":
+			case"Ãâ¼®":
 				graphnumber=0; break;
-			case"ì¤‘ê°„ ì‹œí—˜":
+			case"Áß°£ ½ÃÇè":
 				graphnumber=1; break;
-			case"ê¸°ë§ ì‹œí—˜":
+			case"±â¸» ½ÃÇè":
 				graphnumber=2; break;
-			case"ê³¼ì œ ì ìˆ˜":
+			case"°úÁ¦ Á¡¼ö":
 				graphnumber=3; break;
-			case"í€´ì¦ˆ ì ìˆ˜":
+			case"ÄûÁî Á¡¼ö":
 				graphnumber=4; break;
-			case"ë°œí‘œ ì ìˆ˜":
+			case"¹ßÇ¥ Á¡¼ö":
 				graphnumber=5; break;
-			case"ë³´ê³ ì„œ":
+			case"º¸°í¼­":
 				graphnumber=6; break;
-			case"ê¸°íƒ€ì ìˆ˜":
+			case"±âÅ¸ Á¡¼ö":
 				graphnumber=7; break;
 		}
 		add(dp);
-		setSize(950, 630);
-		//setSize(950, 400);
+		//setSize(950, 630);
+		setSize(950, 400);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		//this.students=students[];
@@ -56,68 +59,91 @@ public class StudentDraw extends JFrame {
 		String graphType = null;  //?...
 		
 		StudentDraw sd = new StudentDraw(students, graphType); 
-		//ì´ê²Œ ì›ë˜ëŠ” ë‹¤ë¥¸ ë©”ì¸ì—ì„œ studentDrawë¥¼ í˜¸ì¶œí•´ì•¼í•¨
+		//ÀÌ°Ô ¿ø·¡´Â ´Ù¸¥ ¸ŞÀÎ¿¡¼­ studentDraw¸¦ È£ÃâÇØ¾ßÇÔ
 	}*/
 
 	class DrawPanel extends JPanel {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8054082226261107522L;
 		ArrayList<Integer> std = new ArrayList<Integer>();
-		//ì¶œì„,ì¤‘ê°„ ì‹œí—˜, ê¸°ë§ ì‹œí—˜, ê³¼ì œ ì ìˆ˜, í€´ì¦ˆ ì ìˆ˜, ë°œí‘œ ì ìˆ˜, ë³´ê³ ì„œ, ê¸°íƒ€ ì ìˆ˜	
+		//Ãâ¼®,Áß°£ ½ÃÇè, ±â¸» ½ÃÇè, °úÁ¦ Á¡¼ö, ÄûÁî Á¡¼ö, ¹ßÇ¥ Á¡¼ö, º¸°í¼­, ±âÅ¸ Á¡¼ö	
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(5));
-			//g2.drawLine(30, 30, 30, 330); // ì„¸ë¡œì„ 
-			//g2.drawLine(30, 750, 850, 330); // ê°€ë¡œì„ 
-			g2.drawLine(30, 30, 30, 550); // ì„¸ë¡œì„ 
-			g2.drawLine(30, 550, 850, 550); // ê°€ë¡œì„ 
+			g2.drawLine(30, 30, 30, 330); // ¼¼·Î¼±
+			g2.drawLine(30, 330, 850, 330); // °¡·Î¼±
 			this.setBackground(Color.WHITE);
 			g2.setColor(Color.BLACK);  
-			g2.drawString("í•™ìƒìˆ˜", 10, 20); //ê·¸ë˜í”„ìƒ í•™ìƒìˆ˜ì˜ ìœ„ì¹˜
-			g2.setColor(Color.BLACK);  
-			g2.drawString(gt, 400, 20); //ê·¸ë˜í”„ìƒ í•™ìƒìˆ˜ì˜ ìœ„ì¹˜
+			g2.drawString("ÇĞ»ı¼ö", 10, 20); //±×·¡ÇÁ»ó ÇĞ»ı¼öÀÇ À§Ä¡
+			//g2.setColor(Color.BLACK);  
+			//g2.drawString(gt, 400, 20); //±×·¡ÇÁ»ó ÇĞ»ı¼öÀÇ À§Ä¡
 			g2.setColor(Color.BLACK); 
-			g2.drawString("ì ìˆ˜" , 860 , 555); //ê·¸ë˜í”„ìƒ ì ìˆ˜ì˜ ìœ„ì¹˜
-			int num[] = new int[11]; //ì•„ì´ë“¤ì˜ ì ìˆ˜ ë¹„ìœ¨
+			g2.drawString("Á¡¼ö" , 860 , 555); //±×·¡ÇÁ»ó Á¡¼öÀÇ À§Ä¡*/
 			
-			for (int i = 0; i <=st.length/*ê°ì²´ìˆ˜*/; i++) {
+			
+			int num[] = new int[11]; //¾ÆÀÌµéÀÇ Á¡¼ö ºñÀ²
+			
+			for (int i = 0; i <st.length/*°´Ã¼¼ö*/; i++) {
 				int score =st[i].getScores()[graphnumber];
 				if(0<=score&&score<10) {
-					num[0] ++; //10ì ë¯¸ë§Œ
+					num[0] ++; //10Á¡¹Ì¸¸
 				}else if(10<=score&&score<20) {
-					num[1] ++; //10ì ëŒ€
+					num[1] ++; //10Á¡´ë
 				}else if(20<=score&&score<30) {
-					num[2] ++; //20ì ëŒ€
+					num[2] ++; //20Á¡´ë
 				}else if(30<=score&&score<40) {
-					num[3] ++; //30ì ëŒ€
+					num[3] ++; //30Á¡´ë
 				}else if(40<=score&&score<50) {
-					num[4] ++; //40ì ëŒ€
+					num[4] ++; //40Á¡´ë
 				}else if(50<=score&&score<60) {
-					num[5] ++; //50ì ëŒ€
+					num[5] ++; //50Á¡´ë
 				}else if(60<=score&&score<70) {
-					num[6] ++; //60ì ëŒ€
+					num[6] ++; //60Á¡´ë
 				}else if(70<=score&&score<80) {
-					num[7] ++; //70ì ëŒ€
+					num[7] ++; //70Á¡´ë
 				}else if(80<=score&&score<90) {
-					num[8] ++; //80ì ëŒ€
+					num[8] ++; //80Á¡´ë
 				}else if(90<=score&&score<100) {
-					num[9] ++; //90ì ëŒ€
+					num[9] ++; //90Á¡´ë
 				}else if(score==100) {
-					num[10] ++; //100ì 
+					num[10] ++; //100Á¡
 				}
 			}
 			
+			int max = 0;
+			for(int i : num)
+				if(i > max) max = i;
+			max += 10 - max % 10;
+			
+			g2.setStroke(new BasicStroke(1));
+			for(int i = 1; i < max; i++) {
+				if(i % 10 == 0) g2.setColor(Color.GRAY);
+				else g2.setColor(Color.LIGHT_GRAY);
+				g2.drawLine(30, 330 - ((330 / max) * i), 850, 330 - ((330 / max) * i));
+				g2.setColor(Color.BLACK);
+				g2.drawString(i + "", 10, 330 - ((330 / max) * i - 3));
+			}
+			
+			
+			
+			
 			for(int i=0; i<=10; i++) {
-				int height = 550 -(30 *num[i]);//- (3 * num[i]);
-				g2.setColor(Color.BLACK); //ì„¸ë¡œì˜ ì ìˆ˜ -> í•™ìƒìˆ˜ 
-				g2.drawString(num[i] + "", 10, height); // ì„¸ë¡œì¶•ì˜ ì ìˆ˜ í‘œê¸°
+				int height = 330 - ((330 / max) * num[i]);//- (3 * num[i]);
+				g2.setColor(Color.BLACK); //¼¼·ÎÀÇ Á¡¼ö -> ÇĞ»ı¼ö 
+				 // ¼¼·ÎÃàÀÇ Á¡¼ö Ç¥±â
+				g2.drawString(num[i] + "", 52 + (i * 75), height - 2);
 				g2.setColor(Color.BLUE);
-				g2.fillRect(40 + (i * 70), height, 25, 550 - height); // ê·¸ë˜í”„ì˜ í¬ê¸°ì„¤ì • (x,y,ê°€ë¡œ,ì„¸ë¡œ)
+				g2.fillRect(40 + (i * 75), height, 30, 330 - height); // ±×·¡ÇÁÀÇ Å©±â¼³Á¤ (x,y,°¡·Î,¼¼·Î)
 				//g2.setColor(Color.BLACK);
 				//g2.drawString(40 + (i * 80)+"", height,  330 - height);
-				g2.setColor(Color.BLACK); //ê°€ë¡œì˜ ìˆœì„œ  -> ì ìˆ˜ëŒ€
-				g2.drawString((i*10) + "", 40 + (i * 70)+7, 570);
+				g2.setColor(Color.BLACK); //°¡·ÎÀÇ ¼ø¼­  -> Á¡¼ö´ë
+				g2.drawString((i*10) + "", 40 + (i * 75) +12, 350);
+				
 			}
 		}
 	}

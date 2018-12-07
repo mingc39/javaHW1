@@ -87,6 +87,8 @@ public class UIAttendance extends JFrame {
 
 				for (int i = 0; i <stu.length; i++) {
 					int a[][] = stu[i].getAttendance();
+					if(a == null) a = new int[16][];
+					if(a[list.getSelectedIndex()] == null) a[list.getSelectedIndex()] = new int[] { 2, 2 };
 					String tue = "", thr = "";
 
 					switch (a[list.getSelectedIndex()][0]) {
@@ -148,14 +150,15 @@ public class UIAttendance extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int num[][] = stu[list.getSelectedIndex()].getAttendance();
 				box.removeAll();
-				Box horr = box;
 				JPanel hor;
 				
 				if (ver != null) {
 					ver.removeAll();
 				}
 				
+				if(num == null) num = new int[16][];
 				for (int i = 0; i < 16; i++) {
+					if(num[i] == null) num[i] = new int[] { 2, 2 };
 					hor = new JPanel(new FlowLayout());
 					hor.add(new JLabel((i + 1) + "ÁÖÂ÷"));
 					for (int j = 0; j < 2; j++) {

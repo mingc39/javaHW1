@@ -68,7 +68,7 @@ public class UIMain extends JFrame {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "DB 열기":
 					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
-					new UIMain(Main.testData(new StudentTable(), 5));
+					new UIMain(Main.testData(new StudentTable(), 5, false));
 					dispose();
 					break;
 				case "DB 저장":
