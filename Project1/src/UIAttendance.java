@@ -148,6 +148,7 @@ public class UIAttendance extends JFrame {
 		ActionListener c = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(stu.length == 0) return;
 				int num[][] = stu[list.getSelectedIndex()].getAttendance();
 				box.removeAll();
 				JPanel hor;
