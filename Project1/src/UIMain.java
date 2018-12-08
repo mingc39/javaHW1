@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -46,7 +47,7 @@ public class UIMain extends JFrame {
 	}
 	
 	// 메뉴 추가
-	private void menu() {
+	private void menu(){
 		
 		// 변수
 		JMenuItem item;
@@ -70,7 +71,12 @@ public class UIMain extends JFrame {
 					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "DB 저장":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
+					try {
+						SQLmethod.Insert(studentTable.getStudents());
+					}
+					catch(SQLException exp) {
+						exp.printStackTrace();
+					}
 					break;
 				case "CSV 열기":
 					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
