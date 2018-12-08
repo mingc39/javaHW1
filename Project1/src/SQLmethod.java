@@ -13,7 +13,7 @@ import java.lang.NullPointerException;
 public class SQLmethod {
 	
 	// DB와 연결해주는 메소드
-	public Connection makeConnection() {
+	public static Connection makeConnection() {
 		String url = "jdbc:mysql://localhost/practice?characterEncoding=UTF-8&serverTimezone=UTC";
 		
 		Connection con = null;
@@ -33,7 +33,7 @@ public class SQLmethod {
 	}
 	
 	// DB에서 Student의 데이터를 불러와 Student 배열로 반환
-	public Student[] open() throws SQLException{
+	public static Student[] open() throws SQLException{
 		Connection con = makeConnection();
 		String sql = "SELECT *FROM `student`";
 		PreparedStatement pstmt = con.prepareStatement(sql.toString());
@@ -54,7 +54,7 @@ public class SQLmethod {
 	}
 	
 	// Student 배열을 받아와 DB에 저장
-	public void Insert(Student stu[]) throws SQLException{
+	public static void Insert(Student stu[]) throws SQLException{
 		Connection con = makeConnection();
 		for(int n = 0; n < stu.length ;n++) {
 			if(search(stu[n])) {
@@ -83,7 +83,7 @@ public class SQLmethod {
 	}
 	
 	// Insert메소드를 사용하기 전 중복되는 id가 있는지 확인
-	public boolean search(Student stu) throws SQLException{
+	public static boolean search(Student stu) throws SQLException{
 		Connection con = makeConnection();
 		String sql = "SELECT *FROM `student`";
 		PreparedStatement pstmt = con.prepareStatement(sql.toString());
