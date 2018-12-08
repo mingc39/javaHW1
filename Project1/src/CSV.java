@@ -9,25 +9,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class CSV {
-	public static void Read(String FN) {
-		List<List<String>> ret = new ArrayList<List<String>>();
+	public static Student[] Read() {
 		BufferedReader br = null;
-		
+		String FN = readC();
 		try {
-			br = Files.newBufferedReader(Paths.get("C:\\Users\\PC\\Desktop\\" + FN +".csv"));
+			br = Files.newBufferedReader(Paths.get(FN));
 			Charset.forName("UTF-8");
 			String line = "";
-			
+			Student stu[] = new Student[100];
+			int num = 0;
 			while((line = br.readLine())!= null) {
-				List<String> tmpList = new ArrayList<String>();
 				// array[0]~[9]까지 데이터 저장
 				String array[] = line.split(",");
-				
-				tmpList = Arrays.asList(array);
-				System.out.println(tmpList);
-				ret.add(tmpList);
+				stu[num] = new Student(Integer.parseInt(array[0]), array[1], Integer.parseInt(array[2]), Integer.parseInt(array[3]), Integer.parseInt(array[4]), Integer.parseInt(array[5]), Integer.parseInt(array[6]), Integer.parseInt(array[7]),Integer.parseInt(array[8]),Integer.parseInt(array[9]));
+				num++;
 			}
+			Student Stu[] = new Student[num];
+			for(int n = 0 ; n< num ; n++) {
+				Stu[n] = stu[n];
+			}
+			return Stu;
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -45,6 +51,7 @@ public class CSV {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 	
 	public static void Write(String FN, Student stu[]) {
@@ -141,5 +148,18 @@ public class CSV {
 			}
 		}*/
 		return ret;
+	}
+	
+	public static String readC() {
+		JFrame window = new JFrame();
+		String Folder = "";
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("csv파일", "csv");
+		fileChooser.addChoosableFileFilter(filter);
+		int result = fileChooser.showOpenDialog(window);
+		if(result == JFileChooser.APPROVE_OPTION) {
+			Folder = fileChooser.getSelectedFile().toString();
+		}
+		return Folder;
 	}
 }
