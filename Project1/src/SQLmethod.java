@@ -19,9 +19,7 @@ public class SQLmethod {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("DB connect중");
 			con = DriverManager.getConnection(url, "root", "tjsvndrl12!");
-			System.out.println("DB connect complete");
 		}
 		catch(ClassNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -75,8 +73,7 @@ public class SQLmethod {
 				pstmt.execute();
 				pstmt.close();
 			}
-			else {
-				
+			else {	
 			}
 		}
 		con.close();
@@ -84,8 +81,8 @@ public class SQLmethod {
 	
 	// Insert메소드를 사용하기 전 중복되는 id가 있는지 확인
 	public static boolean search(Student stu) throws SQLException{
-		Connection con = makeConnection();
 		String sql = "SELECT *FROM `student`";
+		Connection con = makeConnection();
 		PreparedStatement pstmt = con.prepareStatement(sql.toString());
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {

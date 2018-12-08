@@ -79,10 +79,19 @@ public class UIMain extends JFrame {
 					}
 					break;
 				case "CSV 열기":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
-					break;
+					//JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
+		            if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "CSV 열기",
+		                  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) break;
+		            StudentTable newStudentTable = new StudentTable();
+		            Student Stu[] = CSV.Read();
+		            if(Stu != null) {
+		            	for(Student s : Stu) newStudentTable.addStudent(s);
+			            new UIMain(newStudentTable);
+			            dispose();	
+		            }
+		            break;
 				case "CSV 저장":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
+					CSV.Write(studentTable.getStudents());
 					break;
 				case "종료":
 					if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)

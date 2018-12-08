@@ -17,75 +17,83 @@ public class CSV {
 	public static Student[] Read() {
 		BufferedReader br = null;
 		String FN = readC();
-		try {
-			br = Files.newBufferedReader(Paths.get(FN));
-			Charset.forName("UTF-8");
-			String line = "";
-			Student stu[] = new Student[100];
-			int num = 0;
-			while((line = br.readLine())!= null) {
-				// array[0]~[9]까지 데이터 저장
-				String array[] = line.split(",");
-				stu[num] = new Student(Integer.parseInt(array[0]), array[1], Integer.parseInt(array[2]), Integer.parseInt(array[3]), Integer.parseInt(array[4]), Integer.parseInt(array[5]), Integer.parseInt(array[6]), Integer.parseInt(array[7]),Integer.parseInt(array[8]),Integer.parseInt(array[9]));
-				num++;
-			}
-			Student Stu[] = new Student[num];
-			for(int n = 0 ; n< num ; n++) {
-				Stu[n] = stu[n];
-			}
-			return Stu;
+		if(FN == "") {
+			
 		}
-		catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		finally {
+		else {
 			try {
-				if(br != null) {
-					br.close();
+				br = Files.newBufferedReader(Paths.get(FN));
+				Charset.forName("UTF-8");
+				String line = "";
+				Student stu[] = new Student[100];
+				int num = 0;
+				while((line = br.readLine())!= null) {
+					// array[0]~[9]까지 데이터 저장
+					String array[] = line.split(",");
+					stu[num] = new Student(Integer.parseInt(array[0]), array[1], Integer.parseInt(array[2]), Integer.parseInt(array[3]), Integer.parseInt(array[4]), Integer.parseInt(array[5]), Integer.parseInt(array[6]), Integer.parseInt(array[7]),Integer.parseInt(array[8]),Integer.parseInt(array[9]));
+					num++;
 				}
+				Student Stu[] = new Student[num];
+				for(int n = 0 ; n< num ; n++) {
+					Stu[n] = stu[n];
+				}
+				return Stu;
+			}
+			catch(FileNotFoundException e) {
+				e.printStackTrace();
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+			}
+			finally {
+				try {
+					if(br != null) {
+						br.close();
+					}
+				}
+				catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return null;
 	}
 	
-	public static void Write(String FN, Student stu[]) {
+	public static void Write(Student stu[]) {
 		BufferedWriter bufWriter =null;
-		try {
-			bufWriter = Files.newBufferedWriter(Paths.get("C:\\Users\\PC\\Desktop\\"+ FN +".csv"),Charset.forName("UTF-8"));
-			List<List<String>> allData = readCSV(stu);
-			
-			for(List<String> newLine : allData) {
-				List<String> list = newLine;
-				for(String data : list) {
-					bufWriter.write(data);
-					bufWriter.write(",");
-				}
-				bufWriter.newLine();
-			}
-		}
-		catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		finally {
+		String FN = readC();
+		if(FN != "") {
 			try {
-				if(bufWriter != null) {
-					bufWriter.close();
+				bufWriter = Files.newBufferedWriter(Paths.get(FN + ".csv"),Charset.forName("UTF-8"));
+				List<List<String>> allData = readCSV(stu);
+				
+				for(List<String> newLine : allData) {
+					List<String> list = newLine;
+					for(String data : list) {
+						bufWriter.write(data);
+						bufWriter.write(",");
+					}
+					bufWriter.newLine();
 				}
+			}
+			catch(FileNotFoundException e) {
+				e.printStackTrace();
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					if(bufWriter != null) {
+						bufWriter.close();
+					}
+				}
+				catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -159,6 +167,9 @@ public class CSV {
 		int result = fileChooser.showOpenDialog(window);
 		if(result == JFileChooser.APPROVE_OPTION) {
 			Folder = fileChooser.getSelectedFile().toString();
+		}
+		else if(result == fileChooser.CANCEL_OPTION) {
+			System.out.println("취소됨 ㅎ");
 		}
 		return Folder;
 	}
