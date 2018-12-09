@@ -155,26 +155,32 @@ public class UIMain extends JFrame {
 			}
 		};
 		// 메뉴 생성 및 추가
-		item = new JMenuItem("DB 열기");
+		item = new JMenuItem("DB 열기", KeyEvent.VK_D);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('O', Event.CTRL_MASK ^ Event.ALT_MASK));
 		menuFile.add(item);
-		item = new JMenuItem("DB 저장");
+		item = new JMenuItem("DB 저장", KeyEvent.VK_B);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('S', Event.CTRL_MASK ^ Event.ALT_MASK));
 		menuFile.add(item);
 		menuFile.addSeparator();
 		item = new JMenuItem("CSV 열기", KeyEvent.VK_O);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('O', Event.CTRL_MASK));
 		menuFile.add(item);
 		item = new JMenuItem("CSV 저장", KeyEvent.VK_S);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('S', Event.CTRL_MASK));
 		menuFile.add(item);
 		menuFile.addSeparator();
-		item = new JMenuItem("DB 설정");
+		item = new JMenuItem("DB 설정", KeyEvent.VK_A);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('D', Event.CTRL_MASK ^ Event.ALT_MASK));
 		menuFile.add(item);
 		menuFile.addSeparator();
-		item = new JMenuItem("종료");
+		item = new JMenuItem("종료", KeyEvent.VK_Q);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('Q', Event.CTRL_MASK));
 		menuFile.add(item);
 		
 		// =======================<편집 메뉴 생성>=======================
@@ -299,44 +305,44 @@ public class UIMain extends JFrame {
 			}
 		};
 		// 메뉴 생성 및 추가
-		item = new JMenuItem("입력");
+		item = new JMenuItem("입력", KeyEvent.VK_N);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('N', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("수정");
+		item = new JMenuItem("수정", KeyEvent.VK_E);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('E', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("삭제");
+		item = new JMenuItem("삭제", KeyEvent.VK_D);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('D', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("검색");
+		item = new JMenuItem("검색", KeyEvent.VK_F);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("평균");
+		item = new JMenuItem("평균", KeyEvent.VK_T);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('T', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("출석 체크");
+		item = new JMenuItem("출석 체크", KeyEvent.VK_U);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('U', Event.CTRL_MASK));
 		menuEdit.add(item);
 		menuEdit.addSeparator(); // ======================================
-		item = new JMenuItem("반영 비율");
+		item = new JMenuItem("반영 비율", KeyEvent.VK_R);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('R', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("학점 비율");
+		item = new JMenuItem("학점 비율", KeyEvent.VK_G);
 		item.addActionListener(listener);
 		item.setAccelerator(KeyStroke.getKeyStroke('G', Event.CTRL_MASK));
 		menuEdit.add(item);
-		item = new JMenuItem("출석 설정");
+		item = new JMenuItem("출석 설정", KeyEvent.VK_O);
 		item.addActionListener(listener);
-		item.setAccelerator(KeyStroke.getKeyStroke('B', Event.CTRL_MASK));
+		item.setAccelerator(KeyStroke.getKeyStroke('U', Event.CTRL_MASK ^ Event.ALT_MASK));
 		menuEdit.add(item);
 		
 		// =======================<그래프 메뉴 생성>=======================
@@ -348,29 +354,37 @@ public class UIMain extends JFrame {
 			}
 		};
 		// 메뉴 생성 및 추가
-		item = new JMenuItem("출석");
+		item = new JMenuItem("출석", KeyEvent.VK_1);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('1', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("중간 시험");
+		item = new JMenuItem("중간 시험", KeyEvent.VK_2);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('2', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("기말 시험");
+		item = new JMenuItem("기말 시험", KeyEvent.VK_3);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('3', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("과제 점수");
+		item = new JMenuItem("과제 점수", KeyEvent.VK_4);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('4', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("퀴즈 점수");
+		item = new JMenuItem("퀴즈 점수", KeyEvent.VK_5);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('5', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("발표 점수");
+		item = new JMenuItem("발표 점수", KeyEvent.VK_6);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('6', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("보고서");
+		item = new JMenuItem("보고서", KeyEvent.VK_7);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('7', Event.CTRL_MASK));
 		menuGraph.add(item);
-		item = new JMenuItem("기타 점수");
+		item = new JMenuItem("기타 점수", KeyEvent.VK_8);
 		item.addActionListener(listener);
+		item.setAccelerator(KeyStroke.getKeyStroke('8', Event.CTRL_MASK));
 		menuGraph.add(item);
 		
 		// 메뉴 바에 메뉴 추가
