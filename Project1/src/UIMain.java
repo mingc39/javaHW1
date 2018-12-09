@@ -1,4 +1,6 @@
 import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -7,10 +9,14 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 //UIMain.java
@@ -109,6 +115,38 @@ public class UIMain extends JFrame {
 				case "CSV 저장":
 					CSV.Write(studentTable.getStudents());
 					break;
+				case "DB 설정":
+					JPanel panel = new JPanel(new GridLayout(4, 1));
+					JTextField url = new JTextField(SQLmethod.url, 20);
+					JTextField username = new JTextField(SQLmethod.user, 20);
+					JPasswordField password = new JPasswordField(SQLmethod.password, 20);
+					JPasswordField confirm = new JPasswordField(SQLmethod.password, 20);
+					JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("서버 주소"));
+					panel2.add(url);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("사용자 이름"));
+					panel2.add(username);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("암호"));
+					panel2.add(password);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("암호 확인"));
+					panel2.add(confirm);
+					panel.add(panel2);
+					if(JOptionPane.showConfirmDialog(null, panel, "DB", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
+						if(new String(password.getPassword()).equals(new String(confirm.getPassword())) == false) {
+							JOptionPane.showMessageDialog(null, "암호와 암호 확인이 서로 다릅니다.", "DB", JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+						SQLmethod.url = url.getText();
+						SQLmethod.user = username.getText();
+						SQLmethod.password = new String(password.getPassword());
+					}
+					break;
 				case "종료":
 					if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
 						System.exit(0);
@@ -128,6 +166,10 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuFile.add(item);
 		item = new JMenuItem("CSV 저장", KeyEvent.VK_S);
+		item.addActionListener(listener);
+		menuFile.add(item);
+		menuFile.addSeparator();
+		item = new JMenuItem("DB 설정");
 		item.addActionListener(listener);
 		menuFile.add(item);
 		menuFile.addSeparator();

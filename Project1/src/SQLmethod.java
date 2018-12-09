@@ -7,16 +7,18 @@ import java.sql.SQLException;
 
 // module처럼 SQL을 사용하게 하기위한 클라스
 public class SQLmethod {
+	public static String url = "localhost/practice?characterEncoding=UTF-8&serverTimezone=UTC";
+	public static String user = "root";
+	public static String password = "0000";
 	
 	// DB와 연결해주는 메소드
 	public static Connection makeConnection() {
-		String url = "jdbc:mysql://localhost/practice?characterEncoding=UTF-8&serverTimezone=UTC";
 		
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			//con = DriverManager.getConnection(url, "root", "tjsvndrl12!");
-			con = DriverManager.getConnection(url, "root", "0000");
+			con = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
 		}
 		catch(ClassNotFoundException e) {
 			//System.out.println(e.getMessage());
