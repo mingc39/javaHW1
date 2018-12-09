@@ -1,15 +1,22 @@
 import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 //UIMain.java
@@ -36,7 +43,7 @@ public class UIMain extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+				if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?\n저장하지 않은 내용이 사라질 수 있습니다.", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
 					System.exit(0);
 			}
 		});
@@ -46,7 +53,7 @@ public class UIMain extends JFrame {
 	}
 	
 	// 메뉴 추가
-	private void menu() {
+	private void menu(){
 		
 		// 변수
 		JMenuItem item;
@@ -67,18 +74,78 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "DB 열기":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
-					new UIMain(Main.testData(new StudentTable(), 5, false));
-					dispose();
+					if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "DB",
+			                  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) break;
+					try {
+						StudentTable newStudentTable = new StudentTable();
+			            Student students[] = SQLmethod.open();
+			            if(students == null) {
+			            	JOptionPane.showMessageDialog(null, "DB를 열지 못하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
+			            	break;
+			            }
+			            for(Student s : students) newStudentTable.addStudent(s);
+				        new UIMain(newStudentTable);
+				        dispose();
+					}
+					catch(SQLException exp) {
+						JOptionPane.showMessageDialog(null, "DB 오류가 발생하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
+					}
 					break;
 				case "DB 저장":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
+					try {
+						SQLmethod.Insert(studentTable.getStudents());
+					}
+					catch(SQLException exp) {
+						JOptionPane.showMessageDialog(null, "DB 오류가 발생하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
+					}
 					break;
 				case "CSV 열기":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
-					break;
+		            if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "CSV",
+		                  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) break;
+		            StudentTable newStudentTable = new StudentTable();
+		            Student students[] = CSV.Read();
+		            if(students == null) {
+		            	JOptionPane.showMessageDialog(null, "파일을 열지 못하였습니다.\n오류가 발생했거나 사용자가 취소했을 수 있습니다.", "CSV", JOptionPane.ERROR_MESSAGE);
+		            	break;
+		            }
+		            for(Student s : students) newStudentTable.addStudent(s);
+			        new UIMain(newStudentTable);
+			        dispose();
+		            break;
 				case "CSV 저장":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
+					CSV.Write(studentTable.getStudents());
+					break;
+				case "DB 설정":
+					JPanel panel = new JPanel(new GridLayout(4, 1));
+					JTextField url = new JTextField(SQLmethod.url, 20);
+					JTextField username = new JTextField(SQLmethod.user, 20);
+					JPasswordField password = new JPasswordField(SQLmethod.password, 20);
+					JPasswordField confirm = new JPasswordField(SQLmethod.password, 20);
+					JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("서버 주소"));
+					panel2.add(url);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("사용자 이름"));
+					panel2.add(username);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("암호"));
+					panel2.add(password);
+					panel.add(panel2);
+					panel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+					panel2.add(new JLabel("암호 확인"));
+					panel2.add(confirm);
+					panel.add(panel2);
+					if(JOptionPane.showConfirmDialog(null, panel, "DB", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
+						if(new String(password.getPassword()).equals(new String(confirm.getPassword())) == false) {
+							JOptionPane.showMessageDialog(null, "암호와 암호 확인이 서로 다릅니다.", "DB", JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+						SQLmethod.url = url.getText();
+						SQLmethod.user = username.getText();
+						SQLmethod.password = new String(password.getPassword());
+					}
 					break;
 				case "종료":
 					if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
@@ -99,6 +166,10 @@ public class UIMain extends JFrame {
 		item.addActionListener(listener);
 		menuFile.add(item);
 		item = new JMenuItem("CSV 저장", KeyEvent.VK_S);
+		item.addActionListener(listener);
+		menuFile.add(item);
+		menuFile.addSeparator();
+		item = new JMenuItem("DB 설정");
 		item.addActionListener(listener);
 		menuFile.add(item);
 		menuFile.addSeparator();
