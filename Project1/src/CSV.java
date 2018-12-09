@@ -16,7 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class CSV {
 	public static Student[] Read() {
 		BufferedReader br = null;
-		String FN = readC();
+		String FN = readC(false);
 		if(FN == "") {
 			
 		}
@@ -61,7 +61,7 @@ public class CSV {
 	
 	public static void Write(Student stu[]) {
 		BufferedWriter bufWriter =null;
-		String FN = readC();
+		String FN = readC(true);
 		if(FN != "") {
 			try {
 				bufWriter = Files.newBufferedWriter(Paths.get(FN + ".csv"),Charset.forName("UTF-8"));
@@ -158,18 +158,20 @@ public class CSV {
 		return ret;
 	}
 	
-	public static String readC() {
+	public static String readC(boolean isSave) {
 		JFrame window = new JFrame();
 		String Folder = "";
 		JFileChooser fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("csv∆ƒ¿œ", "csv");
 		fileChooser.addChoosableFileFilter(filter);
-		int result = fileChooser.showOpenDialog(window);
+		int result;
+		if(isSave) result = fileChooser.showSaveDialog(window);
+		else result = fileChooser.showOpenDialog(window);
 		if(result == JFileChooser.APPROVE_OPTION) {
 			Folder = fileChooser.getSelectedFile().toString();
 		}
-		else if(result == fileChooser.CANCEL_OPTION) {
-			System.out.println("√Îº“µ  §æ");
+		else if(result == JFileChooser.CANCEL_OPTION) {
+			//System.out.println("");
 		}
 		return Folder;
 	}

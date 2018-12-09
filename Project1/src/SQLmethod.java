@@ -4,10 +4,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.lang.ArrayIndexOutOfBoundsException;
-import java.lang.NullPointerException;
-
 
 // module처럼 SQL을 사용하게 하기위한 클라스
 public class SQLmethod {
@@ -19,13 +15,14 @@ public class SQLmethod {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(url, "root", "tjsvndrl12!");
+			//con = DriverManager.getConnection(url, "root", "tjsvndrl12!");
+			con = DriverManager.getConnection(url, "root", "0000");
 		}
 		catch(ClassNotFoundException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		catch(SQLException e) {
-			System.out.println("SQLException = " + e.getMessage());
+			//System.out.println("SQLException = " + e.getMessage());
 		}
 		return con;
 	}

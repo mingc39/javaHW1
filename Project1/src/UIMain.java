@@ -37,7 +37,7 @@ public class UIMain extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
+				if(JOptionPane.showConfirmDialog(null, "정말로 종료하시겠습니까?\n저장하지 않은 내용이 사라질 수 있습니다.", "종료", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)
 					System.exit(0);
 			}
 		});
@@ -68,27 +68,43 @@ public class UIMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(((JMenuItem) (e.getSource())).getText()) {
 				case "DB 열기":
-					JOptionPane.showMessageDialog(null, "기능이 없습니다.", "DB", JOptionPane.INFORMATION_MESSAGE);
+					if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "DB",
+			                  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) break;
+					try {
+						StudentTable newStudentTable = new StudentTable();
+			            Student students[] = SQLmethod.open();
+			            if(students == null) {
+			            	JOptionPane.showMessageDialog(null, "DB를 열지 못하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
+			            	break;
+			            }
+			            for(Student s : students) newStudentTable.addStudent(s);
+				        new UIMain(newStudentTable);
+				        dispose();
+					}
+					catch(SQLException exp) {
+						JOptionPane.showMessageDialog(null, "DB 오류가 발생하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
+					}
 					break;
 				case "DB 저장":
 					try {
 						SQLmethod.Insert(studentTable.getStudents());
 					}
 					catch(SQLException exp) {
-						exp.printStackTrace();
+						JOptionPane.showMessageDialog(null, "DB 오류가 발생하였습니다.", "DB", JOptionPane.ERROR_MESSAGE);
 					}
 					break;
 				case "CSV 열기":
-					//JOptionPane.showMessageDialog(null, "기능이 없습니다.", "CSV", JOptionPane.INFORMATION_MESSAGE);
-		            if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "CSV 열기",
+		            if(JOptionPane.showConfirmDialog(null, "저장하지 않은 내용은 사라질 수 있습니다. 계속하시겠습니까?", "CSV",
 		                  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) break;
 		            StudentTable newStudentTable = new StudentTable();
-		            Student Stu[] = CSV.Read();
-		            if(Stu != null) {
-		            	for(Student s : Stu) newStudentTable.addStudent(s);
-			            new UIMain(newStudentTable);
-			            dispose();	
+		            Student students[] = CSV.Read();
+		            if(students == null) {
+		            	JOptionPane.showMessageDialog(null, "파일을 열지 못하였습니다.\n오류가 발생했거나 사용자가 취소했을 수 있습니다.", "CSV", JOptionPane.ERROR_MESSAGE);
+		            	break;
 		            }
+		            for(Student s : students) newStudentTable.addStudent(s);
+			        new UIMain(newStudentTable);
+			        dispose();
 		            break;
 				case "CSV 저장":
 					CSV.Write(studentTable.getStudents());
