@@ -29,8 +29,11 @@ public class CSV {
 				int num = 0;
 				while((line = br.readLine())!= null) {
 					// array[0]~[9]까지 데이터 저장
-					String array[] = line.split(",");
+					String array[] = line.replace(" ", "").split(",");
+					int[][] attendance = new int[16][];
+					for(int i = 0; i < 16; i++) attendance[i] = new int[] { Integer.parseInt(array[10 + 2 * i]), Integer.parseInt(array[11 + 2 * i]) };
 					stu[num] = new Student(Integer.parseInt(array[0]), array[1], Integer.parseInt(array[2]), Integer.parseInt(array[3]), Integer.parseInt(array[4]), Integer.parseInt(array[5]), Integer.parseInt(array[6]), Integer.parseInt(array[7]),Integer.parseInt(array[8]),Integer.parseInt(array[9]));
+					stu[num].setAttendance(attendance);
 					num++;
 				}
 				Student Stu[] = new Student[num];
@@ -65,14 +68,23 @@ public class CSV {
 		if(FN != "") {
 			try {
 				bufWriter = Files.newBufferedWriter(Paths.get(FN + ".csv"),Charset.forName("UTF-8"));
-				List<List<String>> allData = readCSV(stu);
+				//List<List<String>> allData = readCSV(stu);
 				
-				for(List<String> newLine : allData) {
+				/*for(List<String> newLine : allData) {
 					List<String> list = newLine;
 					for(String data : list) {
 						bufWriter.write(data);
 						bufWriter.write(",");
 					}
+					bufWriter.newLine();
+				}*/
+				for(Student student : stu) {
+					int[][] attendance = student.getAttendance();
+					if(attendance == null) attendance = new int[16][];
+					for(int i = 0; i < attendance.length; i++)
+						if(attendance[i] == null) attendance[i] = new int[]{2, 2};
+					student.setAttendance(attendance);
+					bufWriter.write(student.toString().replace(" ", ""));
 					bufWriter.newLine();
 				}
 			}
