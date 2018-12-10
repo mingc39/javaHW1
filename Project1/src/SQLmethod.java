@@ -4,12 +4,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 // module처럼 SQL을 사용하게 하기위한 클라스
 public class SQLmethod {
 	public static String url = "localhost/practice?characterEncoding=UTF-8&serverTimezone=UTC";
 	public static String user = "root";
-	public static String password = "0000";
+	public static String password = "tjsvndrl12!";
 	
 	// DB와 연결해주는 메소드
 	public static Connection makeConnection() {
@@ -43,7 +44,16 @@ public class SQLmethod {
 		rs = pstmt.executeQuery();
 		Student stu[] = new Student[num];
 		for(int n = 0; rs.next();n++) {
+			int Chk[][] = new int[16][2];
 			stu[n] = new Student(rs.getInt("id"), rs.getString("name"), rs.getInt("attendance"), rs.getInt("middletest"), rs.getInt("lasttest"), rs.getInt("task"), rs.getInt("quiz"), rs.getInt("announce"), rs.getInt("report"), rs.getInt("ETC"));
+			for(int a = 0; a<16;a++) {
+				for(int b= 0; b< 2 ; b++) {
+					String str = "UCheck" + ((a*2 + b) + 1);
+					Chk[a][b] = rs.getInt(str);
+				}
+			}
+			stu[n].setAttendance(Chk);
+			
 		}
 		pstmt.close();
 		rs.close();
@@ -55,8 +65,9 @@ public class SQLmethod {
 		Connection con = makeConnection();
 		for(int n = 0; n < stu.length ;n++) {
 			if(search(stu[n])) {
-				String sql = "INSERT INTO student(`id`, `name`, `attendance`,`middletest`,`lasttest`,`task`,`quiz`,`announce`,`report`,`ETC`)VALUES"
-						+ "(?,?,?,?,?,?,?,?,?,?)";
+				String sql = "INSERT INTO student VALUES"
+						+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				//(`id`, `name`, `attendance`,`middletest`,`lasttest`,`task`,`quiz`,`announce`,`report`,`ETC`, 'UCheck')
 				PreparedStatement pstmt = con.prepareStatement(sql.toString());
 				pstmt.setInt(1, stu[n].getStudentID());
 				pstmt.setString(2, stu[n].getName());
@@ -69,6 +80,13 @@ public class SQLmethod {
 				pstmt.setInt(9, stu[n].getReport());
 				pstmt.setInt(10, stu[n].getOthers());
 				
+				int Chk[][] = stu[n].getAttendance();
+				for(int a = 0; a<16;a++) {
+					for(int b= 0; b< 2 ; b++) {
+						pstmt.setInt((11 + (a*2) + b), Chk[a][b]);
+					}
+				}
+				
 				pstmt.execute();
 				pstmt.close();
 			}
@@ -76,6 +94,21 @@ public class SQLmethod {
 			}
 		}
 		con.close();
+	}
+	
+	public static void Delete() throws SQLException{
+		Connection con = makeConnection();
+		Statement stmt = con.createStatement();
+		String sql = "TRUNCATE `student`";
+		
+		if(stmt.executeUpdate(sql) == 1) {
+			System.out.println("succeed");
+		}
+		else {
+			System.out.println("fail");
+		}
+		con.close();
+		stmt.close();
 	}
 	
 	// Insert메소드를 사용하기 전 중복되는 id가 있는지 확인

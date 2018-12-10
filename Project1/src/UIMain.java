@@ -93,6 +93,7 @@ public class UIMain extends JFrame {
 					break;
 				case "DB ¿˙¿Â":
 					try {
+						SQLmethod.Delete();
 						SQLmethod.Insert(studentTable.getStudents());
 					}
 					catch(SQLException exp) {
