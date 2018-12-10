@@ -362,18 +362,20 @@ public class StudentTable {
 			double score = (double) tableModel.getValueAt(row, scoreName.length + 3);
 			attendance = (int[][]) tableModel.getValueAt(row, scoreName.length + 5);
 			absent = 0; late = 0;
-			if(attendance == null) continue;
-			for(int[] j : attendance) {
-				if(j == null) continue;
-				else {
-					for(int k : j) {
-						switch(k) {
-						case 1:
-							late++;
-							break;
-						case 2:
-							absent++;
-							break;
+			//if(attendance == null) ;//continue;
+			if(attendance != null) {
+				for(int[] j : attendance) {
+					//if(j == null) ;//continue;
+					if(j != null) {
+						for(int k : j) {
+							switch(k) {
+							case 1:
+								late++;
+								break;
+							case 2:
+								absent++;
+								break;
+							}
 						}
 					}
 				}
