@@ -350,15 +350,44 @@ public class StudentTable {
 		}
 		
 		// 총점 정렬
+		for(double d : scores) System.out.print(d + " ");
+		System.out.println();
 		Arrays.sort(scores);
+		for(double d : scores) System.out.print(d + " ");
+		System.out.println();
 		double rank, t;
 		
 		// 총점 계산 및 저장
 		for(int row = 0; row < table.getRowCount(); row++) {
 			double score = (double) tableModel.getValueAt(row, scoreName.length + 3);
+			attendance = (int[][]) tableModel.getValueAt(row, scoreName.length + 5);
+			absent = 0; late = 0;
+			if(attendance == null) continue;
+			for(int[] j : attendance) {
+				if(j == null) continue;
+				else {
+					for(int k : j) {
+						switch(k) {
+						case 1:
+							late++;
+							break;
+						case 2:
+							absent++;
+							break;
+						}
+					}
+				}
+			}
+			if(lateToAbsent != 0) absent += late / lateToAbsent;
+			if(absent >= absentLimit && absentLimit != 0) score = -1;
 			
-			if(scores[row] < 0) {
+			System.out.print(row + " ");
+			//double score = (double) tableModel.getValueAt(row, scoreName.length + 3);
+			System.out.print(score + " ");
+			
+			if(score < 0) {
 				tableModel.setValueAt(gradeName[gradeName.length - 1], row, scoreName.length + 4);
+				System.out.println(gradeName[gradeName.length - 1]);
 				continue;
 			}
 			
@@ -369,8 +398,10 @@ public class StudentTable {
 					t = 0;
 					for(int j = 0; j < grade.length; j++) {
 						t += grade[j];
+						System.out.print(gradeName[gradeName.length - 1] + " ");
 						if(rank <= t) {
 							tableModel.setValueAt(gradeName[j], row, scoreName.length + 4);
+							System.out.println();
 							break;
 						}
 					}
