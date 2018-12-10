@@ -350,11 +350,7 @@ public class StudentTable {
 		}
 		
 		// 총점 정렬
-		for(double d : scores) System.out.print(d + " ");
-		System.out.println();
 		Arrays.sort(scores);
-		for(double d : scores) System.out.print(d + " ");
-		System.out.println();
 		double rank, t;
 		
 		// 총점 계산 및 저장
@@ -382,14 +378,9 @@ public class StudentTable {
 			}
 			if(lateToAbsent != 0) absent += late / lateToAbsent;
 			if(absent >= absentLimit && absentLimit != 0) score = -1;
-			
-			System.out.print(row + " ");
-			//double score = (double) tableModel.getValueAt(row, scoreName.length + 3);
-			System.out.print(score + " ");
-			
+						
 			if(score < 0) {
 				tableModel.setValueAt(gradeName[gradeName.length - 1], row, scoreName.length + 4);
-				System.out.println(gradeName[gradeName.length - 1]);
 				continue;
 			}
 			
@@ -400,10 +391,8 @@ public class StudentTable {
 					t = 0;
 					for(int j = 0; j < grade.length; j++) {
 						t += grade[j];
-						System.out.print(gradeName[gradeName.length - 1] + " ");
 						if(rank <= t) {
 							tableModel.setValueAt(gradeName[j], row, scoreName.length + 4);
-							System.out.println();
 							break;
 						}
 					}
