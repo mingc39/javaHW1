@@ -103,6 +103,15 @@ public class UISearch extends JFrame {
 						if (field.getText().equals(String.valueOf(stu[i].getOthers())))
 							st.addStudent(stu[i]);
 						break;
+					case 10:
+						if (Double.parseDouble(field.getText())==stu[i].getTotal())
+							st.addStudent(stu[i]);
+						break;
+					case 11:	//개선사항으로 남김  
+						if (field.getText().equals(stu[i].getGrade()))
+							stu[i].setGrade(stu[i].getGrade());
+							st.addStudent(stu[i]);
+						break;
 					} 
 					
 				}
